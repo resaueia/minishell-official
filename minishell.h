@@ -25,6 +25,17 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+typedef enum    e_token
+{
+    PIPE;
+    IN;
+    OUT;
+    APPEND;
+    HDOC;
+    WORD;
+    ERROR;
+}               t_token;
+
 /* FUNCTION PROTOTYPES */
 void	prompt();
 void	execute_command(char *cmd);

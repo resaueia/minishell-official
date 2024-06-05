@@ -13,26 +13,26 @@
 #include "minishell.h"
 
 // Check if a character is one of the delimiters
-static int is_delimiter(char c, const char *delimiters) {
-    while (*delimiters) {
-        if (c == *delimiters)
-            return 1;
-        delimiters++;
+static int is_delimiter(char c) {
+    
+    if (c == '|' || c == '>' || c == '<')
+    {
+        return (1);
     }
     return 0;
 }
 
 // Count the number of words in the string separated by delimiters
-static int ft_token_count(const char *str, const char *delimiters) {
+static int ft_token_count(const char *str) {
     int i = 0;
     int word_nb = 0;
 
     while (str[i]) {
-        while (is_delimiter(str[i], delimiters))
+        while (is_delimiter(str[i])) // Think of a way to validate if a character is a delimiter
             i++;
-        if (!is_delimiter(str[i], delimiters) && str[i] != '\0')
+        if (!is_delimiter(str[i]) && str[i] != '\0')
             word_nb++;
-        while (!is_delimiter(str[i], delimiters) && str[i] != '\0')
+        while (!is_delimiter(str[i]) && str[i] != '\0')
             i++;
     }
     return word_nb;
