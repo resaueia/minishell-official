@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/04 16:52:52 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/06/06 20:07:52 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ typedef enum    e_token
     WORD;
     ERROR;
 }               t_token;
+
+typedef struct s_envp
+{
+	char	*key;
+	char	*value;
+	s_envp	*next;
+}				t_envp;
 
 /* FUNCTION PROTOTYPES */
 void	prompt();

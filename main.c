@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:56:42 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/04 17:39:18 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/06/06 20:07:55 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ int		main()
 {
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, SIG_IGN);
+
+	t_envp	cat_env;
+
+	cat_env = &envp;
 
 	prompt();
 	return (0);
