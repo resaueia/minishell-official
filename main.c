@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:56:42 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/06 16:31:06 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/06/06 19:33:09 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ void handle_signals(int signo) {
         fflush(stdout);
     }
 }
-
-// Declare the split function and helper functions
-char ***ft_split(const char *s, const char *delimiters, int *num_commands);
-void handle_signals(int signo);
-void execute_command(char **args);
 
 // Handle signals (for example, Ctrl-C)
 void handle_signals(int signo) {
@@ -56,7 +51,7 @@ void prompt() {
     char *input;
     const char *delimiters = "|<>";
 
-    while ((input = readline("minishell> ")) != NULL) {
+    while ((input = readline("megatron> ")) != NULL) {
         if (strlen(input) > 0) {
             add_history(input);
             int num_commands = 0;
