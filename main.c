@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:56:42 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/04 17:39:18 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:31:06 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,58 @@ void handle_signals(int signo) {
     }
 }
 
+// Declare the split function and helper functions
+char ***ft_split(const char *s, const char *delimiters, int *num_commands);
+void handle_signals(int signo);
+void execute_command(char **args);
 
-void	prompt()
-{
-	char	*input;
-
-	while ((input = readline("minishell> ")) != NULL)
-	{
-		if (ft_strlen(input) > 0)
-		{
-			add_history(input);
-		//	execute_command(input);
-		}
-		free(input);
-	}
+// Handle signals (for example, Ctrl-C)
+void handle_signals(int signo) {
+    if (signo == SIGINT) {
+        printf("\nminishell> ");
+        fflush(stdout);
+    }
 }
 
-int		main()
-{
-	signal(SIGINT, handle_signals);
-	signal(SIGQUIT, SIG_IGN);
+// Execute commands (placeholder for now)
+void execute_command(char **args) {
+    printf("Executing command: ");
+    for (int i = 0; args[i] != NULL; i++) {
+        printf("%s ", args[i]);
+    }
+    printf("\n");
+}
 
-	prompt();
+// Prompt function
+void prompt() {
+    char *input;
+    const char *delimiters = "|<>";
+
+    while ((input = readline("minishell> ")) != NULL) {
+        if (strlen(input) > 0) {
+            add_history(input);
+            int num_commands = 0;
+            char ***commands = ft_split(input, delimiters, &num_commands);
+            for (int i = 0; i < num_commands; i++) {
+                execute_command(commands[i]);
+                // Free each command's tokens
+                for (int j = 0; commands[i][j] != NULL; j++) {
+                    free(commands[i][j]);
+                }
+                free(commands[i]);
+            }
+            free(commands);
+        }
+        free(input);
+    }
+}
+
+int main() {
+    signal(SIGINT, handle_signals);
+    signal(SIGQUIT, SIG_IGN);
+
+    prompt();
 	return (0);
 }
+   
+
