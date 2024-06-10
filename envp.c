@@ -11,6 +11,50 @@
 /* ************************************************************************** */
 
 /* Main structure (defined on main) */
+#include <stdlib.h>
+#include <stdio.h>
+
+int		ft_strlen(const char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*test;
+	char	*ptr_keeper;
+
+	test = (char *)malloc(sizeof(char) * ft_strlen(s) + 1);
+	if (!test)
+		return (NULL);
+	ptr_keeper = test;
+	while (*s)
+	{
+		*test = *s;
+		test++;
+		s++;
+	}
+	*test = '\0';
+	return ((char *)ptr_keeper);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == c)
+			return ((char *)s);
+		s++;
+	}
+	if (c == '\0')
+		return ((char *)s);
+	return (NULL);
+}
 
 typedef struct s_envp
 {
@@ -48,11 +92,12 @@ t_envp *get_envp(char **envp)
     current = NULL;
     while (*envp)
     {
-        input = envp;
-        delim = ft_strchr(input, '=');
+       input = *envp;
+	   delim = ft_strchr(input, '=');
         if (delim)
         {
-            key = ft_strdup(input - delim);
+           int	key_len = delim - input;
+		   key = ft_strdup(input - key_len);
             value = ft_strdup(delim + 1);
             new_node = create_node(key, value);
             if (!head)
@@ -69,7 +114,7 @@ t_envp *get_envp(char **envp)
 
 void print_envp_list(t_envp *head)
 {
-    t_envp *current
+    t_envp *current;
     
     current = head;
     while (current)
