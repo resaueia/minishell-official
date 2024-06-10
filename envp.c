@@ -23,7 +23,7 @@ t_envp      *create_node(char *key, char *value)
 {
     t_envp  *new_node;
 
-    new_node = (t_envp *)ft_calloc(sizeof(t_envp));
+    new_node = (t_envp *)malloc(sizeof(t_envp));
     if (!new_node)
         return (NULL);
 
@@ -48,11 +48,11 @@ t_envp *get_envp(char **envp)
     current = NULL;
     while (*envp)
     {
-        input = *envp;
+        input = envp;
         delim = ft_strchr(input, '=');
         if (delim)
         {
-            key = ft_strndup(input, input - delim);
+            key = ft_strdup(input - delim);
             value = ft_strdup(delim + 1);
             new_node = create_node(key, value);
             if (!head)
@@ -67,4 +67,26 @@ t_envp *get_envp(char **envp)
     return (head);
 }
 
+void print_envp_list(t_envp *head)
+{
+    t_envp *current
+    
+    current = head;
+    while (current)
+    {
+        printf("Key: %s, Value: %s\n", current->key, current->value);
+        current = current->next;
+    }
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    (void)argc;
+    (void)argv;
+    t_envp *env_list;
+
+    env_list = get_envp(envp);
+    print_envp_list(env_list);
+    return (0);
+}
 
