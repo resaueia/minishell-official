@@ -64,6 +64,7 @@ t_envp *get_envp(char **envp)
                 current->next = new_node;
             current = new_node;
             free(key);
+            free(value);
         }
         envp++;
     }
