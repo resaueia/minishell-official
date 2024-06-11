@@ -27,13 +27,13 @@
 
 typedef enum    e_token
 {
-    PIPE;
-    IN;
-    OUT;
-    APPEND;
-    HDOC;
-    WORD;
-    ERROR;
+    PIPE,
+    IN,
+    OUT,
+    APPEND,
+    HDOC,
+    WORD,
+    ERROR,
 }               t_token;
 
 typedef struct s_envp
@@ -47,15 +47,9 @@ typedef struct s_envp
 void	prompt();
 void	execute_command(char *cmd);
 void	handle_signals(int signo);
-
-/* Built-in commands */
-int		builtin_cd(char **args);
-int		builtin_pwd(char **args);
-int		builtin_echo(char **args);
-int		builtin_export(char **args);
-int		builtin_unset(char **args);
-int		builtin_env(char **args);
-int		builtin_exit(char **args);
+char	*ft_strchr(char *s, int c);
+char    *ft_strdup(char *s);
+int     ft_strlen(char *str);
 
 #endif
 

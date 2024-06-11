@@ -11,61 +11,12 @@
 /* ************************************************************************** */
 
 /* Main structure (defined on main) */
-#include <stdlib.h>
-#include <stdio.h>
 
-int		ft_strlen(const char *str)
+#include "minishell.h"
+
+t_envp *create_node(char *key, char *value)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*test;
-	char	*ptr_keeper;
-
-	test = (char *)malloc(sizeof(char) * ft_strlen(s) + 1);
-	if (!test)
-		return (NULL);
-	ptr_keeper = test;
-	while (*s)
-	{
-		*test = *s;
-		test++;
-		s++;
-	}
-	*test = '\0';
-	return ((char *)ptr_keeper);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s)
-	{
-		if (*s == c)
-			return ((char *)s);
-		s++;
-	}
-	if (c == '\0')
-		return ((char *)s);
-	return (NULL);
-}
-
-typedef struct s_envp
-{
-	char	*key;
-	char	*value;
-	struct s_envp	*next;
-}				t_envp;
-
-t_envp      *create_node(char *key, char *value)
-{
-    t_envp  *new_node;
+    t_envp *new_node;
 
     new_node = (t_envp *)malloc(sizeof(t_envp));
     if (!new_node)
@@ -80,32 +31,39 @@ t_envp      *create_node(char *key, char *value)
 
 t_envp *get_envp(char **envp)
 {
-    t_envp  *head;
-    t_envp  *current;
-    t_envp  *new_node;
-    char    *input;
-    char    *delim;
-    char    *key;
-    char    *value;
+    t_envp *head;
+    t_envp *current;
+    t_envp *new_node;
+    char *input;
+    char *delim;
+    char *key;
+    char *value;
+    int key_len;
+    int i;
 
     head = NULL;
     current = NULL;
     while (*envp)
     {
-       input = *envp;
-	   delim = ft_strchr(input, '=');
+        input = *envp;
+        delim = ft_strchr(input, '=');
         if (delim)
         {
-           int	key_len = delim - input;
-		   key = ft_strdup(input - key_len);
+            key_len = delim - input;
+            key = (char *)malloc(sizeof(char) * (key_len + 1));
+            if (!key)
+                return NULL;
+            for (i = 0; i < key_len; i++)
+                key[i] = input[i];
+            key[key_len] = '\0';
             value = ft_strdup(delim + 1);
             new_node = create_node(key, value);
             if (!head)
                 head = new_node;
             else
-            current->next = new_node;
+                current->next = new_node;
+            current = new_node;
             free(key);
-            free(value);
         }
         envp++;
     }
@@ -115,7 +73,7 @@ t_envp *get_envp(char **envp)
 void print_envp_list(t_envp *head)
 {
     t_envp *current;
-    
+
     current = head;
     while (current)
     {

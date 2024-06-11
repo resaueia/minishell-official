@@ -1,4 +1,17 @@
-char	*ft_strdup(const char *s)
+
+#include "minishell.h"
+
+int ft_strlen(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+        i++;
+    return (i);
+}
+
+char	*ft_strdup(char *s)
 {
 	char	*test;
 	char	*ptr_keeper;
@@ -17,7 +30,7 @@ char	*ft_strdup(const char *s)
 	return ((char *)ptr_keeper);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
 	while (*s)
 	{
