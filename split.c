@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:22:34 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/05 18:27:01 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:19:43 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,3 +75,33 @@ char **ft_split(char const *s, const char *delimiters) {
     return megazord;
 }
 
+/*Thinking of this split res, gotta test to see if it makes sense!*/
+
+/*char	**ft_split(char *str, char delim)
+{
+	char	**result;
+	int		count;
+	int		i;
+	char	*token;
+
+	count = 1;
+	for (i = 0; str[i]; i++)
+		if (str[i] == delim)
+			count++;
+
+	result = (char **)malloc((count + 1) * sizeof(char *));
+	if (!result)
+		return (NULL);
+
+	i = 0;
+	token = strtok(str, &delim);
+	while (token)
+	{
+		result[i] = ft_strdup(token);
+		token = strtok(NULL, &delim);
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
+}
+*/
