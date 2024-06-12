@@ -3,47 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:56:42 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/06 20:07:55 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:01:45 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_signals(int signo) {
-    if (signo == SIGINT) {
-        printf("\nminishell> ");
-        fflush(stdout);
-    }
-}
-
-
-void	prompt()
+int	check_command_line(int c)
 {
-	char	*input;
-
-	while ((input = readline("minishell> ")) != NULL)
+	if (c > 1)
 	{
-		if (ft_strlen(input) > 0)
-		{
-			add_history(input);
-		//	execute_command(input);
-		}
-		free(input);
+		printf("Error: too many arguments\n");
+		exit(0);
 	}
+	return (1);
 }
 
-int		main()
+int	main(int c, char **v, char **env)
 {
-	signal(SIGINT, handle_signals);
-	signal(SIGQUIT, SIG_IGN);
-
-	t_envp	cat_env;
-
-	cat_env = &envp;
-
-	prompt();
+	if (!check_command_line(c))
+		return (0);
+	(void)v;
+	(void)env;
+	// looping the shell
+	minishell_prompt();
 	return (0);
 }
