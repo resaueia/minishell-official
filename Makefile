@@ -12,17 +12,23 @@
 
 NAME = minishell
 
+HEADER = minishell.h
+
 CC = cc
 
 FLAGS = -Wall -Wextra -Werror
 
-SRCS = 
+SRCS = envp_utils.c envp.c
 
-OBJS = 
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
-	$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
+
+$(NAME): $(OBJS)
+	$(CC) $(FLAGS) -o $(NAME) $(OBJS) -lreadline
+
+%.o: %.c $(HEADER)
+	$(CC) $(FLAGS) -c $<
 
 clean:
 	rm -f $(OBJS)
@@ -33,3 +39,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
