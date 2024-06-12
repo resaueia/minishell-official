@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/10 22:21:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/06/11 21:33:54 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@
 # include <unistd.h>
 
 /* FUNCTION PROTOTYPES */
-void	prompt(void);
 void	execute_command(char *cmd);
-void	handle_signals(int signo);
+void	handle_signals(int sig);
 int		check_command_line(int c);
+int		ft_strcmp(char *str, char *value);
+void	minishell_prompt(void);
 
 /* Built-in commands */
 int		builtin_cd(char **args);

@@ -3,32 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+         #
+#    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/06/04 15:07:58 by rsaueia-         ###   ########.fr        #
+#    Updated: 2024/06/11 21:54:27 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = cc
+HEADER = minishell.h
 
+SRCS = main.c prompt.c signals.c utils.c
+OBJS = $(SRCS:.c=.o)
+
+RM = rm -rf
 FLAGS = -Wall -Wextra -Werror
 
-SRCS = 
-
-OBJS = 
-
 all: $(NAME)
-	$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
+
+$(NAME): $(OBJS)
+	cc $(FLAGS) $(OBJS) -o $(NAME) -lreadline
+	
+%.o: %.c $(HEADER)
+	cc $(FLAGS) -c $<
 
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

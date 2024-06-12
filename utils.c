@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/11 21:54:58 by jparnahy         ###   ########.fr       */
+/*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
+/*   Updated: 2024/06/11 21:53:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_command_line(int c)
+int	ft_strcmp(char *str, char *value)
 {
-	if (c > 1)
-	{
-		printf("Error: too many arguments\n");
-		exit(0);
-	}
-	return (1);
-}
+	int i;
 
-int	main(int c, char **v, char **env)
-{
-	if (!check_command_line(c))
+	i = 0;
+	while (str[i] == value[i] && str[i] && value[i])
+		i++;
+	if (value[i] == '\0')
 		return (0);
-	(void)v;
-	(void)env;
-	// looping the shell
-	minishell_prompt();
-	return (0);
+	else
+		return (1);
 }

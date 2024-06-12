@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/11 21:54:58 by jparnahy         ###   ########.fr       */
+/*   Created: 2024/06/11 21:35:49 by jparnahy          #+#    #+#             */
+/*   Updated: 2024/06/11 21:49:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_command_line(int c)
+void	handle_signals(int sig)
 {
-	if (c > 1)
+	if (sig == SIGINT)
 	{
-		printf("Error: too many arguments\n");
-		exit(0);
+		printf("\n");
+		minishell_prompt();
 	}
-	return (1);
-}
-
-int	main(int c, char **v, char **env)
-{
-	if (!check_command_line(c))
-		return (0);
-	(void)v;
-	(void)env;
-	// looping the shell
-	minishell_prompt();
-	return (0);
 }
