@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/11 21:54:58 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:43:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@ int	check_command_line(int c)
 	return (1);
 }
 
-int	main(int c, char **v, char **env)
+int	main(int c, char **v, char **envp)
 {
+	// check if there is more than one argument
 	if (!check_command_line(c))
 		return (0);
 	(void)v;
-	(void)env;
+
 	// looping the shell
-	minishell_prompt();
+	prompt(envp);
 	return (0);
 }

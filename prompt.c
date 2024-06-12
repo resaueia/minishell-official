@@ -6,28 +6,27 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/11 21:56:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:42:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_putchar_str(char *str)
+void	execute_command(char *cmd, char **envp)
 {
-	int	i;
+	t_envp	*env_list;
 
-	i = -1;
-	while (str[++i])
-		printf("str[%i] = %c\n", i, str[i]);
-	printf("------ is done ------\n");
+	// declaração da lista de variáveis de ambiente
+	if (ft_strcmp(cmd, "env") == 0)
+	{
+		// for cat environment variables
+		env_list = get_envp(envp);
+		// print the environment variables
+		print_envp_list(env_list);
+	}
 }
 
-void	execute_command(char *str)
-{
-	ft_putchar_str(str);
-}
-
-void	minishell_prompt(void)
+void	prompt(char **env)
 {
 	char	*prompt;
 
@@ -43,24 +42,16 @@ void	minishell_prompt(void)
 	{
 		// the prompt
 		prompt = readline("minishell> ");
-		printf("prompt = %s\n", prompt);
-		// check if input is not null or empty or full of spaces
-		if (prompt && *prompt == '\0')
-		{
-			add_history(prompt);
-			continue ;
-		}
-		if (ft_strcmp(prompt, "exit") == 0 || prompt == NULL)
+		add_history(prompt);
+		// incluir validações e tratamentos
+		if (ft_strcmp(prompt, "exit") == 0)
 		{
 			free(prompt);
 			return ;
 		}
 		else
-		{
-			add_history(prompt);
 			// execute the command
-			execute_command(prompt);
-		}
+			execute_command(prompt, env);
 		free(prompt);
 	}
 }
