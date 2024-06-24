@@ -29,7 +29,7 @@ int	ft_strcmp(char *str, char *value)
 	i = 0;
 	while (str[i] == value[i] && str[i] && value[i])
 		i++;
-	if (value[i] == '\0')
+	if (value[i] == '\0' && str[i] == '\0')
 		return (0);
 	else
 		return (1);

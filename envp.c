@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/12 17:18:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:10:20 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	print_envp_list(t_envp *head)
 	current = head;
 	while (current)
 	{
-		printf("Key: %s, Value: %s\n", current->key, current->value);
+		printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
 }

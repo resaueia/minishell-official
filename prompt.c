@@ -17,13 +17,13 @@ void	execute_command(char *cmd, char **envp)
 	t_envp	*env_list;
 
 	// declaração da lista de variáveis de ambiente
-	if (ft_strcmp(cmd, "env") == 0)
+	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
 	{
 		// for cat environment variables
 		env_list = get_envp(envp);
 		// print the environment variables
 		print_envp_list(env_list);
-	}
+	}					
 }
 
 void	prompt(char **env)
