@@ -6,13 +6,14 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/12 17:40:37 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:10:36 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "printf/ft_printf.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -37,7 +38,7 @@ typedef enum e_token
 	ERROR,
 }					t_token;
 
-// for eviranment variables
+// for evironment variables
 typedef struct s_envp
 {
 	char			*key;
@@ -46,6 +47,7 @@ typedef struct s_envp
 }					t_envp;
 
 /* FUNCTION PROTOTYPES */
+void				ft_pwd(void);
 void				execute_command(char *cmd, char **envp);
 void				handle_signals(int sig);
 void				prompt(char **envp);

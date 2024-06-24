@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/12 17:42:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:04:08 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	execute_command(char *cmd, char **envp)
 		env_list = get_envp(envp);
 		// print the environment variables
 		print_envp_list(env_list);
-	}					
+	}
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		ft_pwd();
 }
 
 void	prompt(char **env)
