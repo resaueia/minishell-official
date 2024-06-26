@@ -27,30 +27,21 @@ RM = rm -f
 
 FLAGS = -Wall -Wextra -Werror
 
-PRINTF_PATH = printf
-
-PRINTF_ARCHIVE = $(PRINTF_PATH)/libftprintf.a
-
-$(NAME): $(PRINTF_ARCHIVE) $(NAME)
+$(NAME): $(NAME)
 	ar rcs $(NAME)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(FLAGS) $(OBJS) $(PRINTF_ARCHIVE) -o $(NAME) -lreadline
-
-$(PRINTF_ARCHIVE):
-	make -C $(PRINTF_PATH)
+	cc $(FLAGS) $(OBJS) -o $(NAME) -lreadline
 	
 %.o: %.c $(HEADER)
 	cc $(FLAGS) -c $<
 
 clean:
-	make -C $(PRINTF_PATH) clean
 	$(RM) $(OBJS)
 
 fclean: clean
-	make -C $(PRINTF_PATH) fclean
 	$(RM) $(OBJS) $(NAME)
 
 re: fclean all
