@@ -46,26 +46,24 @@ typedef struct s_envp
 }					t_envp;
 
 /* FUNCTION PROTOTYPES */
-void				ft_pwd(void);
 void				execute_command(char *cmd, char **envp);
 void				handle_signals(int sig);
 void				prompt(char **envp);
 int					check_command_line(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);
+int					ft_strncmp(char *s1, char *s2, size_t n);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 void				print_envp_list(t_envp *head);
 
-/* Built-in commands */
-int					builtin_cd(char **args);
-int					builtin_pwd(char **args);
-int					builtin_echo(char **args);
-int					builtin_export(char **args);
-int					builtin_unset(char **args);
-int					builtin_env(char **args);
-int					builtin_exit(char **args);
+/* Built-in functions */
+void				ft_cd(char *path);
+void				ft_pwd(void);
+void				ft_echo(char *args);
+void				ft_export(char *var, t_envp **env_list);
+void				ft_unset(char *var, t_envp **env_list);
 
 #endif

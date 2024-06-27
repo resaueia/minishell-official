@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_strlen(char *str)
+int		ft_strlen(char *str)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_strcmp(char *str, char *value)
+int		ft_strcmp(char *str, char *value)
 {
 	int	i;
 
@@ -33,6 +33,20 @@ int	ft_strcmp(char *str, char *value)
 		return (0);
 	else
 		return (1);
+}
+
+int		ft_strncmp(char *s1, char *s2, size_t n)
+{
+	while (n && *s1 && (*s1 == *s2) == 0)
+	{
+		s1++;
+		s2++;
+		n--;
+	}
+	if (n == 0)
+		return (0);
+	else
+		return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
 char	*ft_strdup(char *s)

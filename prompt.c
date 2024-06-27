@@ -16,16 +16,27 @@ void	execute_command(char *cmd, char **envp)
 {
 	t_envp	*env_list;
 
-	// declaração da lista de variáveis de ambiente
 	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
 	{
-		// for cat environment variables
 		env_list = get_envp(envp);
-		// print the environment variables
 		print_envp_list(env_list);
 	}
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		ft_pwd();
+	else if (ft_strncmp(cmd, "echo ", 5) == 0)
+		ft_echo(cmd + 5);
+	else if (ft_strncmp(cmd, "cd ", 3) == 0)
+		ft_cd(cmd + 3);
+	else if (ft_strncmp(cmd, "export ", 7) == 0)
+	{
+		env_list = get_envp(envp);
+		ft_export(cmd + 7, &env_list);
+	}
+	else if (ft_strncmp(cmd, "unset ", 6) == 0)
+	{
+		env_list = get_envp(envp);
+		ft_unset(cmd + 6, &env_list);
+	}
 }
 
 void	prompt(char **env)
