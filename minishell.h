@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/24 19:10:36 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:49:26 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,17 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+/* COLORS */
+
+#define RESET "\033[m"
+#define PASTEL_BLUE "\033[38;5;153m"
+#define PASTEL_PURPLE "\033[38;5;183m"
+#define PASTEL_PINK "\033[38;5;218m"
+#define NAVY_BLUE "\033[38;5;17m"
+#define MAGENTA "\033[38;5;200m"
+
+#define PROGRAM_NAME PASTEL_BLUE "mi" PASTEL_PURPLE "ni" PASTEL_PINK "shell" MAGENTA "> " RESET
 
 /* DATA STRUCTS */
 typedef enum e_token

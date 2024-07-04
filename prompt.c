@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/24 19:04:08 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:42:03 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	prompt(char **env)
 	while (1)
 	{
 		// the prompt
-		prompt = readline("minishell> ");
+		prompt = readline(PROGRAM_NAME);
 		add_history(prompt);
 		// incluir validações e tratamentos
 		if (ft_strcmp(prompt, "exit") == 0)
