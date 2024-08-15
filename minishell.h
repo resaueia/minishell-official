@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/07/04 16:22:04 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:45:53 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_envp
 }					t_envp;
 
 /* FUNCTION PROTOTYPES */
-void				execute_command(char *cmd, char **envp);
+void				execute_command(char *cmd, t_envp *envp);
 void				handle_signals(int sig);
 void				prompt(char **envp);
 int					check_command_line(int c);
