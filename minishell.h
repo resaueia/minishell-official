@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/07/04 16:22:04 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:49:14 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,20 @@ typedef enum e_token
 	ERROR,
 }					t_token;
 
-// for evironment variables
+// for environment variables
 typedef struct s_envp
 {
 	char			*key;
 	char			*value;
 	struct s_envp	*next;
 }					t_envp;
+
+typedef struct s_init_input
+{
+	char					*string;
+	struct s_init_input		*next;
+}							t_init_input;
+
 
 /* FUNCTION PROTOTYPES */
 void				execute_command(char *cmd, char **envp);

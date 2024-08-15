@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/14 15:54:35 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:50:23 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	ft_wordcount(const char *str)
 	return (word_nb);
 }
 
-static char	*custom_dup(const char *str, int start, int finish)
+/*static char	*custom_dup(const char *str, int start, int finish)
 {
 	char	*word;
 	int		i;
@@ -54,6 +54,18 @@ static char	*custom_dup(const char *str, int start, int finish)
 		word[i++] = str[start++];
 	word[i] = '\0';
 	return (word);
+}*/
+
+t_init_input	*new_node(char **input)
+{
+	t_init_input	*new_node;
+
+	new_node = (t_init_input *)malloc(sizeof(t_init_input));
+	if (!new_node)
+		return (NULL);
+	new_node->string = ft_strdup(input);
+	new_node->next = NULL;
+	return (new_node);
 }
 
 char	**ft_split(char const *s)
@@ -88,3 +100,29 @@ char	**ft_split(char const *s)
 	megazord[words] = 0;
 	return (megazord);
 }
+
+
+/*
+int main(void)
+{
+    char *input = "echo hello > file.txt | grep hello >> output.txt";
+    
+    char **result = ft_split(input);
+    
+
+    if (result)
+    {
+        for (int i = 0; result[i] != NULL; i++)
+        {
+            printf("Substring %d: %s\n", i + 1, result[i]);
+            free(result[i]);
+        }
+        free(result);
+    }
+    else
+    {
+        printf("Error splitting string.\n");
+    }
+    
+    return 0;
+}*/
