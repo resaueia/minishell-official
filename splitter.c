@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:50:23 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/15 19:18:14 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_init_input	*new_node(char **input)
 
 char	**ft_split(char const *s)
 {
+	t_init_input	*head;
 	char	**megazord;
 	size_t	i;
 	int		start_index;
