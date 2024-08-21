@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/15 19:18:14 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:31:55 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	is_delimiter(char c)
 	return (c == ' ' || c == '|' || c == '<' || c == '>' || c == ';');
 }
 
-static int	ft_wordcount(const char *str)
+static int	ft_wordcount(char *str)
 {
 	int	i;
 	int	word_nb;
@@ -43,7 +43,7 @@ static int	ft_wordcount(const char *str)
 	return (word_nb);
 }
 
-/*static char	*custom_dup(const char *str, int start, int finish)
+static char	*custom_dup(char *str, int start, int finish)
 {
 	char	*word;
 	int		i;
@@ -54,9 +54,9 @@ static int	ft_wordcount(const char *str)
 		word[i++] = str[start++];
 	word[i] = '\0';
 	return (word);
-}*/
+}
 
-t_init_input	*new_node(char **input)
+t_init_input	*add_node(char **input)
 {
 	t_init_input	*new_node;
 
@@ -64,25 +64,23 @@ t_init_input	*new_node(char **input)
 	if (!new_node)
 		return (NULL);
 	new_node->string = ft_strdup(input);
+	new_node->prev = NULL;
 	new_node->next = NULL;
 	return (new_node);
 }
 
-char	**ft_split(char const *s)
+char	**ft_split(char *s)
 {
 	t_init_input	*head;
-	char	**megazord;
+	t_init_input	*tail;
+	t_init_input	*new_node;
+	char			*substr;
 	size_t	i;
 	int		start_index;
-	size_t	words;
 
 	i = 0;
 	start_index = -1;
-	words = 0;
 	if (!s)
-		return (NULL);
-	megazord = (char **)malloc(sizeof(char *) * (ft_wordcount(s) + 1));
-	if (!megazord)
 		return (NULL);
 	while (s[i])
 	{
@@ -93,37 +91,45 @@ char	**ft_split(char const *s)
 			// In case it finds a double opperand such as '>>' or '<<'
 			if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1])
 				i++;
-			megazord[words++] = custom_dup(s, start_index, i + (s[i + 1] == '\0'));
+			substr = custom_dup(s, start_index, i + (s[i + 1] == '\0'));
+			new_node = add_node(substr);
+			free(substr);
+			if (!head)
+				head = new_node;
+			else
+			{
+				tail->next = new_node;
+				new_node->prev = tail;
+			}
+			tail = new_node;
 			start_index = -1;
 		}
 		i++;
 	}
-	megazord[words] = 0;
-	return (megazord);
+	return (head);
 }
-
-
-/*
 int main(void)
 {
-    char *input = "echo hello > file.txt | grep hello >> output.txt";
-    
-    char **result = ft_split(input);
-    
+    const char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
+    t_init_input *head = ft_split(input);
+    t_init_input *current = head;
 
-    if (result)
+    // Traverse and print the linked list
+    while (current != NULL)
     {
-        for (int i = 0; result[i] != NULL; i++)
-        {
-            printf("Substring %d: %s\n", i + 1, result[i]);
-            free(result[i]);
-        }
-        free(result);
+        printf("%s\n", current->string);
+        current = current->next;
     }
-    else
+
+    // Free the linked list
+    current = head;
+    t_init_input *tmp;
+    while (current != NULL)
     {
-        printf("Error splitting string.\n");
+        tmp = current;
+        current = current->next;
+        free(tmp->string);
+        free(tmp);
     }
-    
     return 0;
-}*/
+}

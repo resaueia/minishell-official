@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:49:14 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:57:59 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_envp
 typedef struct s_init_input
 {
 	char					*string;
+	struct s_init_input		*prev;
 	struct s_init_input		*next;
 }							t_init_input;
 
