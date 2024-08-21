@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/21 18:31:55 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:09:51 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	is_delimiter(char c)
 {
 	// Checks if the character is in fact a delimiter character
-	return (c == ' ' || c == '|' || c == '<' || c == '>' || c == ';');
+	return (c == ' ' || c == '|' || c == '<' || c == '>');
 }
 
-static int	ft_wordcount(char *str)
+/*static int	ft_wordcount(char *str)
 {
 	int	i;
 	int	word_nb;
@@ -41,7 +41,7 @@ static int	ft_wordcount(char *str)
 				i++;
 	}
 	return (word_nb);
-}
+}*/
 
 static char	*custom_dup(char *str, int start, int finish)
 {
