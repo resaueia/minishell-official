@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/12 17:29:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 19:05:53 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		ft_strncmp(char *s1, char *s2, size_t n)
 		return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-char	*ft_strdup(char *s)
+/*char	*ft_strdup(char *s)
 {
 	char	*test;
 	char	*ptr_keeper;
@@ -66,6 +66,24 @@ char	*ft_strdup(char *s)
 	}
 	*test = '\0';
 	return ((char *)ptr_keeper);
+}*/
+
+char	*ft_strdup(char *str)
+{
+	int		i;
+	char	*dup;
+
+	i = 0;
+	dup = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dup)
+		return (NULL);
+	while(str[i])
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }
 
 char	*ft_strchr(char *s, int c)

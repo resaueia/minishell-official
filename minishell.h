@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/22 16:28:02 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/22 19:04:09 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ t_envp				*get_envp(char **envp);
 t_init_input		*add_node(char *input);
 t_init_input		*ft_split(char *s);
 void				print_envp_list(t_envp *head);
+void				print_stack(t_init_input *stack);
+void				free_list(t_init_input *list);
 
 /* Built-in functions */
 void				ft_cd(char *path);
