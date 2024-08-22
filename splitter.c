@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/21 19:09:51 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:26:14 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,20 @@ int	is_delimiter(char c)
 	return (word_nb);
 }*/
 
-static char	*custom_dup(char *str, int start, int finish)
+char	*custom_dup(char *str, int start, int finish)
 {
 	char	*word;
 	int		i;
 
 	i = 0;
-	word = malloc((finish - start + 1) * sizeof(char));
+	word = malloc(sizeof(char) * (finish - start + 1));
 	while (start < finish)
 		word[i++] = str[start++];
 	word[i] = '\0';
 	return (word);
 }
 
-t_init_input	*add_node(char **input)
+t_init_input	*add_node(char *input)
 {
 	t_init_input	*new_node;
 
@@ -69,14 +69,14 @@ t_init_input	*add_node(char **input)
 	return (new_node);
 }
 
-char	**ft_split(char *s)
+t_init_input	*ft_split(char *s)
 {
 	t_init_input	*head;
 	t_init_input	*tail;
 	t_init_input	*new_node;
 	char			*substr;
-	size_t	i;
-	int		start_index;
+	size_t			i;
+	int				start_index;
 
 	i = 0;
 	start_index = -1;
@@ -108,9 +108,9 @@ char	**ft_split(char *s)
 	}
 	return (head);
 }
-int main(void)
+/*int main(void)
 {
-    const char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
+    char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
     t_init_input *head = ft_split(input);
     t_init_input *current = head;
 
@@ -132,4 +132,4 @@ int main(void)
         free(tmp);
     }
     return 0;
-}
+}*/

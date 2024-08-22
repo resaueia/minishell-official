@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/21 16:57:59 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:28:02 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,12 @@ int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
+char				*custom_dup(char *str, int start, int finish);
+int					is_delimiter(char c);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
+t_init_input		*add_node(char *input);
+t_init_input		*ft_split(char *s);
 void				print_envp_list(t_envp *head);
 
 /* Built-in functions */
