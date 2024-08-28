@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/22 19:03:34 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:04:08 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	free_list(t_init_input *list)
 	{
 		temp = list;
 		list = list->next;
-		free(temp->string);
+		if (temp->string)
+			free(temp->string);
 		free(temp);
 	}
 }
@@ -39,7 +40,7 @@ void	print_stack(t_init_input *stack)
 		current = current->next;
 		i++;
 	}
-	free(stack);
+	//free(stack);
 }
 
 int	check_command_line(int c)
@@ -55,20 +56,19 @@ int	check_command_line(int c)
 int	main(int c, char **v, char **envp)
 {
 	char	*input_dup;
-	t_init_input	*list;
+	t_init_input	*list = NULL;
 
 	input_dup = ft_strdup(v[1]);
 	// check if there is more than one argument
 	if (!check_command_line(c))
 		return (0);
-	(void)v;
+	//(void)v;
 
 	// looping the shell
-	input_dup = ft_strdup(v[1]);
 	list = ft_split(input_dup);
-	print_stack(list);
+	prompt(envp, list);
 	free(input_dup);
 	free_list(list);
-	prompt(envp);
+	
 	return (0);
 }

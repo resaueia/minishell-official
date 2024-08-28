@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/22 19:04:09 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:15:18 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
 /* COLORS */
 
 # define RESET "\033[m"
-# define PASTEL_BLUE "\033[38;5;153m"
-# define PASTEL_PURPLE "\033[38;5;183m"
-# define PASTEL_PINK "\033[38;5;218m"
+# define BLUE "\033[38;5;153m"
+# define PURPLE "\033[38;5;183m"
+# define PINK "\033[38;5;218m"
 # define MAGENTA "\033[38;5;200m"
 
-# define PROGRAM_NAME PASTEL_BLUE "mi" PASTEL_PURPLE "ni" PASTEL_PINK "shell" MAGENTA "> " RESET
+# define PROGRAM_NAME BLUE "mi" PURPLE "ni" PINK "shell" MAGENTA "> " RESET
 
 /* DATA STRUCTS */
 typedef enum e_token
@@ -64,9 +64,9 @@ typedef struct s_init_input
 
 
 /* FUNCTION PROTOTYPES */
-void				execute_command(char *cmd, char **envp);
+void				execute_command(char *cmd, char **envp, t_init_input *list);
 void				handle_signals(int sig);
-void				prompt(char **envp);
+void				prompt(char **envp, t_init_input *list);
 int					check_command_line(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);

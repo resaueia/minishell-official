@@ -6,13 +6,13 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/22 18:27:00 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:15:06 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_command(char *cmd, char **envp)
+void	execute_command(char *cmd, char **envp, t_init_input *list)
 {
 	t_envp	*env_list;
 
@@ -37,13 +37,15 @@ void	execute_command(char *cmd, char **envp)
 		env_list = get_envp(envp);
 		ft_unset(cmd + 6, &env_list);
 	}
+	else if (ft_strcmp(cmd, "print") == 0)
+		print_stack(list);
 }
 
-void	prompt(char **env)
+void	prompt(char **env, t_init_input *list)
 {
-	char	*prompt;
+	char			*prompt;
 
-	// for signal handlin
+	// for signal handling
 	// SIGINT is the signal sent by pressing Ctrl+C
 	// SIGQUIT is the signal sent by pressing Ctrl+D
 	// não está funcionando - ainda não sei o motivo.
@@ -63,8 +65,16 @@ void	prompt(char **env)
 			return ;
 		}
 		else
+		{
 			// execute the command
-			execute_command(prompt, env);
+			if (!list)
+			{
+				free(prompt);
+				continue;
+			}
+			execute_command(prompt, env, list);
+			free_list(list);
+		}
 		free(prompt);
 	}
 }

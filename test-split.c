@@ -1,16 +1,42 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   splitter.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/28 16:37:54 by rsaueia-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <stdlib.h>
+#include <stdio.h>
 
-#include "minishell.h"
+typedef struct s_init_input
+{
+	char					*string;
+	struct s_init_input		*prev;
+	struct s_init_input		*next;
+}							t_init_input;
+
+int		ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(char *str)
+{
+	int		i;
+	char	*dup;
+
+	if (!str)
+        return (NULL);
+    i = 0;
+	dup = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dup)
+		return (NULL);
+	while(str[i])
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
 
 int	is_delimiter(char c)
 {
@@ -85,7 +111,7 @@ t_init_input	*ft_split(char *s)
 	}
 	return (head);
 }
-/*int main(void)
+int main(void)
 {
     char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
     t_init_input *head = ft_split(input);
@@ -109,4 +135,4 @@ t_init_input	*ft_split(char *s)
         free(tmp);
     }
     return 0;
-}*/
+}
