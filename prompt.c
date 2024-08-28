@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/28 18:15:06 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:42:03 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ void	execute_command(char *cmd, char **envp, t_init_input *list)
 		print_stack(list);
 }
 
-void	prompt(char **env, t_init_input *list)
+void	prompt(char **env, char *input)
 {
 	char			*prompt;
+	t_init_input	*input_list;
 
 	// for signal handling
 	// SIGINT is the signal sent by pressing Ctrl+C
@@ -67,14 +68,10 @@ void	prompt(char **env, t_init_input *list)
 		else
 		{
 			// execute the command
-			if (!list)
-			{
-				free(prompt);
-				continue;
-			}
-			execute_command(prompt, env, list);
-			free_list(list);
+			input_list = ft_split(input);
+			execute_command(prompt, env, input_list);
 		}
 		free(prompt);
+		free(input_list);
 	}
 }
