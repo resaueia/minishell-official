@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/28 18:40:41 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:42:43 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,22 @@ void	free_list(t_init_input *list)
 
 void	print_stack(t_init_input *stack)
 {
-	int i;
-	t_init_input	*current;
-
-	i = 0;
-	current = stack;
-	while (current)
-	{
-		printf("Node: %i, Valor:%s\n", i, current->string);
-		current = current->next;
-		i++;
-	}
-	//free(stack);
+    t_init_input *head = stack;
+    t_init_input *current = head;
+	while (current != NULL)
+    {
+        printf("%s\n", current->string);
+        current = current->next;
+    }
+    current = head;
+    t_init_input *tmp;
+    while (current != NULL)
+    {
+        tmp = current;
+        current = current->next;
+        free(tmp->string);
+        free(tmp);
+    }
 }
 
 int	check_command_line(int c)
@@ -55,16 +59,20 @@ int	check_command_line(int c)
 
 int	main(int c, char **v, char **envp)
 {
-	char	*input_dup;
+	char			*input;
+	char			*input_dup;
+	t_init_input	*input_list;
 
+	input = v[1];
 	input_dup = ft_strdup(v[1]);
+	input_list = ft_split(input_dup);
 	// check if there is more than one argument
 	if (!check_command_line(c))
 		return (0);
 	//(void)v;
 
 	// looping the shell
-	prompt(envp, input_dup);
+	prompt(envp, input_list);
 	free(input_dup);
 	
 	return (0);

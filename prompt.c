@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/28 18:42:03 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:09:36 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@ void	execute_command(char *cmd, char **envp, t_init_input *list)
 {
 	t_envp	*env_list;
 
-	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
+	if (ft_strcmp(cmd, "print") == 0)
+	{
+		printf("entrou no print_stack");
+		print_stack(list);
+	}
+	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
 	{
 		env_list = get_envp(envp);
 		print_envp_list(env_list);
@@ -37,14 +42,11 @@ void	execute_command(char *cmd, char **envp, t_init_input *list)
 		env_list = get_envp(envp);
 		ft_unset(cmd + 6, &env_list);
 	}
-	else if (ft_strcmp(cmd, "print") == 0)
-		print_stack(list);
 }
 
-void	prompt(char **env, char *input)
+void	prompt(char **env, t_init_input *input_list)
 {
 	char			*prompt;
-	t_init_input	*input_list;
 
 	// for signal handling
 	// SIGINT is the signal sent by pressing Ctrl+C
@@ -68,7 +70,6 @@ void	prompt(char **env, char *input)
 		else
 		{
 			// execute the command
-			input_list = ft_split(input);
 			execute_command(prompt, env, input_list);
 		}
 		free(prompt);
