@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/03 17:02:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:03:38 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_echo(char *args)
 			newline = 0;
 		args += 3;
 		if (newline == 1)
-			printf("%s$\n", args);
+			printf("%s\n", args);
 		else if (newline == 0)
 			printf("%s", args);
 	}	
