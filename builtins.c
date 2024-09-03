@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/28 23:13:03 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:59:24 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,22 @@ void	ft_echo(char *args)
 	}
 	if (*args == ' ' && (args + 1 != NULL))
 		args++;
-	if (ft_strncmp(args, "-n", 2) == 0)
+	if (ft_strncmp(args, "\"", 1) == 0)
 	{
-		newline = 0;
-		args += 3;
+		remove_quotes(&args);
+			printf("%s$\n", args);
 	}
-	if (newline == 1)
-		printf("%s\n", args);
-	else if (newline == 0)
-		printf("%s", args);
+	else if (ft_strncmp(args, "\"", 1) != 0)
+	{
+		if (ft_strncmp(args, "-n", 2) == 0)
+			newline = 0;
+		args += 3;
+		if (newline == 1)
+			printf("%s$\n", args);
+		else if (newline == 0)
+			printf("%s", args);
+	}
+	
 }
 
 void	ft_cd(char *path)
