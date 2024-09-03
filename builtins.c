@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/03 16:59:24 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:02:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void	ft_echo(char *args)
 			printf("%s$\n", args);
 		else if (newline == 0)
 			printf("%s", args);
-	}
-	
+	}	
 }
 
 void	ft_cd(char *path)
