@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/03 17:03:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:26:25 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,29 @@ void	ft_echo(char *args)
 
 void	ft_cd(char *path)
 {
-	if (chdir(path) != 0)
-		perror("cd incurred in an unexpected error");
+	//coisas para fazer:
+	/*
+		nos seguintes casos:
+		cd -> voltar para home e alterar no env PWD e OLDPWD
+		cd - -> voltar para o último path registrado e alterar no env PWD e OLDPWD
+		cd normal funciona normal, modificando sempre o env no PWD e OLDPWD
+	*/
+	if (!*path)
+	{
+		//movimentar o path para home
+		//alterar o value do pwd do env
+		printf("%s", path);
+	}
+	else if (chdir(path) == 0)
+	{
+		//atualizar PWD e OLDPWD
+		ft_pwd();
+	}
+	else 
+	{
+		printf("cd: ");
+		perror(path);
+	}
 }
 
 void	ft_export(char *var, t_envp **env_list)

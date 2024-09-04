@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/03 16:45:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:15:04 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,11 @@ char	*ft_strchr(char *s, int c)
 }
 void remove_quotes(char **str)
 {
-	//printf("pointer of str: [%p]\n", *str);
-	//printf("string of str: [%s]\n", *str);
-	//printf("char of str: [%c]\n", **str);
 	char	*src;
 	char	*dst;
 
 	src = *str;
 	dst = *str;
-
-	//printf("pointer of src: [%p]\n", src);
-	//printf("char of src: [%c]\n", *src);
-	//printf("pointer of dst: [%p]\n", dst);
 
 	if (*src == '\"')
 	{

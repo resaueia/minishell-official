@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/24 18:10:20 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:03:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,17 @@ void	print_envp_list(t_envp *head)
 		printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
+}
+char	*search_node(char *key, t_envp *env_head)
+{
+	t_envp *current;
+
+	current = env_head;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
 }
