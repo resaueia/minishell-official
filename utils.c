@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/29 19:45:31 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:16:44 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_strlen(char *str)
 
 int		ft_strcmp(char *str, char *value)
 {
-	printf("entrou na strcmp\n");
+	//printf("entrou na strcmp\n");
 	int	i;
 
 	i = 0;
@@ -32,12 +32,12 @@ int		ft_strcmp(char *str, char *value)
 		i++;
 	if (value[i] == '\0' && str[i] == '\0')
 	{
-		printf("ok\n");
+		//printf("ok\n");
 		return (0);
 	}
 	else
 	{
-		printf("not ok\n");
+		//printf("not ok\n");
 		return (1);
 	}
 }
