@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/29 20:09:36 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:42:31 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_command(char *cmd, char **envp, t_init_input *list)
 
 	if (ft_strcmp(cmd, "print") == 0)
 	{
-		printf("entrou no print_stack");
+		//printf("entrou no print_stack");
 		print_stack(list);
 	}
 	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
@@ -44,9 +44,11 @@ void	execute_command(char *cmd, char **envp, t_init_input *list)
 	}
 }
 
-void	prompt(char **env, t_init_input *input_list)
+void	prompt(char **envp)
 {
 	char			*prompt;
+	char			*prompt_dup;
+	t_init_input	*input_list;
 
 	// for signal handling
 	// SIGINT is the signal sent by pressing Ctrl+C
@@ -61,6 +63,8 @@ void	prompt(char **env, t_init_input *input_list)
 		// the prompt
 		prompt = readline(PROGRAM_NAME);
 		add_history(prompt);
+		prompt_dup = ft_strdup(prompt);
+		input_list = ft_split(prompt_dup);
 		// incluir validações e tratamentos
 		if (ft_strcmp(prompt, "exit") == 0)
 		{
@@ -70,7 +74,7 @@ void	prompt(char **env, t_init_input *input_list)
 		else
 		{
 			// execute the command
-			execute_command(prompt, env, input_list);
+			execute_command(prompt, envp, input_list);
 		}
 		free(prompt);
 		free(input_list);

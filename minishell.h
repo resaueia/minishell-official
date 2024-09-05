@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/29 15:49:18 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:41:45 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_init_input
 /* FUNCTION PROTOTYPES */
 void				execute_command(char *cmd, char **envp, t_init_input *list);
 void				handle_signals(int sig);
-void				prompt(char **envp, t_init_input *input_list);
+void				prompt(char **envp);
 int					check_command_line(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);

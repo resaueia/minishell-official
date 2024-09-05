@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/08/29 19:42:43 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:41:31 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,16 @@ int	main(int c, char **v, char **envp)
 {
 	char			*input;
 	char			*input_dup;
-	t_init_input	*input_list;
 
 	input = v[1];
 	input_dup = ft_strdup(v[1]);
-	input_list = ft_split(input_dup);
 	// check if there is more than one argument
 	if (!check_command_line(c))
 		return (0);
 	//(void)v;
 
 	// looping the shell
-	prompt(envp, input_list);
+	prompt(envp);
 	free(input_dup);
 	
 	return (0);
