@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/05 18:41:31 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:58:48 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_stack(t_init_input *stack)
     t_init_input *current = head;
 	while (current != NULL)
     {
-        printf("%s\n", current->string);
+        printf("Valor: %s\n", current->string);
         current = current->next;
     }
     current = head;

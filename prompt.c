@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/05 18:42:31 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:52:50 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,6 @@ void	prompt(char **envp)
 			execute_command(prompt, envp, input_list);
 		}
 		free(prompt);
-		free(input_list);
+		//free(input_list);
 	}
 }
