@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/06 16:52:50 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:31:11 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	execute_command(char *cmd, char **envp, t_init_input *list)
 {
-	t_envp	*env_list;
+	t_envp	*tmp;
 
 	if (ft_strcmp(cmd, "print") == 0)
 	{
@@ -28,19 +28,23 @@ void	execute_command(char *cmd, char **envp, t_init_input *list)
 	}
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		ft_pwd();
-	else if (ft_strncmp(cmd, "echo ", 5) == 0)
-		ft_echo(cmd + 5);
-	else if (ft_strncmp(cmd, "cd ", 3) == 0)
-		ft_cd(cmd + 3);
-	else if (ft_strncmp(cmd, "export ", 7) == 0)
+	else if (ft_strncmp(cmd, "echo", 4) == 0)
+		ft_echo(cmd + 4);
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
+		ft_cd(cmd + 2);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
 	{
-		env_list = get_envp(envp);
-		ft_export(cmd + 7, &env_list);
+		printf("this is export\n--");
+		printf("cmd: %s\n", cmd);
+		printf("export: %s\n", cmd + 7);
+		ft_export(cmd + 7, &tmp);
 	}
-	else if (ft_strncmp(cmd, "unset ", 6) == 0)
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
 	{
-		env_list = get_envp(envp);
-		ft_unset(cmd + 6, &env_list);
+		printf("this is unset\n--");
+		printf("cmd: %s\n", cmd);
+		printf("unset: %s\n", cmd + 6);
+		ft_unset(cmd + 6, &tmp);
 	}
 }
 
@@ -57,6 +61,8 @@ void	prompt(char **envp)
 	// SIGINT roda apenas uma vez e SIQUIT roda com segfault
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, SIG_IGN);
+	// get the envp list
+	env_list = get_envp(env);
 	// loop the shell. Temporária, necessário incluir validações e tratamentos
 	while (1)
 	{
@@ -69,7 +75,7 @@ void	prompt(char **envp)
 		if (ft_strcmp(prompt, "exit") == 0)
 		{
 			free(prompt);
-			return ;
+			exit(1);
 		}
 		else
 		{

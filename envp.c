@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/08/14 18:52:14 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:28:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,25 @@ void	print_envp_list(t_envp *head)
 		printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
+}
+void	search_node(char *key, t_envp *head)
+{
+	t_envp *current;
+
+	current = head;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
+void	change_path(char *key, t_envp *head)
+{
+	t_envp *current;
+
+	current = head;
+	
 }

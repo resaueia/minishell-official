@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.rio>         +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/06/24 19:09:17 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:23:21 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	ft_pwd(void)
 {
-	char	cwd[1024]; //variable where we'll store the path of the current dir
-
+	char cwd[1024]; // variable where we'll store the path of the current dir
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
@@ -27,20 +26,59 @@ void	ft_echo(char *args)
 	int	newline;
 
 	newline = 1;
-	if (ft_strncmp(args, "-n ", 3) == 0) // Check if the -n flag is used. If so, we suppress newline and adjust the string for it to be printed correctly.
+	if (*args == ' ' && (args + 1 == NULL))
 	{
-		newline = 0;
-		args += 3;
-	}
-	printf("%s", args);
-	if (newline == 1) // If the -n flag is not used, we print a new line.
 		printf("\n");
+		return ;
+	}
+	if (*args == ' ' && (args + 1 != NULL))
+		args++;
+	if (ft_strncmp(args, "\"", 1) == 0)
+	{
+		remove_quotes(&args);
+			printf("%s$\n", args);
+	}
+	else if (ft_strncmp(args, "\"", 1) != 0)
+	{
+		if (ft_strncmp(args, "-n", 2) == 0)
+			newline = 0;
+		args += 3;
+		if (newline == 1)
+			printf("%s\n", args);
+		else if (newline == 0)
+			printf("%s", args);
+	}	
 }
 
-void	ft_cd(char *path)
+void	ft_cd(char *path, t_envp **env_list)
 {
-	if (chdir(path) != 0)
-		perror("cd incurred in an unexpected error");
+	//coisas para fazer:
+	/*
+		nos seguintes casos:
+		cd -> voltar para home e alterar no env PWD e OLDPWD
+		cd - -> voltar para o último path registrado e alterar no env PWD e OLDPWD
+		cd normal funciona normal, modificando sempre o env no PWD e OLDPWD
+	*/
+	//printf("no ft_cd\n");
+	//printf("str on path is [%s]\n--\n", path);
+	if ((!*path) || (is_space(path) == 1))
+	{
+		change_path(char "HOME", *env_list); //alterar o value do pwd do env, path para home
+		//printf("is_space == 1\n");
+		printf("%s", path);
+	}
+	else if (is_space(path) == 2)
+	{
+		printf("is_space == 2\n");
+		path++;
+		if (chdir(path) == 0)
+		{
+			//atualizar PWD e OLDPWD
+			ft_pwd();
+		}
+		else 
+			printf("cd: %s: %s\n", strerror(errno), path);
+	}
 }
 
 void	ft_export(char *var, t_envp **env_list)
@@ -56,12 +94,12 @@ void	ft_export(char *var, t_envp **env_list)
 		current = *env_list;
 		while (current)
 		{
-			if (ft_strcmp(current->key, var) == 0) //Here, we traverse the list to check for the existence of 'key'. If it's already there, we update its value and return.
-			{
-				free(current->value);
-				current->value = ft_strdup(delim + 1);
-				return;
-			}
+			if (ft_strcmp(current->key, var) == 0) // Here, we traverse the list to check for the existence of 'key'. If it's already there, we update its value and return.
+				{
+					free(current->value);
+					current->value = ft_strdup(delim + 1);
+					return ;
+				}
 			current = current->next;
 		}
 		// If 'key' is not present, we create it, by adding a new node to our var list.
@@ -73,24 +111,25 @@ void	ft_export(char *var, t_envp **env_list)
 
 void	ft_unset(char *var, t_envp **env_list)
 {
-	t_envp	*current;
-	t_envp	*prev;
+	t_envp *current;
+	t_envp *prev;
 
 	current = *env_list;
 	prev = NULL;
 	while (current)
 	{
-		if (ft_strcmp(current->key, var) == 0) // We traverse the list and look for the desired key. If found, we remove it from the list and free all memory associated with it.
-		{
-			if( prev)
-				prev->next = current->next;
-			else
-				*env_list = current->next;
-			free(current->key);
-			free(current->value);
-			free(current);
-			return;
-		}
+		if (ft_strcmp(current->key, var) == 0)
+			// We traverse the list and look for the desired key. If found, we remove it from the list and free all memory associated with it.
+			{
+				if (prev)
+					prev->next = current->next;
+				else
+					*env_list = current->next;
+				free(current->key);
+				free(current->value);
+				free(current);
+				return ;
+			}
 		prev = current;
 		current = current->next;
 	}
