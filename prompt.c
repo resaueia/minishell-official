@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/05 23:27:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:14:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,15 @@ void	execute_command(char *cmd, t_envp *env_list)
 	else if (ft_strncmp(cmd, "echo", 4) == 0)
 		ft_echo(cmd + 4);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-	{
-		ft_cd(cmd + 3);
-	}
-	else if (ft_strncmp(cmd, "export ", 7) == 0)
+		ft_cd(cmd + 2);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
 	{
 		printf("this is export\n--");
 		printf("cmd: %s\n", cmd);
 		printf("export: %s\n", cmd + 7);
 		ft_export(cmd + 7, &tmp);
 	}
-	else if (ft_strncmp(cmd, "unset ", 6) == 0)
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
 	{
 		printf("this is unset\n--");
 		printf("cmd: %s\n", cmd);

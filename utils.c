@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/04 16:15:04 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:30:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,13 @@ void remove_quotes(char **str)
 		while (*src)
 			*dst++ = *src++;
 	}
+}
+
+int	is_space(char *args)
+{
+	if (*args == ' ' && (args + 1 == NULL))
+		return (1);
+	else if (*args == ' ' && (args + 1 != NULL))
+		return (2);
+	return (0);
 }

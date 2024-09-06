@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/05 23:30:04 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:31:49 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,17 @@ int					check_command_line(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
+int					is_space(char *args);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
-void				change_node(char *key, t_envp *env_head);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 void				print_envp_list(t_envp *head);
+void				search_node(char *key, t_envp *env_head);
+void				change_path(char *key, t_envp *env_head);
 
 /* Built-in functions */
-void				ft_cd(char *path);
+void				ft_cd(char *path, t_envp **env_list);
 void				ft_pwd(void);
 void				ft_echo(char *args);
 void				ft_export(char *var, t_envp **env_list);

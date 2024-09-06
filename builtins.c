@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/04 19:26:25 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:23:21 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_echo(char *args)
 	}	
 }
 
-void	ft_cd(char *path)
+void	ft_cd(char *path, t_envp **env_list)
 {
 	//coisas para fazer:
 	/*
@@ -59,21 +59,25 @@ void	ft_cd(char *path)
 		cd - -> voltar para o último path registrado e alterar no env PWD e OLDPWD
 		cd normal funciona normal, modificando sempre o env no PWD e OLDPWD
 	*/
-	if (!*path)
+	//printf("no ft_cd\n");
+	//printf("str on path is [%s]\n--\n", path);
+	if ((!*path) || (is_space(path) == 1))
 	{
-		//movimentar o path para home
-		//alterar o value do pwd do env
+		change_path(char "HOME", *env_list); //alterar o value do pwd do env, path para home
+		//printf("is_space == 1\n");
 		printf("%s", path);
 	}
-	else if (chdir(path) == 0)
+	else if (is_space(path) == 2)
 	{
-		//atualizar PWD e OLDPWD
-		ft_pwd();
-	}
-	else 
-	{
-		printf("cd: ");
-		perror(path);
+		printf("is_space == 2\n");
+		path++;
+		if (chdir(path) == 0)
+		{
+			//atualizar PWD e OLDPWD
+			ft_pwd();
+		}
+		else 
+			printf("cd: %s: %s\n", strerror(errno), path);
 	}
 }
 
