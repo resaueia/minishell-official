@@ -3,20 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/07/04 15:42:03 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:52:50 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_command(char *cmd, char **envp)
+void	execute_command(char *cmd, char **envp, t_init_input *list)
 {
 	t_envp	*env_list;
 
-	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
+	if (ft_strcmp(cmd, "print") == 0)
+	{
+		//printf("entrou no print_stack");
+		print_stack(list);
+	}
+	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
 	{
 		env_list = get_envp(envp);
 		print_envp_list(env_list);
@@ -39,11 +44,13 @@ void	execute_command(char *cmd, char **envp)
 	}
 }
 
-void	prompt(char **env)
+void	prompt(char **envp)
 {
-	char	*prompt;
+	char			*prompt;
+	char			*prompt_dup;
+	t_init_input	*input_list;
 
-	// for signal handlin
+	// for signal handling
 	// SIGINT is the signal sent by pressing Ctrl+C
 	// SIGQUIT is the signal sent by pressing Ctrl+D
 	// não está funcionando - ainda não sei o motivo.
@@ -56,6 +63,8 @@ void	prompt(char **env)
 		// the prompt
 		prompt = readline(PROGRAM_NAME);
 		add_history(prompt);
+		prompt_dup = ft_strdup(prompt);
+		input_list = ft_split(prompt_dup);
 		// incluir validações e tratamentos
 		if (ft_strcmp(prompt, "exit") == 0)
 		{
@@ -63,8 +72,11 @@ void	prompt(char **env)
 			return ;
 		}
 		else
+		{
 			// execute the command
-			execute_command(prompt, env);
+			execute_command(prompt, envp, input_list);
+		}
 		free(prompt);
+		//free(input_list);
 	}
 }

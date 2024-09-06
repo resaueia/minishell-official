@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
+#    By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/06/24 19:23:31 by rsaueia-         ###   ########.fr        #
+#    Updated: 2024/08/22 16:28:57 by rsaueia-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRCS = main.c \
 	   signals.c \
 	   envp.c \
 	   utils.c \
-	   builtins.c
+	   builtins.c \
+	   splitter.c
 
 OBJS = $(SRCS:.c=.o)
 

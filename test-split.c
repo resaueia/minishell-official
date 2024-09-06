@@ -1,22 +1,48 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   splitter.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/04 17:44:54 by rsaueia-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <stdlib.h>
+#include <stdio.h>
 
-#include "minishell.h"
+typedef struct s_init_input
+{
+	char					*string;
+	struct s_init_input		*prev;
+	struct s_init_input		*next;
+}							t_init_input;
+
+int		ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(char *str)
+{
+	int		i;
+	char	*dup;
+
+	if (!str)
+        return (NULL);
+    i = 0;
+	dup = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dup)
+		return (NULL);
+	while(str[i])
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
 
 int	is_delimiter(char c)
 {
 	// Checks if the character is in fact a delimiter character
-	//return (c == ' ' || c == '|' || c == '<' || c == '>');
-	return (c == ' ' || (c > 8 && c < 14));
+	//return (c == ' ' | c == '|' || c == '<' || c == '>');
+	return (c == ' ');
 }
 
 char	*custom_dup(char *str, int start, int finish)
@@ -86,20 +112,31 @@ t_init_input	*ft_split(char *s)
 	}
 	return (head);
 }
-/*int main(void)
-{
-    char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
-    t_init_input *head = ft_split(input);
-    t_init_input *current = head;
 
-    // Traverse and print the linked list
-    while (current != NULL)
+void	print_stack(t_init_input *stack)
+{
+	int i;
+	t_init_input	*current;
+
+	i = 0;
+	current = stack;
+	while (current)
+	{
+		printf("Node: %i, Valor:%s\n", i, current->string);
+		current = current->next;
+		i++;
+	}
+	//free(stack);
+}
+/*void	print_stack(t_init_input *stack)
+{
+    t_init_input *head = stack;
+    t_init_input *current = head;
+	while (current != NULL)
     {
         printf("%s\n", current->string);
         current = current->next;
     }
-
-    // Free the linked list
     current = head;
     t_init_input *tmp;
     while (current != NULL)
@@ -109,5 +146,29 @@ t_init_input	*ft_split(char *s)
         free(tmp->string);
         free(tmp);
     }
-    return 0;
 }*/
+
+int main(void)
+{
+    char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
+    t_init_input *head = ft_split(input);
+    t_init_input *current = head;
+
+    print_stack(current);
+	
+	/*while (current != NULL)
+    {
+        printf("%s\n", current->string);
+        current = current->next;
+    }
+    current = head;
+    t_init_input *tmp;
+    while (current != NULL)
+    {
+        tmp = current;
+        current = current->next;
+        free(tmp->string);
+        free(tmp);
+    }*/
+	return 0;
+}
