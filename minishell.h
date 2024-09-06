@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/04 19:16:58 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:30:04 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
-char				*search_node(char *key, t_envp *env_head);
+void				change_node(char *key, t_envp *env_head);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 void				print_envp_list(t_envp *head);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/04 19:16:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:27:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,13 @@ void	execute_command(char *cmd, t_envp *env_list)
 {
 	t_envp	*tmp;
 
-	//printf("on execution\n");
 	tmp = env_list;
 	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
-	{
-		printf("print envp\n--");
 		print_envp_list(tmp);
-		printf("\n");
-	}
 	else if (ft_strcmp(cmd, "pwd") == 0)
-	{
-		printf("this is pwd\n--");
 		ft_pwd();
-	}
 	else if (ft_strncmp(cmd, "echo", 4) == 0)
-	{
 		ft_echo(cmd + 4);
-	}
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
 	{
 		ft_cd(cmd + 3);
