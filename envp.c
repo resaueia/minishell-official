@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/06 17:28:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:10:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	print_envp_list(t_envp *head)
 		current = current->next;
 	}
 }
-void	search_node(char *key, t_envp *head)
+/*void	search_node(char *key, t_envp *head)
 {
 	t_envp *current;
 
@@ -92,12 +92,32 @@ void	search_node(char *key, t_envp *head)
 		current = current->next;
 	}
 	return (NULL);
-}
+}*/
 
-void	change_path(char *key, t_envp *head)
+void	change_path(char *old_pwd, char *home, char *pwd, t_envp *head)
 {
 	t_envp *current;
 
 	current = head;
-	
+	while (current)
+	{
+		if (ft_strcmp(current->key, old_pwd) == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(pwd);
+			break;
+		}
+		current = current->next;
+	}
+	current = head;
+	while (current)
+	{
+		if (ft_strcmp(current->key, pwd) == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(home);
+			break;
+		}
+		current = current->next;
+	}
 }

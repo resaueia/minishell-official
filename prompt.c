@@ -6,32 +6,30 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/06 17:31:11 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:06:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_command(char *cmd, char **envp, t_init_input *list)
+void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 {
 	t_envp	*tmp;
 
+	tmp = env_list;
 	if (ft_strcmp(cmd, "print") == 0)
 	{
 		//printf("entrou no print_stack");
 		print_stack(list);
 	}
 	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
-	{
-		env_list = get_envp(envp);
-		print_envp_list(env_list);
-	}
+		print_envp_list(tmp);
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		ft_pwd();
 	else if (ft_strncmp(cmd, "echo", 4) == 0)
 		ft_echo(cmd + 4);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		ft_cd(cmd + 2);
+		ft_cd(cmd + 2, &tmp);
 	else if (ft_strncmp(cmd, "export", 6) == 0)
 	{
 		printf("this is export\n--");
@@ -53,6 +51,7 @@ void	prompt(char **envp)
 	char			*prompt;
 	char			*prompt_dup;
 	t_init_input	*input_list;
+	t_envp			*env_list;
 
 	// for signal handling
 	// SIGINT is the signal sent by pressing Ctrl+C
@@ -62,7 +61,7 @@ void	prompt(char **envp)
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, SIG_IGN);
 	// get the envp list
-	env_list = get_envp(env);
+	env_list = get_envp(envp);
 	// loop the shell. Temporária, necessário incluir validações e tratamentos
 	while (1)
 	{
@@ -80,7 +79,7 @@ void	prompt(char **envp)
 		else
 		{
 			// execute the command
-			execute_command(prompt, envp, input_list);
+			execute_command(prompt, env_list, input_list);
 		}
 		free(prompt);
 		//free(input_list);

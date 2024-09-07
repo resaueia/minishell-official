@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/06 17:23:21 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:37:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ void	ft_echo(char *args)
 	int	newline;
 
 	newline = 1;
+	if (*args != ' ')
+	{
+		printf("zsh: command not found: echo%s\n", args);
+		return ;
+	}
 	if (*args == ' ' && (args + 1 == NULL))
 	{
 		printf("\n");
@@ -33,21 +38,17 @@ void	ft_echo(char *args)
 	}
 	if (*args == ' ' && (args + 1 != NULL))
 		args++;
-	if (ft_strncmp(args, "\"", 1) == 0)
+	if (ft_strncmp(args, "-n", 2) == 0)
 	{
-		remove_quotes(&args);
-			printf("%s$\n", args);
-	}
-	else if (ft_strncmp(args, "\"", 1) != 0)
-	{
-		if (ft_strncmp(args, "-n", 2) == 0)
-			newline = 0;
+		newline = 0;
 		args += 3;
-		if (newline == 1)
-			printf("%s\n", args);
-		else if (newline == 0)
-			printf("%s", args);
-	}	
+	}
+	remove_quotes(&args);
+	printf("args: %s\n", args);
+	if (newline == 1)
+		printf("%s\n", args);
+	else if (newline == 0)
+		printf("%s", args);
 }
 
 void	ft_cd(char *path, t_envp **env_list)
@@ -63,7 +64,8 @@ void	ft_cd(char *path, t_envp **env_list)
 	//printf("str on path is [%s]\n--\n", path);
 	if ((!*path) || (is_space(path) == 1))
 	{
-		change_path(char "HOME", *env_list); //alterar o value do pwd do env, path para home
+		
+		change_path("OLDPWD", "HOME", "PWD", *env_list); //alterar o value do pwd do env, path para home
 		//printf("is_space == 1\n");
 		printf("%s", path);
 	}

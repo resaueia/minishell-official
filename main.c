@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/06 16:58:48 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:50:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,19 @@ int	check_command_line(int c)
 
 int	main(int c, char **v, char **envp)
 {
-	char			*input;
-	char			*input_dup;
+	//char			*input;
+	//char			*input_dup;
 
-	input = v[1];
-	input_dup = ft_strdup(v[1]);
+	//input = v[1];
+	//input_dup = ft_strdup(v[1]);
 	// check if there is more than one argument
 	if (!check_command_line(c))
 		return (0);
-	//(void)v;
+	(void)v;
 
 	// looping the shell
 	prompt(envp);
-	free(input_dup);
+	//free(input_dup);
 	
 	return (0);
 }

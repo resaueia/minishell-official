@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/06 17:33:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:09:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_init_input
 
 
 /* FUNCTION PROTOTYPES */
-void				execute_command(char *cmd, char **envp, t_init_input *list);
+void				execute_command(char *cmd, t_envp *envp, t_init_input *list);
 void				handle_signals(int sig);
 void				prompt(char **envp);
 void 				remove_quotes(char **str);
@@ -84,6 +84,7 @@ t_init_input		*ft_split(char *s);
 void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
+void				change_path(char *old_pwd, char *home, char *pwd, t_envp *head);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);
