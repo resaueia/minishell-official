@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/07 00:37:52 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:02:37 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	ft_echo(char *args)
 	int	newline;
 
 	newline = 1;
-	if (*args != ' ')
+	/*if (*args != ' ')
 	{
 		printf("zsh: command not found: echo%s\n", args);
 		return ;
-	}
+	}*/
 	if (*args == ' ' && (args + 1 == NULL))
 	{
 		printf("\n");
