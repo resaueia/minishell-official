@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/09/10 17:35:02 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/09/10 19:21:38 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,17 @@ void    add_to_list(t_init_input **head, t_init_input **tail, char *substr)
     new_node = add_node(substr);
     if (!new_node)
         return (NULL);
+    if (!*head)
+    {
+        *head = new_node;
+        *tail = new_node;
+    }
     else
     {
         (*tail)->next = new_node;
         new_node->prev = *tail;
+        *tail = new_node;
     }
-    *tail = new_node;
 }
 
 t_init_input    *delim_split(char *s)
@@ -52,7 +57,7 @@ t_init_input    *delim_split(char *s)
         {
             if(start_index >= 0) //This tells us there's a substring to be added
             {
-                substr = custom_dup(s, start_index, i + (s[i + 1] == '\0'));
+                substr = custom_dup(s, start_index, i + (s[i + 1] == '\0')); //This makes sure the last character gets picked up on
                 add_to_list(&head, &tail, substr);
                 free(substr);
                 start_index = -1;
