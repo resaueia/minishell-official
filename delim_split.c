@@ -6,13 +6,13 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/09/10 19:21:38 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/09/16 17:06:23 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     is_delim(char c)
+static int     is_delim(char c)
 {
     return (c == '|' || c == '>' || c == '<');
 }
@@ -51,9 +51,9 @@ t_init_input    *delim_split(char *s)
         return (NULL);
     while (s[i])
     {
-        if (!is_delimiter(s[i]) && start_index < 0)
+        if (!is_delim(s[i]) && start_index < 0)
             start_index = i;
-        else if (is_delimiter(s[i]) || s[i + 1] == '\0')
+        else if (is_delim(s[i]) || s[i + 1] == '\0')
         {
             if(start_index >= 0) //This tells us there's a substring to be added
             {
@@ -62,7 +62,7 @@ t_init_input    *delim_split(char *s)
                 free(substr);
                 start_index = -1;
             }
-            if (is_delimiter(s[i]))
+            if (is_delim(s[i]))
             {
                 if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1]) // Checks for douple opperand
                 {

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/04 17:44:54 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/16 17:05:47 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_delimiter(char c)
+static int	is_delimiter(char c)
 {
 	// Checks if the character is in fact a delimiter character
 	//return (c == ' ' || c == '|' || c == '<' || c == '>');
