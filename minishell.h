@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/16 22:00:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:31:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int					check_command_line(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
-int					check_args(char *args);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
 char				*custom_dup(char *str, int start, int finish);
 char				*get_value(char *name, t_envp *list);
+char				*change_path(char *path, char *src, t_envp *head);
 int					is_delimiter(char c);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
@@ -85,7 +85,6 @@ t_init_input		*ft_split(char *s);
 void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
-void				change_path(char *old_pwd, char *home, char *pwd, t_envp *head);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);

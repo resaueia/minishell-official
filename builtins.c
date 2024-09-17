@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/16 22:28:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:48:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,28 @@ void	ft_echo(char *args)
 
 void	ft_cd(char *path, t_envp **env_list)
 {
-	//coisas para fazer:
-	/*
-		nos seguintes casos:
-		cd -> voltar para home e alterar no env PWD e OLDPWD
-		cd - -> voltar para o último path registrado e alterar no env PWD e OLDPWD
-		cd normal funciona normal, modificando sempre o env no PWD e OLDPWD
-	*/
-	//printf("no ft_cd\n");
-	//printf("str on path is [%s]\n--\n", path);
-	if ((!*path) || (check_args(path) == 1)) //argumento vazio
-	{
-		change_path("OLDPWD", "HOME", "PWD", *env_list); //alterar o value do pwd do env, path para home
-		//printf("check_args == 1\n");
-		printf("%s", path);
-	}
-	else if (check_args(path) == 2)
-	{
-		//printf("check_args == 2\n");
+	while (*path == ' ' )
 		path++;
+	if (!*path || *path == '~') //caminho para HOME
+	{
+		path = change_path(path, "HOME", *env_list); //alterar o value do pwd do env, path para home
+		chdir(path); //aplicar chdir para modificação do diretório.
+		
+	}
+	else if (*path == '-') //caminho para o último diretório
+	{
+		path = change_path(path, "OLDPWD", *env_list); //alterar o value do pwd do env, recebendo o path do oldpwd
+		chdir(path);//aplicar chdir para modificação do diretório.
+	}
+	else //para as outras condições
+	{
 		if (chdir(path) == 0)
 		{
-			//atualizar PWD e OLDPWD
-			ft_pwd();
+			char	cwd[1024];
+			getcwd(cwd, sizeof(cwd)); // corrigir entrada do path a ser utilizado para alterar envp
+			path = change_path(cwd, "PWD", *env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
 		}
+			
 		else 
 			printf("cd: %s: %s\n", strerror(errno), path);
 	}
