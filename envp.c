@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/07 00:10:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:00:06 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,31 +93,50 @@ void	print_envp_list(t_envp *head)
 	}
 	return (NULL);
 }*/
+char	*get_value(char *name, t_envp *list)
+{
+	t_envp	*current;
+	char	*new_value;
+
+	current = list;
+	while (current)
+	{
+		if (ft_strcmp(current->key, name) == 0)
+			new_value = ft_strdup(current->value);			
+		current = current->next;
+	}
+	//printf("new value is: [%s]\n", new_value);
+	return (new_value);
+}
+
 
 void	change_path(char *old_pwd, char *home, char *pwd, t_envp *head)
 {
 	t_envp *current;
+	char	*tmp_pwd;
+	char	*value_home;
 
 	current = head;
-	while (current)
+	tmp_pwd = get_value(pwd, current);
+	value_home = get_value(home, current);
+
+	while (head)
 	{
-		if (ft_strcmp(current->key, old_pwd) == 0)
+		//printf("current key: [%s]\n", current->key);
+		if (ft_strcmp(head->key, old_pwd) == 0)
 		{
-			free(current->value);
-			current->value = ft_strdup(pwd);
-			break;
+			printf("on old_pwd key: [%s]\n", head->value);
+			free(head->value);
+			head->value = tmp_pwd;
+			printf("new value: [%s]\n", head->value);
 		}
-		current = current->next;
-	}
-	current = head;
-	while (current)
-	{
-		if (ft_strcmp(current->key, pwd) == 0)
+		else if (ft_strcmp(head->key, pwd) == 0)
 		{
-			free(current->value);
-			current->value = ft_strdup(home);
-			break;
+			printf("on pwd key: [%s]\n", head->value);
+			free(head->value);
+			head->value = value_home;
+			printf("new value: [%s]\n", head->value);
 		}
-		current = current->next;
+		head = head->next;
 	}
 }

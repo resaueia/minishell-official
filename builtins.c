@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/10 15:57:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:07:37 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,15 @@ void	ft_cd(char *path, t_envp **env_list)
 	*/
 	//printf("no ft_cd\n");
 	//printf("str on path is [%s]\n--\n", path);
-	if ((!*path) || (is_space(path) == 1))
+	if ((!*path) || (check_args(path) == 1)) //argumento vazio
 	{
-		
 		change_path("OLDPWD", "HOME", "PWD", *env_list); //alterar o value do pwd do env, path para home
-		//printf("is_space == 1\n");
+		//printf("check_args == 1\n");
 		printf("%s", path);
 	}
-	else if (is_space(path) == 2)
+	else if (check_args(path) == 2)
 	{
-		printf("is_space == 2\n");
+		printf("check_args == 2\n");
 		path++;
 		if (chdir(path) == 0)
 		{
