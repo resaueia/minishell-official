@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/16 22:07:37 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:28:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_cd(char *path, t_envp **env_list)
 	}
 	else if (check_args(path) == 2)
 	{
-		printf("check_args == 2\n");
+		//printf("check_args == 2\n");
 		path++;
 		if (chdir(path) == 0)
 		{
