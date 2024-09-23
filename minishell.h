@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/16 17:05:55 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/09/23 18:51:14 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_envp
 typedef struct s_init_input
 {
 	char					*string;
+	t_token					token;
 	struct s_init_input		*prev;
 	struct s_init_input		*next;
 }							t_init_input;
@@ -79,7 +80,7 @@ char				*custom_dup(char *str, int start, int finish);
 //int					is_delimiter(char c);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
-t_init_input		*add_node(char *input);
+t_init_input		*add_node(char *input, t_token token);
 t_init_input		*ft_split(char *s);
 void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);

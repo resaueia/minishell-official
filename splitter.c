@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/16 17:05:47 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/09/23 18:54:33 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*custom_dup(char *str, int start, int finish)
 	return (word);
 }
 
-t_init_input	*add_node(char *input)
+t_init_input	*add_node(char *input, t_token token)
 {
 	t_init_input	*new_node;
 
@@ -40,6 +40,7 @@ t_init_input	*add_node(char *input)
 	if (!new_node)
 		return (NULL);
 	new_node->string = ft_strdup(input);
+	new_node->token = token;
 	new_node->prev = NULL;
 	new_node->next = NULL;
 	return (new_node);
@@ -47,13 +48,16 @@ t_init_input	*add_node(char *input)
 
 t_init_input	*ft_split(char *s)
 {
-	t_init_input	*head = NULL;
-	t_init_input	*tail = NULL;
+	t_init_input	*head;
+	t_init_input	*tail;
 	t_init_input	*new_node;
 	char			*substr;
+	t_token			token;
 	size_t			i;
 	int				start_index;
 
+	head = NULL;
+	tail = NULL;
 	i = 0;
 	start_index = -1;
 	if (!s)
@@ -70,7 +74,8 @@ t_init_input	*ft_split(char *s)
 			substr = custom_dup(s, start_index, i + (s[i + 1] == '\0'));
 			if (!substr)
 				return (NULL);
-			new_node = add_node(substr);
+			get_token(substr);
+			new_node = add_node(substr, token);
 			free(substr);
 			if (!head)
 				head = new_node;

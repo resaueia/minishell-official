@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delim_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/09/16 17:06:23 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/09/23 18:50:52 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,30 @@ static int     is_delim(char c)
     return (c == '|' || c == '>' || c == '<');
 }
 
-void    add_to_list(t_init_input **head, t_init_input **tail, char *substr)
+t_token         get_token(char *c)
+{
+    int i;
+
+    i = 0;
+    if (c[i] == '|' && c[i + 1] != '|')
+        return (PIPE);
+    else if (c[i] == '>' && c[i + 1] == '>')
+        return (APPEND);
+    else if (c[i] == '<' && c[i + 1] == '<')
+        return (HDOC);
+    else if (c[i] == '>' && c[i + 1] != '>')
+        return (OUT);
+    else if (c[i] == '<' && c[i + 1] != '<')
+        return (IN);
+    else
+        return (WORD);
+}
+
+void    add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token)
 {
     t_init_input    *new_node;
 
-    new_node = add_node(substr);
+    new_node = add_node(substr, token);
     if (!new_node)
         return (NULL);
     if (!*head)
@@ -44,7 +63,10 @@ t_init_input    *delim_split(char *s)
     char            *substr;
     size_t          i;
     int             start_index;
+    t_token         token;
     
+    head = NULL;
+    tail = NULL;
     i = 0;
     start_index = -1;
     if (!s)
@@ -58,7 +80,7 @@ t_init_input    *delim_split(char *s)
             if(start_index >= 0) //This tells us there's a substring to be added
             {
                 substr = custom_dup(s, start_index, i + (s[i + 1] == '\0')); //This makes sure the last character gets picked up on
-                add_to_list(&head, &tail, substr);
+                add_to_list(&head, &tail, substr, WORD);
                 free(substr);
                 start_index = -1;
             }
@@ -67,11 +89,15 @@ t_init_input    *delim_split(char *s)
                 if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1]) // Checks for douple opperand
                 {
                     substr = custom_dup(s, i, i + 2);
+                    token = get_token(substr);
                     i++;
                 }
                 else
+                {
                     substr = custom_dup(s, i, i + 1);
-                add_to_list(&head, &tail, substr);
+                    token = get_token(substr);
+                }
+                add_to_list(&head, &tail, substr, token);
                 free(substr);
             }
         }
