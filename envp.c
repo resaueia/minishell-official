@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/17 13:36:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:35:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ char	*get_value(char *name, t_envp *list)
 }
 
 
-char	*change_path(char *path, char *src, t_envp *head)
+char	*change_path(char *path, char *src, t_envp **head)
 {
 	t_envp *current;
 	char	*tmp_pwd;
 	char	*value_src;
 	char	*value_old;
 
-	current = head;
+	current = *head;
 	tmp_pwd = get_value("PWD", current);
 	value_src = get_value(src, current);
 	value_old = get_value("OLDPWD", current);
@@ -125,36 +125,36 @@ char	*change_path(char *path, char *src, t_envp *head)
 	if (ft_strcmp("HOME", src) == 0 || ft_strcmp("OLDPWD", src) == 0)
 	{
 		(void) path;
-		while (head)
+		while (current)
 		{
-			if (ft_strcmp(head->key, "OLDPWD") == 0)
+			if (ft_strcmp(current->key, "OLDPWD") == 0)
 			{
-				free(head->value);
-				head->value = tmp_pwd;
+				free(current->value);
+				current->value = tmp_pwd;
 			}
-			else if (ft_strcmp(head->key, "PWD") == 0)
+			else if (ft_strcmp(current->key, "PWD") == 0)
 			{
-				free(head->value);
-				head->value = value_src;
+				free(current->value);
+				current->value = value_src;
 			}
-			head = head->next;
+			current = current->next;
 		}
 	}
 	else if (ft_strcmp("PWD", src) == 0)
 	{
-		while (head)
+		while (current)
 		{
-			if (ft_strcmp(head->key, "OLDPWD") == 0)
+			if (ft_strcmp(current->key, "OLDPWD") == 0)
 			{
-				free(head->value);
-				head->value = tmp_pwd;
+				free(current->value);
+				current->value = tmp_pwd;
 			}
-			else if (ft_strcmp(head->key, "PWD") == 0)
+			else if (ft_strcmp(current->key, "PWD") == 0)
 			{
-				free(head->value);
-				head->value = path;
+				free(current->value);
+				current->value = path;
 			}
-			head = head->next;
+			current = current->next;
 		}
 	}
 	return (value_src);

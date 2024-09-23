@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/17 12:21:23 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:06:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,4 +136,23 @@ void remove_quotes(char **str)
 		}
 		*dst = '\0';
 	}
+}
+char	*ft_joinpath(char *path, char *key, t_envp **env_list)
+{
+	char	*new_path;
+	char	*value;
+	char	*tmp;
+
+	value = get_value(key, *env_list); //armaena o valor de HOME
+	new_path = (char *)malloc(sizeof(char) * (ft_strlen(value) + ft_strlen(path) + 2)); //maloca o tamanho de value + path + 2
+	if (!new_path)
+		return (NULL);
+	tmp = new_path; //recebe o endereço de new_path
+	while (*value)
+		*tmp++ = *value++; //tmp recebe o valor de value (HOME)
+	*tmp++ = '/'; //home termina sem '/', atribuir para continuar com o new_path
+	while (*path)
+		*tmp++ = *path++; //tmp recebe o valor de path descrito no prompt e passado pelo argumento
+	*tmp = '\0'; //finaliza a string
+	return (new_path); //retorna o novo path
 }
