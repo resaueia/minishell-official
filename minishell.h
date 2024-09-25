@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/23 18:51:14 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:31:15 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,13 @@ t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 t_init_input		*add_node(char *input, t_token token);
 t_init_input		*ft_split(char *s);
+t_init_input		*delim_split(char *s);
+t_token				get_token(char *c);
 void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
 void				change_path(char *old_pwd, char *home, char *pwd, t_envp *head);
+void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);

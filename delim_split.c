@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delim_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/09/23 18:50:52 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:33:03 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void    add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_to
 
     new_node = add_node(substr, token);
     if (!new_node)
-        return (NULL);
+        return ;
     if (!*head)
     {
         *head = new_node;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/23 18:54:33 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:32:09 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_init_input	*ft_split(char *s)
 			substr = custom_dup(s, start_index, i + (s[i + 1] == '\0'));
 			if (!substr)
 				return (NULL);
-			get_token(substr);
+			token = get_token(substr);
 			new_node = add_node(substr, token);
 			free(substr);
 			if (!head)
