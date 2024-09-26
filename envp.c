@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/23 17:35:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:16:06 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,9 @@ char	*get_value(char *name, t_envp *list)
 
 char	*change_path(char *path, char *src, t_envp **head)
 {
+	printf("no change_path\n");
+	printf("path in: [%s]\n", path);
+	printf("src in: [%s]\n", src);
 	t_envp *current;
 	char	*tmp_pwd;
 	char	*value_src;
@@ -122,8 +125,13 @@ char	*change_path(char *path, char *src, t_envp **head)
 	value_src = get_value(src, current);
 	value_old = get_value("OLDPWD", current);
 
+	printf("tmp_pwd: [%s]\n", tmp_pwd);
+	printf("value_src: [%s]\n", value_src);
+	printf("value_old: [%s]\n", value_old);
+
 	if (ft_strcmp("HOME", src) == 0 || ft_strcmp("OLDPWD", src) == 0)
 	{
+		printf("entrou no if\n");
 		(void) path;
 		while (current)
 		{
@@ -142,17 +150,23 @@ char	*change_path(char *path, char *src, t_envp **head)
 	}
 	else if (ft_strcmp("PWD", src) == 0)
 	{
+		printf("entrou no else if\n");
 		while (current)
 		{
+			printf("entrou no while\n");
 			if (ft_strcmp(current->key, "OLDPWD") == 0)
 			{
+				printf("entrou no if OLDPWD\n");
 				free(current->value);
 				current->value = tmp_pwd;
+				printf("current->value: [%s]\n", current->value);
 			}
 			else if (ft_strcmp(current->key, "PWD") == 0)
 			{
+				printf("entrou no else if PWD\n");
 				free(current->value);
-				current->value = path;
+				current->value = ft_strdup(path);
+				printf("current->value: [%s]\n", current->value);
 			}
 			current = current->next;
 		}

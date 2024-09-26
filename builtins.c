@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/23 18:20:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:23:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,39 +64,17 @@ void	ft_cd(char *path, t_envp **env_list)
 	else //para as outras condições com path relativo ou absoluto
 	{
 		printf("no else\n");
-		if (ft_strncmp(path, "./", 2) == 0) //caso o path seja relativo
-		{
-			printf("frst path: [%s]\n", path);
-			path = ft_joinpath(path, "PWD", env_list); //corrigir entrada do path a ser utilizado para alterar envp
-			printf("new path: [%s]\n", path);
-			change_path(path, "PWD", env_list); //alterar o value do pwd do env
-			//chdir = (path); //atualizar o path do oldpwd, aplicar chdir para modificação do diretório.
-		}
-		else if (ft_strncmp(path, "../", 3) == 0) //caso o path seja relativo
-		{
-			char	cwd[1024];
-			getcwd(cwd, sizeof(cwd)); // corrigir entrada do path a ser utilizado para alterar envp
-			path = change_path(cwd, path, env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
-		}
-		else if (ft_strncmp(path, "/", 1) == 0) //caso o path seja absoluto
-		{
-			char	cwd[1024];
-			getcwd(cwd, sizeof(cwd)); // corrigir entrada do path a ser utilizado para alterar envp
-			path = change_path(cwd, path, env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
-		}
-		else
-		{
-			printf("no else do else\n");
 		if (chdir(path) == 0)
 		{
 			char	cwd[1024];
-			getcwd(cwd, sizeof(cwd)); // corrigir entrada do path a ser utilizado para alterar envp
-			path = change_path(cwd, "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
+			printf("pointer of get: [%p]\n", getcwd(cwd, sizeof(cwd))); // corrigir entrada do path a ser utilizado para alterar envp
+			printf("path out: [%s]\n", cwd);
+			printf("pointer of path: [%p]\n", path);
+			printf("pointer of cwd: [%p]\n", &cwd);
+			change_path(cwd, "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
 		}
-			
 		else 
 			printf("cd: %s: %s\n", strerror(errno), path);
-		}
 	}
 }
 
