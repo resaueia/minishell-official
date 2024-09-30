@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/23 17:06:33 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:04:25 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,30 @@ char	*ft_strchr(char *s, int c)
 	if (c == '\0')
 		return ((char *)s);
 	return (NULL);
+}
+int	ft_islower(char *args)
+{
+	printf("na islower\n");
+	printf("args: [%s]\n", args);
+	int	len;
+	int	i;
+
+	len = ft_strlen(args);
+	i = 0;
+	while (args[i++])
+	{
+		if (args[i] >= 'a' || args[i] <= 'z')
+		{
+			printf("char: [%c] is lower\n", args[i]);
+			len--;
+		}
+	}
+	if (len == 0)
+		return (0);
+	else if (len > 0)
+		return (1);
+	else
+		return (-1);
 }
 void remove_quotes(char **str)
 {

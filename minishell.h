@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/23 17:32:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:50:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int					check_command_line(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
+int					ft_islower(char *args);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
 char				*custom_dup(char *str, int start, int finish);
@@ -90,7 +91,7 @@ void				free_list(t_init_input *list);
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);
 void				ft_pwd(void);
-void				ft_echo(char *args);
+void				ft_echo(char *args, t_envp **env_list);
 void				ft_export(char *var, t_envp **env_list);
 void				ft_unset(char *var, t_envp **env_list);
 

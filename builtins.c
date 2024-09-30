@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/26 15:23:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:03:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,34 @@ void	ft_pwd(void)
 		perror("getcwd() incurred in unexpected error");
 }
 
-void	ft_echo(char *args)
+void	ft_echo(char *args, t_envp **env_list)
 {
 	int	newline;
 
 	newline = 1;
-	if (*args == ' ' && (args + 1 == NULL))
+	while (*args == ' ' )
+		args++;
+	printf("frst args: [%s]\n", args);
+	if (args == NULL)
 	{
+		printf("args NULL\n");
 		printf("\n");
 		return ;
 	}
-	if (*args == ' ' && (args + 1 != NULL))
+	else if ((*args == '$' && (args + 1 != NULL)) && ft_islower(args + 1) == 1)
+	{
+		printf("args $lower\n");
+		printf("\n");
+		return ;
+	}
+	else if ((*args == '$' && (args + 1 != NULL)) && ft_islower(args + 1) == 0)
+	{
+		printf("args $upper: [%s]\n", args);
 		args++;
+		printf("args upper: [%s]\n", args);
+		args = get_value(args, *env_list);
+	}
+	printf("args: [%s]\n", args);
 	if (ft_strncmp(args, "-n", 2) == 0)
 	{
 		newline = 0;
@@ -49,32 +65,28 @@ void	ft_cd(char *path, t_envp **env_list)
 {
 	while (*path == ' ' )
 		path++;
-	printf("path in: [%s]\n", path);
-	if (!*path || *path == '~') //caminho para HOME
+	if (ft_strlen(path) >= 2)
+	{
+		if (ft_strncmp(path, "~/", 2) == 0)
+			path = ft_joinpath(path + 2, "HOME", env_list);
+		if (chdir(path) == 0)
+		{
+			char	cwd[1024];
+			getcwd(cwd, sizeof(cwd)); // entrada do path a ser utilizado para alterar envp
+			change_path(cwd, "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
+		}
+		else 
+			printf("cd: %s: %s\n", strerror(errno), path);
+	}
+	else if (!*path || *path == '~') //caminho para HOME
 	{
 		path = change_path(path, "HOME", env_list); //alterar o value do pwd do env, path para home
 		chdir(path); //aplicar chdir para modificação do diretório.
-		
 	}
 	else if (*path == '-') //caminho para o último diretório
 	{
 		path = change_path(path, "OLDPWD", env_list); //alterar o value do pwd do env, recebendo o path do oldpwd
 		chdir(path);//aplicar chdir para modificação do diretório.
-	}
-	else //para as outras condições com path relativo ou absoluto
-	{
-		printf("no else\n");
-		if (chdir(path) == 0)
-		{
-			char	cwd[1024];
-			printf("pointer of get: [%p]\n", getcwd(cwd, sizeof(cwd))); // corrigir entrada do path a ser utilizado para alterar envp
-			printf("path out: [%s]\n", cwd);
-			printf("pointer of path: [%p]\n", path);
-			printf("pointer of cwd: [%p]\n", &cwd);
-			change_path(cwd, "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
-		}
-		else 
-			printf("cd: %s: %s\n", strerror(errno), path);
 	}
 }
 
