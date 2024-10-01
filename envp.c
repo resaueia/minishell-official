@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/30 15:35:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:00:06 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,19 @@ void	print_envp_list(t_envp *head)
 	}
 	return (NULL);
 }*/
+int	is_key(char *key, t_envp *head)
+{
+	t_envp *current;
+
+	current = head;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+			return (1);
+		current = current->next;
+	}
+	return (0);
+}
 char	*get_value(char *name, t_envp *list)
 {
 	t_envp	*current;
@@ -108,8 +121,6 @@ char	*get_value(char *name, t_envp *list)
 	//printf("new value is: [%s]\n", new_value);
 	return (new_value);
 }
-
-
 char	*change_path(char *path, char *src, t_envp **head)
 {
 	t_envp *current;

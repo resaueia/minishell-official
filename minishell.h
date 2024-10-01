@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/30 15:50:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:00:36 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,12 @@ void				prompt(char **envp);
 void 				remove_quotes(char **str);
 int					check_command_line(int c);
 int					ft_strlen(char *str);
+int					add_to_history(char *line);
+int					ft_is_whitspace(char c);
 int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
 int					ft_islower(char *args);
+int					is_key(char *key, t_envp *head);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
 char				*custom_dup(char *str, int start, int finish);

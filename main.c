@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/06 23:50:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/01 10:41:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,13 @@ int	main(int c, char **v, char **envp)
 
 	//input = v[1];
 	//input_dup = ft_strdup(v[1]);
-	// check if there is more than one argument
-	if (!check_command_line(c))
+	
+	if (!check_command_line(c)) // check if there is more than one argument
 		return (0);
 	(void)v;
-
-	// looping the shell
-	prompt(envp);
-	//free(input_dup);
 	
+	prompt(envp); // looping the shell
+	
+	//free(input_dup);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/30 17:04:25 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:22:49 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	ft_strlen(char *str)
 		i++;
 	return (i);
 }
-
+int	ft_is_whitspace(char c)
+{
+	return (c == '\t' || c == '\v' || c == '\r' || c == ' ');
+}
 int	ft_strcmp(char *str, char *value)
 {
 	//printf("entrou na strcmp\n");
@@ -41,7 +44,6 @@ int	ft_strcmp(char *str, char *value)
 		return (1);
 	}
 }
-
 int	ft_strncmp(char *s1, char *s2, size_t n)
 {
 	//printf("\nn: %zu\n", n);
@@ -58,7 +60,6 @@ int	ft_strncmp(char *s1, char *s2, size_t n)
 	//printf("NOK\n--");
 	return (1);
 }
-
 /*char	*ft_strdup(char *s)
 {
 	char	*test;
@@ -77,7 +78,6 @@ int	ft_strncmp(char *s1, char *s2, size_t n)
 	*test = '\0';
 	return ((char *)ptr_keeper);
 }*/
-
 char	*ft_strdup(char *str)
 {
 	int		i;
@@ -97,7 +97,6 @@ char	*ft_strdup(char *str)
 	dup[i] = '\0';
 	return (dup);
 }
-
 char	*ft_strchr(char *s, int c)
 {
 	while (*s)
@@ -112,8 +111,6 @@ char	*ft_strchr(char *s, int c)
 }
 int	ft_islower(char *args)
 {
-	printf("na islower\n");
-	printf("args: [%s]\n", args);
 	int	len;
 	int	i;
 
@@ -122,10 +119,7 @@ int	ft_islower(char *args)
 	while (args[i++])
 	{
 		if (args[i] >= 'a' || args[i] <= 'z')
-		{
-			printf("char: [%c] is lower\n", args[i]);
 			len--;
-		}
 	}
 	if (len == 0)
 		return (0);

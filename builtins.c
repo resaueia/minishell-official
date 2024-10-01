@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/30 17:03:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:20:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,42 +23,53 @@ void	ft_pwd(void)
 
 void	ft_echo(char *args, t_envp **env_list)
 {
+	(void)env_list;
 	int	newline;
+	char	dollar;
 
 	newline = 1;
+	dollar = '$';
 	while (*args == ' ' )
 		args++;
-	printf("frst args: [%s]\n", args);
-	if (args == NULL)
+	if (args == NULL) //if echo come without args, it will print just a newline
 	{
-		printf("args NULL\n");
 		printf("\n");
 		return ;
 	}
-	else if ((*args == '$' && (args + 1 != NULL)) && ft_islower(args + 1) == 1)
+	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
 	{
-		printf("args $lower\n");
-		printf("\n");
-		return ;
+		newline = 0; //flag to not print a newline
+		args += 3; //incrementing the pointer to the next character for check next conditions
 	}
-	else if ((*args == '$' && (args + 1 != NULL)) && ft_islower(args + 1) == 0)
+	remove_quotes(&args); //to remove quotes from the args
+	if (*args == '$') //if echo come with $, it will print the value of the env variable
 	{
-		printf("args $upper: [%s]\n", args);
-		args++;
-		printf("args upper: [%s]\n", args);
-		args = get_value(args, *env_list);
+		args++; //incrementing the pointer to the next character for check next conditions
+		if (*args == '\0') //if echo come with $ and no args, it will print just a char '$'
+			args = &dollar; //changing the pointer to the char '$'
+		else //if echo come with $ and args, need check what kind of args it is
+		{
+			if (ft_islower(args) == 1) //if echo come with $ and args in lower case, it will print just a newline
+			{
+				printf("\n");
+				return ;
+			}
+			else if (ft_islower(args) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
+			{
+				if (is_key(args, *env_list) == 1) //if is a key, it will get the value of the key
+					args = get_value(args, *env_list); //changing the pointer to the value of the key
+				else //if is not a key, it will print just a newline
+				{
+					printf("\n");
+					return ;
+				}
+			}
+		}
 	}
-	printf("args: [%s]\n", args);
-	if (ft_strncmp(args, "-n", 2) == 0)
-	{
-		newline = 0;
-		args += 3;
-	}
-	remove_quotes(&args);
-	if (newline == 1)
-		printf("%s\n", args);
-	else if (newline == 0)
-		printf("%s", args);
+	if (newline == 1) //if newline is 1, it will print a newline
+		printf("%s\n", args); //printing the args with a newline
+	else if (newline == 0) //if newline is 0, it will not print a newline
+		printf("%s", args); //printing the args without a newline
 }
 
 void	ft_cd(char *path, t_envp **env_list)
@@ -92,6 +103,9 @@ void	ft_cd(char *path, t_envp **env_list)
 
 void	ft_export(char *var, t_envp **env_list)
 {
+	printf("ptr of env_list: [%p]\n", *env_list);
+	while (*var == ' ' )
+		var++;
 	char	*delim;
 	t_envp	*new_node;
 	t_envp	*current;
@@ -99,8 +113,11 @@ void	ft_export(char *var, t_envp **env_list)
 	delim = ft_strchr(var, '=');
 	if (delim)
 	{
+		printf("delim: [%s]\n", delim);
 		*delim = '\0';
+		printf("delim: [%s]\n", delim);
 		current = *env_list;
+		printf("ptr of current: [%p]\n", current);
 		while (current)
 		{
 			if (ft_strcmp(current->key, var) == 0) // Here, we traverse the list to check for the existence of 'key'. If it's already there, we update its value and return.
@@ -111,10 +128,25 @@ void	ft_export(char *var, t_envp **env_list)
 				}
 			current = current->next;
 		}
+		printf("current: [%p]\n", current);
 		// If 'key' is not present, we create it, by adding a new node to our var list.
 		new_node = create_node(var, delim + 1);
+		printf("new_node->key: [%s]\n", new_node->key);
+		printf("new_node->value: [%s]\n", new_node->value);
+		printf("new_node->next: [%p]\n", new_node->next);
+		if (!current)
+			current = new_node;
+		else
+		{
+			current->next = new_node;
+		}
+		current = new_node;
+		/*printf("new_node->next: [%p]\n", new_node->next);
+		current = new_node;
 		new_node->next = *env_list;
-		*env_list = new_node;
+		printf("ptr of env_list: [%p]\n", *env_list);
+		printf("new_node->next: [%p]\n", new_node->next);
+		*env_list = new_node;*/
 	}
 }
 

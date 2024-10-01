@@ -6,22 +6,39 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/30 15:49:49 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:09:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	add_to_history(char *line)
+{
+	int i;
+
+	i = -1;
+	if (!line)
+		return (0);
+	while (line[++i])
+	{
+		if (!ft_is_whitspace(line[i]))
+		{
+			add_history(line);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 {
+	printf("ptr of env_list: [%p]\n", env_list);
 	t_envp	*tmp;
 
 	tmp = env_list;
+	printf("ptr of tmp: [%p]\n", tmp);
 	if (ft_strcmp(cmd, "print") == 0)
-	{
-		//printf("entrou no print_stack");
 		print_stack(list);
-	}
 	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
 		print_envp_list(tmp);
 	else if (ft_strcmp(cmd, "pwd") == 0)
@@ -29,14 +46,9 @@ void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 	else if (ft_strncmp(cmd, "echo", 4) == 0)
 		ft_echo(cmd + 4, &tmp);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		ft_cd(cmd + 2, &env_list);
+		ft_cd(cmd + 2, &tmp);
 	else if (ft_strncmp(cmd, "export", 6) == 0)
-	{
-		printf("this is export\n--");
-		printf("cmd: %s\n", cmd);
-		printf("export: %s\n", cmd + 7);
-		ft_export(cmd + 7, &tmp);
-	}
+		ft_export(cmd + 6, &tmp);
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
 	{
 		printf("this is unset\n--");
@@ -45,7 +57,6 @@ void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 		ft_unset(cmd + 6, &tmp);
 	}
 }
-
 void	prompt(char **envp)
 {
 	char			*prompt;
@@ -53,35 +64,25 @@ void	prompt(char **envp)
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
-	// for signal handling
-	// SIGINT is the signal sent by pressing Ctrl+C
-	// SIGQUIT is the signal sent by pressing Ctrl+D
-	// não está funcionando - ainda não sei o motivo.
-	// SIGINT roda apenas uma vez e SIQUIT roda com segfault
-	signal(SIGINT, handle_signals);
-	signal(SIGQUIT, SIG_IGN);
-	// get the envp list
-	env_list = get_envp(envp);
-	// loop the shell. Temporária, necessário incluir validações e tratamentos
-	while (1)
+	env_list = get_envp(envp); 	// get the envp list
+	while (1) // loop the shell.
 	{
-		// the prompt
-		prompt = readline(PROGRAM_NAME);
-		add_history(prompt);
-		prompt_dup = ft_strdup(prompt);
-		input_list = ft_split(prompt_dup);
-		// incluir validações e tratamentos
-		if (ft_strcmp(prompt, "exit") == 0)
+		// for signal handling
+		signal(SIGINT, handle_signals); // SIGINT is the signal sent by pressing Ctrl+C
+		signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
+		prompt = readline(PROGRAM_NAME); // the prompt
+		if (add_to_history(prompt)) // add the prompt to the history and go on
 		{
-			free(prompt);
-			exit(1);
+			prompt_dup = ft_strdup(prompt);
+			input_list = ft_split(prompt_dup);
+		}
+		if (ft_strcmp(prompt, "exit") == 0) //if the user types exit, the shell will exit.
+		{
+			free(prompt); //free the prompt
+			exit(1); //exit the shell with error code 1
 		}
 		else
-		{
-			// execute the command
-			execute_command(prompt, env_list, input_list);
-		}
-		free(prompt);
-		//free(input_list);
+			execute_command(prompt, env_list, input_list); // execute the command line
+		free(prompt); //free(input_list);
 	}
 }
