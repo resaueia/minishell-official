@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/01 18:39:45 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/10/02 15:54:56 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	is_double_delim(char *str)
 	{
 		if (ft_strchr("|<>", str[i])) // is it a delim char?
 		{
+			if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i + 1] == '>')) // here we check for heredoc and redirect
+				i++;
 			if (ft_strchr("|<>", str[i + 1])) // is the next one also a delim?
 				return (1);
 		}
@@ -53,6 +55,11 @@ int	has_end_delim(char *str)
 	return (0);
 }
 
+/*
+
+I'm already ignoring white spaces in one of my split functions and because they're properly dealt with,
+they're not stored into nodes, hence why I believe this function is redundant (for now!).
+
 int	has_delim_spaces(char *str)
 {
 	int i;
@@ -70,7 +77,7 @@ int	has_delim_spaces(char *str)
 		i++;
 	}
 	return (0);
-}
+}*/
 
 int	quotes_check(char *str)
 {
@@ -109,11 +116,6 @@ int	input_check(char *input)
 	if (has_end_delim(input))
 	{
 		printf("Error: Delimiter at the end of input.\n");
-		return (1);
-	}
-	if (has_delim_spaces(input))
-	{
-		printf("Error: Too many spaces around delimiters.\n");
 		return (1);
 	}
 	if (!quotes_check(input))
