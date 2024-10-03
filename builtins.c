@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/01 14:20:52 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:03:15 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,24 +129,24 @@ void	ft_export(char *var, t_envp **env_list)
 			current = current->next;
 		}
 		printf("current: [%p]\n", current);
+		printf("var is: [%s]\n", var);
+		printf("delim is: [%s]\n", delim + 1);
 		// If 'key' is not present, we create it, by adding a new node to our var list.
-		new_node = create_node(var, delim + 1);
+		new_node = create_new_node(env_list, var, delim + 1);
 		printf("new_node->key: [%s]\n", new_node->key);
 		printf("new_node->value: [%s]\n", new_node->value);
 		printf("new_node->next: [%p]\n", new_node->next);
-		if (!current)
-			current = new_node;
-		else
-		{
-			current->next = new_node;
-		}
-		current = new_node;
-		/*printf("new_node->next: [%p]\n", new_node->next);
-		current = new_node;
-		new_node->next = *env_list;
 		printf("ptr of env_list: [%p]\n", *env_list);
+		printf("new_node: [%p]\n", new_node);
+		/*new_node->next = *env_list;
+		printf("ptr of env_list: [%p]\n", env_list);
 		printf("new_node->next: [%p]\n", new_node->next);
-		*env_list = new_node;*/
+		*env_list = new_node;
+		printf("new_node: [%p]\n", new_node);*/
+		printf("ptr of env_list: [%p]\n", *env_list);
+		/*printf("------------\n");
+		print_envp_list(*env_list);
+		printf("------------\n");*/
 	}
 }
 

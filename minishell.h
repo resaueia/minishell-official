@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/01 13:00:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:05:30 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char				*ft_joinpath(char *path, char *key, t_envp **env_list);
 int					is_delimiter(char c);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
+t_envp				*create_new_node(t_envp **env_list, char *key, char *value);
 t_init_input		*add_node(char *input);
 t_init_input		*ft_split(char *s);
 void				print_envp_list(t_envp *head);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/01 13:00:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:07:57 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,37 @@ void	print_envp_list(t_envp *head)
 		current = current->next;
 	}
 }
-/*void	search_node(char *key, t_envp *head)
+t_envp	*create_new_node(t_envp **env_list, char *key, char *value)
 {
-	t_envp *current;
+	printf("env_list: [%p]\n", env_list);
+	printf("key is: [%s]\n", key);
+	printf("value is: [%s]\n", value);
+	t_envp	*new_node;
+	t_envp	*current;
 
-	current = head;
-	while (current)
+	current = *env_list;
+	printf("current plus env: [%p]\n", current);
+	new_node = (t_envp *)malloc(sizeof(t_envp));
+	if (!new_node)
+		return (NULL);
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value);
+	new_node->next = NULL;
+	if (!current)
 	{
-		if (ft_strcmp(current->key, key) == 0)
-			return (current->value);
-		current = current->next;
+		current = new_node;
 	}
-	return (NULL);
-}*/
+	else
+	{
+		while (current->next)
+			current = current->next;
+		current->next = new_node;
+	}
+	printf("current plus env: [%p]\n", current);
+	printf("current plus env: [%p]\n", current);
+	printf("new_node: [%p]\n", new_node);
+	return (new_node);
+}
 int	is_key(char *key, t_envp *head)
 {
 	t_envp *current;
