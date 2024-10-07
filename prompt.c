@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/03 16:36:05 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:24:32 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,9 @@ int	add_to_history(char *line)
 
 void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 {
-	printf("execute_command | ptr of env_list: [%p]\n", env_list);
 	t_envp	*tmp;
 
 	tmp = env_list;
-	printf("execute_command | ptr of tmp: [%p]\n", tmp);
 	if (ft_strcmp(cmd, "print") == 0)
 		print_stack(list);
 	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
@@ -48,18 +46,9 @@ void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
 		ft_cd(cmd + 2, &tmp);
 	else if (ft_strncmp(cmd, "export", 6) == 0)
-	{
 		ft_export(cmd + 6, &tmp);
-		printf("execute_command | ptr of tmp pos: [%p]\n", tmp);
-		printf("execute_command | ptr of env_list pos: [%p]\n", env_list);
-	}
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
-	{
-		printf("this is unset\n--");
-		printf("cmd: %s\n", cmd);
-		printf("unset: %s\n", cmd + 6);
-		ft_unset(cmd + 6, &tmp);
-	}
+		ft_unset(cmd + 5, &tmp);
 }
 void	prompt(char **envp)
 {
@@ -69,7 +58,6 @@ void	prompt(char **envp)
 	t_envp			*env_list;
 
 	env_list = get_envp(envp); 	// get the envp list
-	printf("prompt | ptr of env_list pre while: [%p]\n", env_list);
 	while (1) // loop the shell.
 	{
 		// for signal handling
@@ -88,7 +76,6 @@ void	prompt(char **envp)
 		}
 		else
 			execute_command(prompt, env_list, input_list); // execute the command line
-		printf("prompt | ptr of env_list pos execute: [%p]\n", env_list);
 		free(prompt); //free(input_list);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/01 10:41:34 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:18:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,6 @@ int	check_command_line(int c)
 
 int	main(int c, char **v, char **envp)
 {
-	//char			*input;
-	//char			*input_dup;
-
-	//input = v[1];
-	//input_dup = ft_strdup(v[1]);
-	
 	if (!check_command_line(c)) // check if there is more than one argument
 		return (0);
 	(void)v;

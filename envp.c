@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/03 17:07:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:30:06 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,10 @@ void	print_envp_list(t_envp *head)
 }
 t_envp	*create_new_node(t_envp **env_list, char *key, char *value)
 {
-	printf("env_list: [%p]\n", env_list);
-	printf("key is: [%s]\n", key);
-	printf("value is: [%s]\n", value);
 	t_envp	*new_node;
 	t_envp	*current;
 
 	current = *env_list;
-	printf("current plus env: [%p]\n", current);
 	new_node = (t_envp *)malloc(sizeof(t_envp));
 	if (!new_node)
 		return (NULL);
@@ -106,9 +102,6 @@ t_envp	*create_new_node(t_envp **env_list, char *key, char *value)
 			current = current->next;
 		current->next = new_node;
 	}
-	printf("current plus env: [%p]\n", current);
-	printf("current plus env: [%p]\n", current);
-	printf("new_node: [%p]\n", new_node);
 	return (new_node);
 }
 int	is_key(char *key, t_envp *head)
