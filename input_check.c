@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/02 15:54:56 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:36:07 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,37 @@ int	quotes_check(char *str)
 	if (single_quote % 2 == 0 && double_quote % 2 == 0)
         return (1);
 	return (0);
+}
+
+int	quotes_check(char *str)
+{
+	int single_quote = 0;
+	int double_quote = 0;
+	int i = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '\'' && double_quote == 0) // Initial condition, finds single quotes (as long as double ones are off)
+		{
+			if (single_quote == 0)  // If off then turn it on
+				single_quote = 1;   
+			else
+				single_quote = 0;   // else turns it off
+		}
+		else if (str[i] == '\"' && single_quote == 0) // Same here, needs to check if it's inside single quotes
+		{
+			if (double_quote == 0)  // If off then turn it on
+				double_quote = 1;   
+			else
+				double_quote = 0;   // else they're off
+		}
+		i++;
+	}
+	
+	// If by the end of the check either of them are still on, they're not balanced
+	if (single_quote == 1 || double_quote == 1)
+		return (0);  
+	return (1);
 }
 
 int	input_check(char *input)
