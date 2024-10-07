@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/07 17:18:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:58:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	free_list(t_init_input *list)
 		free(temp);
 	}
 }
-
-
 void	print_stack(t_init_input *stack)
 {
     t_init_input *head = stack;
@@ -46,7 +44,6 @@ void	print_stack(t_init_input *stack)
         free(tmp);
     }
 }
-
 int	check_command_line(int c)
 {
 	if (c > 1)
@@ -56,7 +53,6 @@ int	check_command_line(int c)
 	}
 	return (1);
 }
-
 int	main(int c, char **v, char **envp)
 {
 	if (!check_command_line(c)) // check if there is more than one argument

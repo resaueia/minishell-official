@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/07 17:24:40 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:58:36 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	ft_pwd(void)
 	else
 		perror("getcwd() incurred in unexpected error");
 }
-
 void	ft_echo(char *args, t_envp **env_list)
 {
 	(void)env_list;
@@ -71,7 +70,6 @@ void	ft_echo(char *args, t_envp **env_list)
 	else if (newline == 0) //if newline is 0, it will not print a newline
 		printf("%s", args); //printing the args without a newline
 }
-
 void	ft_cd(char *path, t_envp **env_list)
 {
 	while (*path == ' ' )
@@ -100,7 +98,6 @@ void	ft_cd(char *path, t_envp **env_list)
 		chdir(path);//aplicar chdir para modificação do diretório.
 	}
 }
-
 void	ft_export(char *var, t_envp **env_list)
 {
 	while (*var == ' ' )
@@ -128,7 +125,6 @@ void	ft_export(char *var, t_envp **env_list)
 		new_node = create_new_node(env_list, var, delim + 1);
 	}
 }
-
 void	ft_unset(char *var, t_envp **env_list)
 {
 	while (*var == ' ' )

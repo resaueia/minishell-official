@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/07 17:30:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:54:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_envp	*create_node(char *key, char *value)
 	new_node->next = NULL;
 	return (new_node);
 }
-
 t_envp	*get_envp(char **envp)
 {
 	t_envp	*head;
@@ -68,7 +67,6 @@ t_envp	*get_envp(char **envp)
 	}
 	return (head);
 }
-
 void	print_envp_list(t_envp *head)
 {
 	t_envp *current;

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/07 17:24:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:58:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	add_to_history(char *line)
 	}
 	return (0);
 }
-
 void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 {
 	t_envp	*tmp;
@@ -58,11 +57,11 @@ void	prompt(char **envp)
 	t_envp			*env_list;
 
 	env_list = get_envp(envp); 	// get the envp list
+	// for signal handling
+	signal(SIGINT, handle_signals); // SIGINT is the signal sent by pressing Ctrl+C
+	signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
 	while (1) // loop the shell.
 	{
-		// for signal handling
-		signal(SIGINT, handle_signals); // SIGINT is the signal sent by pressing Ctrl+C
-		signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
 		prompt = readline(PROGRAM_NAME); // the prompt
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 		{
