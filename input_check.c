@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/07 16:36:07 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:43:02 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	has_delim_spaces(char *str)
 	return (0);
 }*/
 
-int	quotes_check(char *str)
+/*int	quotes_check(char *str)
 {
 	int i;
     int single_quote;
@@ -99,14 +99,17 @@ int	quotes_check(char *str)
 	if (single_quote % 2 == 0 && double_quote % 2 == 0)
         return (1);
 	return (0);
-}
+}*/
 
 int	quotes_check(char *str)
 {
-	int single_quote = 0;
-	int double_quote = 0;
-	int i = 0;
+	int single_quote;
+	int double_quote;
+	int i;
 
+	single_quote = 0;
+	double_quote = 0;
+	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'' && double_quote == 0) // Initial condition, finds single quotes (as long as double ones are off)
@@ -125,7 +128,6 @@ int	quotes_check(char *str)
 		}
 		i++;
 	}
-	
 	// If by the end of the check either of them are still on, they're not balanced
 	if (single_quote == 1 || double_quote == 1)
 		return (0);  
