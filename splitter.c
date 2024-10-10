@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/04 17:44:54 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:36:20 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	is_delimiter(char c)
 
 char	*custom_dup(char *str, int start, int finish)
 {
+	printf("custom_dup {\n");
+	printf("string: [%s]\n", str);
+	printf("start: [%d], finish: [%d]\n", start, finish);
 	char	*word;
 	int		i;
 
@@ -29,6 +32,7 @@ char	*custom_dup(char *str, int start, int finish)
 	while (start < finish)
 		word[i++] = str[start++];
 	word[i] = '\0';
+	printf("}\n");
 	return (word);
 }
 
@@ -60,13 +64,27 @@ t_init_input	*ft_split(char *s)
 		return (NULL);
 	while (s[i])
 	{
+		printf("L67 --> string: [%s]\n", s);
+		printf("L68 --> s[%zu]: [%c]\n\n", i, s[i]);
 		if (!is_delimiter(s[i]) && start_index < 0)
+		{
+			printf("L71 --> -- delimiter not found --\n");
 			start_index = i;
+			printf("L105 --> i: [%zu]\n", i);
+		}
 		else if ((is_delimiter(s[i]) || s[i + 1] == '\0') && start_index >= 0)
 		{
+			printf("\nL77 --> -- delimiter found --\n");
+			printf("L78 --> start_index: [%d]\n", start_index);
+			printf("L79 --> i: [%zu]\n", i);
 			// In case it finds a double opperand such as '>>' or '<<'
 			if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1])
+			{
 				i++;
+				printf("L84 --> is %c\n", s[i]);
+			}
+			printf("L86 --> start_index: [%d]\n", start_index);
+			printf("L87 --> i: [%zu]\n", i);	
 			substr = custom_dup(s, start_index, i + (s[i + 1] == '\0'));
 			if (!substr)
 				return (NULL);
@@ -82,11 +100,14 @@ t_init_input	*ft_split(char *s)
 			tail = new_node;
 			start_index = -1;
 		}
+		printf("\nL103 --> --------------------\n");
+		printf("L104 --> start_index: [%d]\n", start_index);
+		printf("\nL105 --> --------------------\n");
 		i++;
 	}
 	return (head);
 }
-/*int main(void)
+int main(void)
 {
     char *input = "echo hello > file | cat < input.txt; ls -l >> output.txt";
     t_init_input *head = ft_split(input);
@@ -110,4 +131,4 @@ t_init_input	*ft_split(char *s)
         free(tmp);
     }
     return 0;
-}*/
+}
