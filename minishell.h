@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/09/25 16:31:15 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/10/11 18:50:19 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_init_input
 	t_token					token;
 	struct s_init_input		*prev;
 	struct s_init_input		*next;
-}							t_init_input;
+}					t_init_input;
 
 
 /* FUNCTION PROTOTYPES */
@@ -89,6 +89,19 @@ void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
 void				change_path(char *old_pwd, char *home, char *pwd, t_envp *head);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
+
+/* SPLIT UTILS */
+
+char    			**list_to_char(t_init_input *list);
+void    			process_input(char *input);
+
+/* INPUT CHECK */
+
+int					is_empty_string(char *str);
+int					is_double_delim(char *str);
+int					has_end_delim(char *str);
+int					quotes_check(char *str);
+int					input_check(char *input);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);

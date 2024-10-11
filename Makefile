@@ -6,7 +6,7 @@
 #    By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/09/25 16:29:08 by rsaueia          ###   ########.fr        #
+#    Updated: 2024/10/11 17:14:26 by rsaueia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ SRCS = main.c \
 	   utils.c \
 	   builtins.c \
 	   splitter.c \
-	   delim_split.c
+	   delim_split.c \
+	   input_check.c \
+	   split_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
