@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/14 18:54:58 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:03:47 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char    **list_to_char(t_init_input *list)
         temp = temp->next;
         i++;
     }
-    cmds[i] = '\0';
+    cmds[i] = NULL;
     return (cmds);
 }
 
@@ -65,15 +65,14 @@ char    **list_to_char(t_init_input *list)
 void    process_input(char *input)
 {
     t_init_input    *cmd_list;
-    t_init_input    *space_list;
+    t_init_input    *args_list;
     char            **cmds;
     char            **args;
-    int             i;
     
     cmd_list = delim_split(input);
     cmds = list_to_char(cmd_list);
-    args = ft_split(input);
-    i = 0;
+    args_list = ft_split(input);
+    args = list_to_char(args_list);
     
     // This is not working for now as my ft_split function converts a char *
     // into a list (not a char **). I believe it's a somewhat easy fix, but I fail
