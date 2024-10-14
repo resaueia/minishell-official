@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/09/07 00:06:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:33:20 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	prompt(char **envp)
 		prompt = readline(PROGRAM_NAME);
 		add_history(prompt);
 		prompt_dup = ft_strdup(prompt);
+		//process_input;
 		input_list = ft_split(prompt_dup);
 		// incluir validações e tratamentos
 		if (ft_strcmp(prompt, "exit") == 0)
