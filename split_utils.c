@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/14 19:03:47 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/16 18:45:59 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,41 +41,40 @@ char    **list_to_char(t_init_input *list)
     return (cmds);
 }
 
-/*void    split_commands(char **commands)
+void    split_commands(char **commands, t_init_input **head, t_init_input **tail)
 {
-    t_init_input    *head;
-    t_init_input    *tail;
-    char            **split_cmd;
     int             i;
-    int             j;
+    t_init_input    *split_cmd_list;
+    t_init_input    *current_node;
 
     i = 0;
     while (commands[i])
     {
-        split_cmd[i] = ft_split(commands[i]);
-        j = 0;
-        while (split_cmd[j])
+        split_cmd_list = ft_split(commands[i]);
+        current_node = split_cmd_list;
+        while (current_node)
         {
-            add_to_list()
+            add_to_list(head, tail, current_node->string, current_node->token);
+            current_node = current_node->next;
         }
+        //free the list (create a function for it);
+        i++;
     }
-    
-}*/
+}
 
 void    process_input(char *input)
 {
     t_init_input    *cmd_list;
     t_init_input    *args_list;
+    t_init_input    *args_tail;
     char            **cmds;
-    char            **args;
+    //char            *args;  Ideia que o allan deu de guardar o input inteiro
     
+    args_list = NULL;
+    args_tail = NULL;
     cmd_list = delim_split(input);
     cmds = list_to_char(cmd_list);
-    args_list = ft_split(input);
-    args = list_to_char(args_list);
-    
-    // This is not working for now as my ft_split function converts a char *
-    // into a list (not a char **). I believe it's a somewhat easy fix, but I fail
-    // to understand this particular sequence's logic now. Need to check.
-    //space_list = ft_split(cmds);
+    split_commands(cmds, &args_list, &args_tail);
+
+    // free the cmds array, free the cmds list and free the args list?
 }
