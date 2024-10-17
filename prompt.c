@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/14 19:33:20 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:56:35 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ void	prompt(char **envp)
 		add_history(prompt);
 		prompt_dup = ft_strdup(prompt);
 		//process_input;
-		input_list = ft_split(prompt_dup);
+		process_input(prompt_dup);
+		// after processing it, where and how do I store it? Need to think about the execution part and what it entails
+		input_list = delim_split(prompt_dup);
 		// incluir validações e tratamentos
 		if (ft_strcmp(prompt, "exit") == 0)
 		{
