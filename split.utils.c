@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_utils.c                                      :+:      :+:    :+:   */
+/*   split.utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/17 21:58:35 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:48:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char    **list_to_char(t_init_input *list)
     return (cmds);
 }
 
+//talvez alterar para retornar uma t_init_input
 void    split_commands(char **commands, t_init_input **head, t_init_input **tail)
 {
     int             i;
@@ -55,6 +56,8 @@ void    split_commands(char **commands, t_init_input **head, t_init_input **tail
         while (current_node)
         {
             add_to_list(head, tail, current_node->string, current_node->token);
+            //printf("string %s | ", current_node->string);
+            //printf("token %u\n", current_node->token);
             current_node = current_node->next;
         }
         //free the list (create a function for it);
@@ -62,21 +65,25 @@ void    split_commands(char **commands, t_init_input **head, t_init_input **tail
     }
 }
 
-void    process_input(char *input)
+char    **process_input(t_init_input *cmd_list, char **cmds)
 {
-    t_init_input    *cmd_list;
     t_init_input    *args_list;
     t_init_input    *args_tail;
-    char            **cmds;
     //char            *args;  Ideia que o allan deu de guardar o input inteiro
     
     args_list = NULL;
     args_tail = NULL;
-    cmd_list = delim_split(input);
-    cmds = list_to_char(cmd_list);
-    split_commands(cmds, &args_list, &args_tail);
+    split_commands(cmds, &args_list, &args_tail); 
+    print_the_stack(args_list);
+
+    //para enviar para execução
+    //has pipe
+    //has redirect
+    //has built-in
+
     free_list(cmd_list);
     free_list(args_list);
 
+    return (cmds);
     // free the cmds array, free the cmds list and free the args list?
 }

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/17 21:56:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:34:48 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_init_input
 
 
 /* FUNCTION PROTOTYPES */
-void				execute_command(char *cmd, t_envp *envp, t_init_input *list);
+void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list);
 void				handle_signals(int sig);
 void				prompt(char **envp);
 void 				remove_quotes(char **str);
@@ -103,7 +103,7 @@ void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);
-void    			process_input(char *input);
+char				**process_input(t_init_input *cmd_list, char **cmds);
 void				split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
 /* INPUT CHECK */
@@ -119,5 +119,7 @@ void				ft_pwd(void);
 void				ft_echo(char *args, t_envp **env_list);
 void				ft_export(char *var, t_envp **env_list);
 void				ft_unset(char *var, t_envp **env_list);
+
+void				print_the_stack(t_init_input *list);
 
 #endif

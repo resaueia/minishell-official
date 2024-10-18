@@ -6,20 +6,20 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/17 22:24:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:37:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void print_the_stack(t_init_input *list)
+void print_the_stack(t_init_input *list)
 {
 	t_init_input *current = list;
 
 	// Traverse and print the linked list
 	while (current != NULL)
 	{
-		printf("%s\n", current->string);
+		printf("string: [%s] - token [%u]\n", current->string, current->token);
 		current = current->next;
 	}
 }
@@ -42,7 +42,7 @@ int	add_to_history(char *line)
 	return (0);
 }
 
-void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
+void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list)
 {
 	t_envp	*tmp;
 
@@ -66,6 +66,8 @@ void	prompt(char **envp)
 {
 	char			*prompt;
 	char			*prompt_dup;
+	char            **cmds;
+	char			**process;
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
@@ -89,9 +91,12 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt)) // check if the input is valid
 			{
-				input_list = ft_split(prompt_dup); // split the input into a linked list
-				print_the_stack(input_list);
-				execute_command(prompt, env_list, input_list); // execute the command line
+				input_list = delim_split(prompt_dup); // split the input into a linked list
+				cmds = list_to_char(input_list);
+				process = process_input(input_list, cmds); 
+				
+				//print_the_stack(input_list);
+				//execute_builtin(prompt, env_list, input_list); // execute the command line
 			}
 			else
 			{
