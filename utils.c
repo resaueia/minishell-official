@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/01 13:22:49 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/17 21:55:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ int	ft_strlen(char *str)
 		i++;
 	return (i);
 }
+
 int	ft_is_whitspace(char c)
 {
 	return (c == '\t' || c == '\v' || c == '\r' || c == ' ');
 }
+
 int	ft_strcmp(char *str, char *value)
 {
 	//printf("entrou na strcmp\n");
@@ -44,6 +46,7 @@ int	ft_strcmp(char *str, char *value)
 		return (1);
 	}
 }
+
 int	ft_strncmp(char *s1, char *s2, size_t n)
 {
 	//printf("\nn: %zu\n", n);
@@ -60,6 +63,7 @@ int	ft_strncmp(char *s1, char *s2, size_t n)
 	//printf("NOK\n--");
 	return (1);
 }
+
 /*char	*ft_strdup(char *s)
 {
 	char	*test;
@@ -78,6 +82,7 @@ int	ft_strncmp(char *s1, char *s2, size_t n)
 	*test = '\0';
 	return ((char *)ptr_keeper);
 }*/
+
 char	*ft_strdup(char *str)
 {
 	int		i;
@@ -97,6 +102,7 @@ char	*ft_strdup(char *str)
 	dup[i] = '\0';
 	return (dup);
 }
+
 char	*ft_strchr(char *s, int c)
 {
 	while (*s)
@@ -109,6 +115,7 @@ char	*ft_strchr(char *s, int c)
 		return ((char *)s);
 	return (NULL);
 }
+
 int	ft_islower(char *args)
 {
 	int	len;
@@ -128,6 +135,7 @@ int	ft_islower(char *args)
 	else
 		return (-1);
 }
+
 void remove_quotes(char **str)
 {
 	char	*src;
@@ -155,6 +163,7 @@ void remove_quotes(char **str)
 		*dst = '\0';
 	}
 }
+
 char	*ft_joinpath(char *path, char *key, t_envp **env_list)
 {
 	char	*new_path;
@@ -173,4 +182,13 @@ char	*ft_joinpath(char *path, char *key, t_envp **env_list)
 		*tmp++ = *path++; //tmp recebe o valor de path descrito no prompt e passado pelo argumento
 	*tmp = '\0'; //finaliza a string
 	return (new_path); //retorna o novo path
+}
+
+int	is_space(char *args)
+{
+	if (*args == ' ' && (args + 1 == NULL))
+		return (1);
+	else if (*args == ' ' && (args + 1 != NULL))
+		return (2);
+	return (0);
 }

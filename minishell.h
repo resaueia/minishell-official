@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/03 17:05:30 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/17 21:56:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define PROGRAM_NAME BLUE "mi" PURPLE "ni" PINK "shell" MAGENTA "> " RESET
 
 /* DATA STRUCTS */
+
+// for token
 typedef enum e_token
 {
 	PIPE,
@@ -55,12 +57,15 @@ typedef struct s_envp
 	struct s_envp	*next;
 }					t_envp;
 
+// for parser
 typedef struct s_init_input
 {
 	char					*string;
+	char					**args;
+	t_token					token;
 	struct s_init_input		*prev;
 	struct s_init_input		*next;
-}							t_init_input;
+}					t_init_input;	
 
 
 /* FUNCTION PROTOTYPES */
@@ -76,21 +81,37 @@ int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
 int					ft_islower(char *args);
 int					is_key(char *key, t_envp *head);
+int					is_space(char *args);
+//int					is_delimiter(char c);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);
 char				*custom_dup(char *str, int start, int finish);
 char				*get_value(char *name, t_envp *list);
 char				*change_path(char *path, char *src, t_envp **head);
 char				*ft_joinpath(char *path, char *key, t_envp **env_list);
-int					is_delimiter(char c);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
-t_envp				*create_new_node(t_envp **env_list, char *key, char *value);
-t_init_input		*add_node(char *input);
+void				*create_new_node(t_envp **env_list, char *key, char *value);
+t_init_input		*add_node(char *input, t_token token);
 t_init_input		*ft_split(char *s);
+t_init_input		*delim_split(char *s);
+t_token				get_token(char *c);
 void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
+void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
+
+/* SPLIT UTILS */
+char    			**list_to_char(t_init_input *list);
+void    			process_input(char *input);
+void				split_commands(char **commands, t_init_input **head, t_init_input **tail);
+
+/* INPUT CHECK */
+int					is_empty_string(char *str);
+int					is_double_delim(char *str);
+int					has_end_delim(char *str);
+int					quotes_check(char *str);
+int					input_check(char *input);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);

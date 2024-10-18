@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/07 18:54:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/17 21:42:07 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	print_envp_list(t_envp *head)
 		current = current->next;
 	}
 }
-t_envp	*create_new_node(t_envp **env_list, char *key, char *value)
+void	*create_new_node(t_envp **env_list, char *key, char *value)
 {
 	t_envp	*new_node;
 	t_envp	*current;
@@ -135,12 +135,12 @@ char	*change_path(char *path, char *src, t_envp **head)
 	t_envp *current;
 	char	*tmp_pwd;
 	char	*value_src;
-	char	*value_old;
+//	char	*value_old;
 
 	current = *head;
 	tmp_pwd = get_value("PWD", current);
 	value_src = get_value(src, current);
-	value_old = get_value("OLDPWD", current);
+//	value_old = get_value("OLDPWD", current);
 
 	if (ft_strcmp("HOME", src) == 0 || ft_strcmp("OLDPWD", src) == 0)
 	{

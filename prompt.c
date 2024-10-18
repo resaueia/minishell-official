@@ -6,11 +6,23 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/07 18:58:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:24:18 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void print_the_stack(t_init_input *list)
+{
+	t_init_input *current = list;
+
+	// Traverse and print the linked list
+	while (current != NULL)
+	{
+		printf("%s\n", current->string);
+		current = current->next;
+	}
+}
 
 int	add_to_history(char *line)
 {
@@ -29,6 +41,7 @@ int	add_to_history(char *line)
 	}
 	return (0);
 }
+
 void	execute_command(char *cmd, t_envp *env_list, t_init_input *list)
 {
 	t_envp	*tmp;
@@ -66,7 +79,6 @@ void	prompt(char **envp)
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 		{
 			prompt_dup = ft_strdup(prompt);
-			input_list = ft_split(prompt_dup);
 		}
 		if (ft_strcmp(prompt, "exit") == 0) //if the user types exit, the shell will exit.
 		{
@@ -74,7 +86,21 @@ void	prompt(char **envp)
 			exit(1); //exit the shell with error code 1
 		}
 		else
-			execute_command(prompt, env_list, input_list); // execute the command line
-		free(prompt); //free(input_list);
+		{
+			if (!input_check(prompt)) // check if the input is valid
+			{
+				input_list = ft_split(prompt_dup); // split the input into a linked list
+				print_the_stack(input_list);
+				execute_command(prompt, env_list, input_list); // execute the command line
+			}
+			else
+			{
+				printf("minishell: syntax error\n"); // if the input is invalid, print an error message
+				continue;
+			}
+			
+		}
+		free(prompt); 
+		//free(input_list);
 	}
 }

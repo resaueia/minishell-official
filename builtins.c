@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/07 18:58:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/17 21:42:46 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	ft_export(char *var, t_envp **env_list)
 	while (*var == ' ' )
 		var++;
 	char	*delim;
-	t_envp	*new_node;
 	t_envp	*current;
 
 	delim = ft_strchr(var, '=');
@@ -121,8 +120,8 @@ void	ft_export(char *var, t_envp **env_list)
 				}
 			current = current->next;
 		}
+		create_new_node(env_list, var, delim + 1);
 		// If 'key' is not present, we create it, by adding a new node to our var list.
-		new_node = create_new_node(env_list, var, delim + 1);
 	}
 }
 void	ft_unset(char *var, t_envp **env_list)
