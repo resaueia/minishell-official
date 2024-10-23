@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/21 16:22:20 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:21:04 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void    tackle_heredoc(t_init_input *input_list)
 {
     t_init_input    *temp;
     char            *delim;
+    char            *line;
     int             pipe_fd[2];
 
     temp = input_list;
@@ -63,6 +64,35 @@ void    tackle_heredoc(t_init_input *input_list)
         perror("Heredoc delimiter not found\n");
         return ;
     }
-    // HERE WRITE PIPE AND THINK ABOUT RESETTING THE CMDS
+    if (pipe(pipe_fd) == -1)
+    {
+        perror("Error");
+        return ;
+    }
+    while (1)
+    {
+        line = readline("heredoc> ");
+        if (!line)
+        {
+            perror("Error");
+            return ;
+        }
+        if (ft_strcmp(line, delim) == 0)
+        {
+            free(line);
+            break;
+        }
+        write(pipe_fd[1], line, ft_strlen(line));
+        write(pipe_fd[1], "\n", 1);
+        free(line);
+    }
+    close(pipe_fd[1]);
+    dup2(pipe_fd[0], STDIN_FILENO);
+    close(pipe_fd[0]);
+    /*After writing stuff on the pipe, I close its writing end, use
+    the dup2 function to set its reading end to the standard input (which used to be the keyboard)
+    and then proceed to close the actual read end of the pipe, hence finishing the whole process.*/
+
+    /*Not sure if the execution part of this should be written here already or elsewhere.*/
 }
 
