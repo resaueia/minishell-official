@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/18 19:34:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:02:25 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ typedef enum e_token
 	HDOC,
 	WORD,
 	ERROR,
+	FILE,
+	BUILTIN,
+	EXEC,
+	//EOF (?)
 }					t_token;
 
 // for environment variables
@@ -62,6 +66,8 @@ typedef struct s_init_input
 {
 	char					*string;
 	char					**args;
+	int						fd_in;
+	int						fd_out;
 	t_token					token;
 	struct s_init_input		*prev;
 	struct s_init_input		*next;

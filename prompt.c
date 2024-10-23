@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/18 19:37:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:04:31 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt)) // check if the input is valid
 			{
+				//initiliaze list (start/set variables)
 				input_list = delim_split(prompt_dup); // split the input into a linked list
 				cmds = list_to_char(input_list);
 				process = process_input(input_list, cmds); 

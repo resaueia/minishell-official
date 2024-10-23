@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/23 16:21:04 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:07:16 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void    tackle_heredoc(t_init_input *input_list)
         if (ft_strcmp(temp->string, "<<") == 0 && temp->next)
         {
             delim = temp->next->string;
+            break ;
         }
         temp = temp->next;
     }
@@ -75,20 +76,23 @@ void    tackle_heredoc(t_init_input *input_list)
         if (!line)
         {
             perror("Error");
-            return ;
+            break ;
         }
         if (ft_strcmp(line, delim) == 0)
         {
             free(line);
-            break;
+            break ;
         }
         write(pipe_fd[1], line, ft_strlen(line));
         write(pipe_fd[1], "\n", 1);
         free(line);
     }
     close(pipe_fd[1]);
-    dup2(pipe_fd[0], STDIN_FILENO);
-    close(pipe_fd[0]);
+    if (input_list->fd_in != 0)
+        close(input_list->fd_in);
+    input_list->fd_in = pipe_fd[0];
+    //dup2(pipe_fd[0], STDIN_FILENO);
+    //close(pipe_fd[0]);
     /*After writing stuff on the pipe, I close its writing end, use
     the dup2 function to set its reading end to the standard input (which used to be the keyboard)
     and then proceed to close the actual read end of the pipe, hence finishing the whole process.*/

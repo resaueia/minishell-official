@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   delim_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/17 21:48:59 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:43:05 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int     is_delim(char c)
+static int     is_pipe(char c)
 {
-    return (c == '|' || c == '>' || c == '<');
+    return (c == '|');
 }
 
 t_token         get_token(char *c)
@@ -73,9 +73,9 @@ t_init_input    *delim_split(char *s)
         return (NULL);
     while (s[i])
     {
-        if (!is_delim(s[i]) && start_index < 0)
+        if (!is_pipe(s[i]) && start_index < 0)
             start_index = i;
-        else if (is_delim(s[i]) || s[i + 1] == '\0')
+        else if (is_pipe(s[i]) || s[i + 1] == '\0')
         {
             if(start_index >= 0) //This tells us there's a substring to be added
             {
@@ -84,9 +84,9 @@ t_init_input    *delim_split(char *s)
                 free(substr);
                 start_index = -1;
             }
-            if (is_delim(s[i]))
+            if (is_pipe(s[i]))
             {
-                if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1]) // Checks for douple opperand
+                if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1]) // Checks for double opperand
                 {
                     substr = custom_dup(s, i, i + 2);
                     token = get_token(substr);
