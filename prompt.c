@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/23 19:04:31 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/24 19:40:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_init_input	*init_list(void)
+{
+	t_init_input	*list;
+
+	list = (t_init_input *)malloc(sizeof(t_init_input));
+	if (!list)
+		return (NULL);
+	list->string = NULL;
+	list->args = NULL;
+	list->fd_in = -1;
+	list->fd_out = -1;
+	list->token = (t_token){0};
+	list->prev = NULL;
+	list->next = NULL;
+	return (list);
+}
 
 void print_the_stack(t_init_input *list)
 {
@@ -67,11 +84,12 @@ void	prompt(char **envp)
 	char			*prompt;
 	char			*prompt_dup;
 	char            **cmds;
-	char			**process;
+	//char			**process;
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
 	env_list = get_envp(envp); 	// get the envp list
+	input_list = init_list(); // initialize the input list
 	// for signal handling
 	signal(SIGINT, handle_signals); // SIGINT is the signal sent by pressing Ctrl+C
 	signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
@@ -91,11 +109,18 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt)) // check if the input is valid
 			{
-				//initiliaze list (start/set variables)
+				printf("struct inicialized: ");
+				print_the_stack(input_list);
 				input_list = delim_split(prompt_dup); // split the input into a linked list
 				cmds = list_to_char(input_list);
-				process = process_input(input_list, cmds); 
-				
+				printf("struct after split: ");
+				print_the_stack(input_list);
+				printf("convertion of struct to char**: ");
+				printf("cmds[0]: %s\n", cmds[0]);
+				printf("cmds[1]: %s\n", cmds[1]);
+				printf("cmds[2]: %s\n", cmds[2]);
+				//process = process_input(input_list, cmds);
+
 				//print_the_stack(input_list);
 				//execute_builtin(prompt, env_list, input_list); // execute the command line
 			}
