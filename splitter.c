@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/17 21:54:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/24 19:08:28 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_init_input	*add_node(char *input, t_token token)
 	if (!new_node)
 		return (NULL);
 	new_node->string = ft_strdup(input);
+	new_node->fd_in = STDIN_FILENO;
+	new_node->fd_out = STDOUT_FILENO;
 	new_node->token = token;
 	new_node->prev = NULL;
 	new_node->next = NULL;
