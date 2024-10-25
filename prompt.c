@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/24 19:40:52 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:22:50 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static t_init_input	*init_list(void)
 		return (NULL);
 	list->string = NULL;
 	list->args = NULL;
-	list->fd_in = -1;
-	list->fd_out = -1;
+	list->fd_in = ft_dup(STDIN);
+	list->fd_out = ft_dup(STDOUT);
 	list->token = (t_token){0};
 	list->prev = NULL;
 	list->next = NULL;
@@ -79,12 +79,53 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list)
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
 		ft_unset(cmd + 5, &tmp);
 }
+
+char    **process_input(t_init_input *cmd_list, char **cmds, t_envp *env_list)
+{
+    t_init_input    *args_list;
+    t_init_input    *args_tail;
+    //char            *args;  Ideia que o allan deu de guardar o input inteiro
+    
+    args_list = NULL;
+    args_tail = NULL;
+    split_commands(cmds, &args_list, &args_tail); 
+	printf("\n--> args_list:\n");
+    print_the_stack(args_list);
+
+    printf("\n--> cmd_list:\n");
+    print_the_stack(cmd_list);
+		
+	//para enviar para execução
+	if (is_heredoc(cmd_list)) //has heredoc
+	{
+		//executa heredoc
+		tackle_heredoc(t_init_input *input_list);
+	}
+	else if (is_pipe(cmds_list)) //has pipe
+	{
+		//executa em cenário de pipe
+	}
+    else if (is_redirect(cmd_list))//has redirect
+	{
+		//executa redirect
+	}
+	else if (is_builtin(cmd_list))//has built-in
+	{
+		// execute the command line
+		execute_builtin(cmds[0], env_list, cmd_list);
+	}
+    free_list(cmd_list);
+    free_list(args_list);
+    return (cmds);
+    // free the cmds array, free the cmds list and free the args list?
+}
+
 void	prompt(char **envp)
 {
 	char			*prompt;
 	char			*prompt_dup;
 	char            **cmds;
-	//char			**process;
+	char			**process;
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
@@ -109,20 +150,25 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt)) // check if the input is valid
 			{
-				printf("struct inicialized: ");
+				printf("----\nstruct inicialized:\n");
 				print_the_stack(input_list);
+
 				input_list = delim_split(prompt_dup); // split the input into a linked list
 				cmds = list_to_char(input_list);
-				printf("struct after split: ");
+				
+				printf("\n----\nstruct after split:\n");
 				print_the_stack(input_list);
-				printf("convertion of struct to char**: ");
-				printf("cmds[0]: %s\n", cmds[0]);
-				printf("cmds[1]: %s\n", cmds[1]);
-				printf("cmds[2]: %s\n", cmds[2]);
-				//process = process_input(input_list, cmds);
+				
+				printf("\n----\nconvertion of struct to char**:\n");
+				int i;
+				for (i = 0; cmds[i]; i++)
+					printf("cmds[%i]: %s\n", i, cmds[i]);
 
-				//print_the_stack(input_list);
-				//execute_builtin(prompt, env_list, input_list); // execute the command line
+				printf("\n----\nsending to process_input:\n");
+
+				process = process_input(input_list, cmds, env_list);
+
+				printf("\n----\nretorn of process: [%s]\n", process[0]);
 			}
 			else
 			{

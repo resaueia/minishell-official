@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/24 19:24:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:28:19 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+/* INICIAL SETS*/
+# define PIPE 1
+# define APPEND 2
+# define HDOC 3
+# define WORD 4
+# define BUILTIN 5
+# define EXEC 6
+# define FILE 7
+# define EOF 8
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 /* COLORS */
 
@@ -109,7 +123,7 @@ void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);
-char				**process_input(t_init_input *cmd_list, char **cmds);
+char				**process_input(t_init_input *cmd_list, char **cmds, t_envp *env_list);
 void				split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
 /* INPUT CHECK */
