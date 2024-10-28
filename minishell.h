@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/23 19:02:25 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:32:06 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef enum e_token
 	HDOC,
 	WORD,
 	ERROR,
-	FILE,
+	//FILE,
 	BUILTIN,
 	EXEC,
 	//EOF (?)
@@ -106,10 +106,12 @@ void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
+int					tackle_heredoc(char *delim);
+int					setup_redirection(t_init_input *args_list);
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);
-char				**process_input(t_init_input *cmd_list, char **cmds);
+void				process_input(t_init_input *cmd_list, char **cmds);
 void				split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
 /* INPUT CHECK */
@@ -118,6 +120,7 @@ int					is_double_delim(char *str);
 int					has_end_delim(char *str);
 int					quotes_check(char *str);
 int					input_check(char *input);
+int					is_heredoc(t_init_input *input_list);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);

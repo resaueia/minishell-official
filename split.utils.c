@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/24 19:12:42 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/10/28 18:44:47 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void    split_commands(char **commands, t_init_input **head, t_init_input **tail
     }
 }
 
-void    **process_input(t_init_input *cmd_list, char **cmds)
+void    process_input(t_init_input *cmd_list, char **cmds)
 {
     t_init_input    *args_list;
     t_init_input    *args_tail;
@@ -75,7 +75,11 @@ void    **process_input(t_init_input *cmd_list, char **cmds)
     args_tail = NULL;
     split_commands(cmds, &args_list, &args_tail); 
     //print_the_stack(args_list);
-    tackle_heredoc(args_list);
+    if (is_heredoc(args_list) == -1)
+    {
+        perror ("Error setting up heredoc");
+        return ;
+    }
     if (setup_redirection(args_list) == -1)
     {
         perror("Error whule setting up redirection\n");

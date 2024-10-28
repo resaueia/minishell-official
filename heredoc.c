@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/24 19:11:28 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/10/28 18:42:51 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,44 +32,37 @@ if (pipe(pipe_fd) == -1)
 int     is_heredoc(t_init_input *input_list)
 {
     t_init_input    *temp;
+    int             heredoc_fd;
 
     temp = input_list;
     while(temp)
     {
         if (ft_strcmp(temp->string, "<<") == 0 && temp->next->string)
+        {
+            heredoc_fd = tackle_heredoc(temp->next->string);
+            if (heredoc_fd == -1)
+            {
+                perror ("Error setting up heredoc");
+                return (-1);
+            }
+            temp->fd_in = heredoc_fd;
             return (1);
+        }
         temp = temp->next;
     }
     return (0);
 }
 
 
-void    tackle_heredoc(t_init_input *input_list)
+int    tackle_heredoc(char *delim)
 {
-    t_init_input    *temp;
-    char            *delim;
     char            *line;
     int             pipe_fd[2];
 
-    temp = input_list;
-    while (temp)
-    {
-        if (ft_strcmp(temp->string, "<<") == 0 && temp->next)
-        {
-            delim = temp->next->string;
-            break ;
-        }
-        temp = temp->next;
-    }
-    if (!delim)
-    {
-        perror("Heredoc delimiter not found\n");
-        return ;
-    }
     if (pipe(pipe_fd) == -1)
     {
         perror("Error creating pipe\n");
-        return ;
+        return (-1);
     }
     while (1)
     {
@@ -89,9 +82,10 @@ void    tackle_heredoc(t_init_input *input_list)
         free(line);
     }
     close(pipe_fd[1]);
-    if (input_list->fd_in != STDIN_FILENO)
-        close(input_list->fd_in);
-    input_list->fd_in = pipe_fd[0];
+    //if (input_list->fd_in != STDIN_FILENO)
+      //  close(input_list->fd_in);
+    
+    return (pipe_fd[0]);
     //dup2(pipe_fd[0], STDIN_FILENO);
     //close(pipe_fd[0]);
     /*After writing stuff on the pipe, I close its writing end, use

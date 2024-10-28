@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
+#    By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/10/17 21:57:57 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/10/28 18:50:31 by rsaueia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ SRCS = main.c \
 	   splitter.c \
 	   delim_split.c \
 	   input_check.c \
-	   split.utils.c
+	   split.utils.c \
+	   heredoc.c \
+	   redirects.c
 
 OBJS = $(SRCS:.c=.o)
 

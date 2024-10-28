@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/23 19:04:31 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:29:36 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	prompt(char **envp)
 	char			*prompt;
 	char			*prompt_dup;
 	char            **cmds;
-	char			**process;
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
@@ -93,11 +92,12 @@ void	prompt(char **envp)
 			{
 				//initiliaze list (start/set variables)
 				input_list = delim_split(prompt_dup); // split the input into a linked list
+				
 				cmds = list_to_char(input_list);
-				process = process_input(input_list, cmds); 
+				process_input(input_list, cmds);
 				
 				//print_the_stack(input_list);
-				//execute_builtin(prompt, env_list, input_list); // execute the command line
+				execute_builtin(prompt, env_list, input_list); // execute the command line
 			}
 			else
 			{
