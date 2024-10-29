@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/25 20:28:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/28 21:40:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <unistd.h>
 
 /* INICIAL SETS*/
-# define PIPE 1
+/*# define PIPE 1
 # define APPEND 2
 # define HDOC 3
 # define WORD 4
@@ -34,7 +34,7 @@
 # define EXEC 6
 # define FILE 7
 # define EOF 8
-
+*/
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
@@ -120,6 +120,7 @@ void				print_envp_list(t_envp *head);
 void				print_stack(t_init_input *stack);
 void				free_list(t_init_input *list);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
+void				exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list);
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);

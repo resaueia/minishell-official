@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/25 20:22:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/28 21:59:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static t_init_input	*init_list(void)
 		return (NULL);
 	list->string = NULL;
 	list->args = NULL;
-	list->fd_in = ft_dup(STDIN);
-	list->fd_out = ft_dup(STDOUT);
+	list->fd_in = dup(STDIN);
+	list->fd_out = dup(STDOUT);
 	list->token = (t_token){0};
 	list->prev = NULL;
 	list->next = NULL;
@@ -82,6 +82,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list)
 
 char    **process_input(t_init_input *cmd_list, char **cmds, t_envp *env_list)
 {
+	(void) env_list;
     t_init_input    *args_list;
     t_init_input    *args_tail;
     //char            *args;  Ideia que o allan deu de guardar o input inteiro
@@ -94,9 +95,9 @@ char    **process_input(t_init_input *cmd_list, char **cmds, t_envp *env_list)
 
     printf("\n--> cmd_list:\n");
     print_the_stack(cmd_list);
-		
+			
 	//para enviar para execução
-	if (is_heredoc(cmd_list)) //has heredoc
+	/*if (is_heredoc(cmd_list)) //has heredoc
 	{
 		//executa heredoc
 		tackle_heredoc(t_init_input *input_list);
@@ -114,6 +115,8 @@ char    **process_input(t_init_input *cmd_list, char **cmds, t_envp *env_list)
 		// execute the command line
 		execute_builtin(cmds[0], env_list, cmd_list);
 	}
+	*/
+	execute_builtin(cmds[0], env_list, cmd_list);
     free_list(cmd_list);
     free_list(args_list);
     return (cmds);
@@ -131,28 +134,19 @@ void	prompt(char **envp)
 
 	env_list = get_envp(envp); 	// get the envp list
 	input_list = init_list(); // initialize the input list
-	// for signal handling
-	signal(SIGINT, handle_signals); // SIGINT is the signal sent by pressing Ctrl+C
-	signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
 	while (1) // loop the shell.
 	{
+		signal(SIGINT, handle_signals); // SIGINT is the signal sent by pressing Ctrl+C
+		signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
 		prompt = readline(PROGRAM_NAME); // the prompt
 		if (add_to_history(prompt)) // add the prompt to the history and go on
-		{
 			prompt_dup = ft_strdup(prompt);
-		}
 		if (ft_strcmp(prompt, "exit") == 0) //if the user types exit, the shell will exit.
-		{
-			free(prompt); //free the prompt
-			exit(1); //exit the shell with error code 1
-		}
+			exit_mini(input_list, prompt, prompt_dup, env_list); // exit the shell end clear the memory
 		else
 		{
 			if (!input_check(prompt)) // check if the input is valid
 			{
-				printf("----\nstruct inicialized:\n");
-				print_the_stack(input_list);
-
 				input_list = delim_split(prompt_dup); // split the input into a linked list
 				cmds = list_to_char(input_list);
 				
@@ -175,9 +169,7 @@ void	prompt(char **envp)
 				printf("minishell: syntax error\n"); // if the input is invalid, print an error message
 				continue;
 			}
-			
 		}
-		free(prompt); 
-		//free(input_list);
+		free(prompt); // free the prompt
 	}
 }

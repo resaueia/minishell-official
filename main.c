@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/17 21:23:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:56:48 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,31 @@ void	free_list(t_init_input *list)
 			free(temp->string);
 		free(temp);
 	}
+}
+
+void	free_env(t_envp *env_list)
+{
+	t_envp *temp;
+
+	while (env_list)
+	{
+		temp = env_list;
+		env_list = env_list->next;
+		if (temp->key)
+			free(temp->key);
+		if (temp->value)
+			free(temp->value);
+		free(temp);
+	}
+}
+
+void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list)
+{
+	free(prompt);
+	free(prompt_dup);
+	free_list(list);
+	free_env(env_list);
+	exit(0); //exit the shell with error code 0 - no error
 }
 
 void	print_stack(t_init_input *stack)
@@ -50,7 +75,7 @@ int	check_command_line(int c)
 	if (c > 1)
 	{
 		printf("Error: too many arguments\n");
-		exit(0);
+		exit(1);
 	}
 	return (1);
 }
