@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/17 21:49:37 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:15:07 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_empty_string(char *str)
     i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ') // If it finds any non space characters, it's not empty
+		if (str[i] != ' ' || ft_is_whitspace(str[i])) // If it finds any non space characters, it's not empty
 			return (0);    
 		i++;
 	}

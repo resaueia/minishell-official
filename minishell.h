@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/28 21:40:51 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:18:28 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-/* INICIAL SETS*/
-/*# define PIPE 1
-# define APPEND 2
-# define HDOC 3
-# define WORD 4
-# define BUILTIN 5
-# define EXEC 6
-# define FILE 7
-# define EOF 8
-*/
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
@@ -124,7 +114,7 @@ void				exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *en
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);
-char				**process_input(t_init_input *cmd_list, char **cmds, t_envp *env_list);
+void				process_input(t_init_input *input_list, char *prompt, t_envp *env_list);
 void				split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
 /* INPUT CHECK */
@@ -133,6 +123,13 @@ int					is_double_delim(char *str);
 int					has_end_delim(char *str);
 int					quotes_check(char *str);
 int					input_check(char *input);
+
+/* EXEC CHECK*/
+t_init_input		*parser(t_init_input *input, char **cmds);
+int					has_heredoc(t_init_input *cmd);
+int					has_redirect(t_init_input *cmd);
+int 				has_pipe(t_init_input *cmd);
+int					has_builtin(t_init_input *cmd);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/17 21:42:46 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:29:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_echo(char *args, t_envp **env_list)
 	(void)env_list;
 	int	newline;
 	char	dollar;
+	char	*tmp;
 
 	newline = 1;
 	dollar = '$';
@@ -37,8 +38,21 @@ void	ft_echo(char *args, t_envp **env_list)
 	}
 	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
 	{
-		newline = 0; //flag to not print a newline
-		args += 3; //incrementing the pointer to the next character for check next conditions
+		tmp = args;
+		args++; //incrementando o ponteiro para pular o '-';
+		while (*args == 'n')
+			args++; //incrementando o ponteiro para pular o 'n';
+		if (*args == ' ')
+		{
+			newline = 0; //flag to not print a newline	
+			args++; //incrementa para o próximo caractere
+		}
+		else
+		{
+			args = tmp; //se não for um espaço, volta para o início da string
+			newline = 1; //flag to print a newline
+		}
+		//args += 3; //incrementing the pointer to the next character for check next conditions
 	}
 	remove_quotes(&args); //to remove quotes from the args
 	if (*args == '$') //if echo come with $, it will print the value of the env variable
@@ -74,10 +88,15 @@ void	ft_cd(char *path, t_envp **env_list)
 {
 	while (*path == ' ' )
 		path++;
-	if (ft_strlen(path) >= 2)
+	if (ft_strlen(path) == 1 && *path == '/') //caminho para o diretório raiz
+	{
+		chdir("/");
+		change_path("/", "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
+	}
+	else if (ft_strlen(path) >= 2) //caminho para um diretório específico
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
-			path = ft_joinpath(path + 2, "HOME", env_list);
+			path = ft_joinpath(path + 2, "HOME", env_list); //para atualizar o path do envp
 		if (chdir(path) == 0)
 		{
 			char	cwd[1024];
@@ -98,6 +117,7 @@ void	ft_cd(char *path, t_envp **env_list)
 		chdir(path);//aplicar chdir para modificação do diretório.
 	}
 }
+
 void	ft_export(char *var, t_envp **env_list)
 {
 	while (*var == ' ' )

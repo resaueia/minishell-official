@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/17 21:55:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:30:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ char	*ft_joinpath(char *path, char *key, t_envp **env_list)
 	char	*value;
 	char	*tmp;
 
-	value = get_value(key, *env_list); //armaena o valor de HOME
+	value = get_value(key, *env_list); //armazena o valor de HOME
 	new_path = (char *)malloc(sizeof(char) * (ft_strlen(value) + ft_strlen(path) + 2)); //maloca o tamanho de value + path + 2
 	if (!new_path)
 		return (NULL);
