@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/28 18:44:47 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/01 17:48:21 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void    process_input(t_init_input *cmd_list, char **cmds)
     }
 
     //para enviar para execução
-    //has pipe
-    //has redirect
+    //has pipe (IMPORTANTE VIR PRIMEIRO!!!)
+    //has redirect (REDIRECT TEM PRIORIDADE AO PIPE NA EXECUÇÃO)
     //has built-in
 
     free_list(cmd_list);

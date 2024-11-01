@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/17 21:23:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:19:14 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t g_signal_received = 0;
 
 void	free_list(t_init_input *list)
 {

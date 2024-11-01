@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:35:49 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/06/12 17:47:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 18:11:29 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signals(int signo)
+void	handle_signal(int sig)
 {
-	if (signo == SIGINT)
-	{
-		printf("\nminishell> ");
-		fflush(stdout);
-	}
+	g_signal_received = sig;
 }

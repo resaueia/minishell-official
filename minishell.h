@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/28 18:32:06 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/01 18:13:00 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+extern volatile sig_atomic_t g_signal_received;
 
 /* COLORS */
 
@@ -76,7 +78,7 @@ typedef struct s_init_input
 
 /* FUNCTION PROTOTYPES */
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list);
-void				handle_signals(int sig);
+void				handle_signal(int sig);
 void				prompt(char **envp);
 void 				remove_quotes(char **str);
 int					check_command_line(int c);
