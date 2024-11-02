@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/29 22:18:28 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 22:31:54 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int					ft_strncmp(char *s1, char *s2, size_t n);
 int					ft_islower(char *args);
 int					is_key(char *key, t_envp *head);
 int					is_space(char *args);
+int					is_number(char c);
 //int					is_delimiter(char c);
 char				*ft_strchr(char *s, int c);
 char				*ft_strdup(char *s);

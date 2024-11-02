@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/29 22:14:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 22:31:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,17 @@ int	add_to_history(char *line)
 {
 	int i;
 
-	i = -1;
+	i = 0;
 	if (!line)
 		return (0);
-	while (line[++i])
+	while (line[i] != '\0')
 	{
 		if (!ft_is_whitspace(line[i]))
 		{
 			add_history(line);
 			return (1);
 		}
+		i++;
 	}
 	return (0);
 }
@@ -75,10 +76,39 @@ void	prompt(char **envp)
 		prompt = readline(PROGRAM_NAME); // the prompt
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 			prompt_dup = ft_strdup(prompt);
-		if (ft_strcmp(prompt, "exit") == 0) //if the user types exit, the shell will exit.
+		printf("prompt: [%s]\n", prompt);
+		if (ft_strncmp(prompt, "exit", 4) == 0) //if the user types exit, the shell will exit.
 		{
 			// incluir lógica para verificar argumentos após exit.
+			int ret;
+			int i;
+
+			ret = 0;
+			i = 4;
+			while (prompt[i] == ' ')
+				i++;
+			while (prompt[i])
+			{
+				if (ft_is_whitspace(prompt[i]))
+				{
+					printf("exit\nminishell: exit: too many arguments\n");
+					exit(1);
+				}
+				if (!is_number(prompt[i]))
+				{
+					printf("exit\nminishell: exit: %s: numeric argument required\n", prompt + 4);
+					exit(255);
+				}
+				else if (is_number(prompt[i]))
+				{
+					ret = ret * 10 + prompt[i] - '0';
+					i++;
+				}
+			}
+			printf("ret: [%d]\n", ret);
+			printf("----\n");
 			exit_mini(input_list, prompt, prompt_dup, env_list); // exit the shell end clear the memory
+			exit(ret);
 		}
 		else
 		{
@@ -94,7 +124,6 @@ void	prompt(char **envp)
 				continue;
 			}
 		}
-		free(prompt_dup); // free the prompt_dup
 		free(prompt); // free the prompt
 	}
 }

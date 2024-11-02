@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/28 20:56:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:47:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,27 @@ void	free_env(t_envp *env_list)
 
 void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list)
 {
-	free(prompt);
-	free(prompt_dup);
-	free_list(list);
-	free_env(env_list);
-	exit(0); //exit the shell with error code 0 - no error
+	printf("Exiting minishell\n");
+	if (list)
+	{
+		printf("Freeing list\n");
+		free_list(list);
+	}
+	if (prompt)
+	{
+		printf("Freeing prompt\n");
+		free(prompt);
+	}
+	if (prompt_dup)
+	{
+		printf("Freeing prompt_dup\n");
+		free(prompt_dup);
+	}
+	if (env_list)
+	{
+		printf("Freeing env_list\n");
+		free_env(env_list);
+	}
 }
 
 void	print_stack(t_init_input *stack)

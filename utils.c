@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/29 18:30:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 22:31:49 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,4 +191,8 @@ int	is_space(char *args)
 	else if (*args == ' ' && (args + 1 != NULL))
 		return (2);
 	return (0);
+}
+int	is_number(char c)
+{
+	return (c >= '0' && c <= '9');
 }
