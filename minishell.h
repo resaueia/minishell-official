@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/01 18:13:00 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:01:10 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 # include <unistd.h>
 
 extern volatile sig_atomic_t g_signal_received;

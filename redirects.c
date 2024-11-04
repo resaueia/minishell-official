@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/01 17:47:18 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/04 17:33:35 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int setup_redirection(t_init_input *args_list)
 {
-    t_init_input *temp = args_list;
+    t_init_input *temp;
     int temp_fd;
 
+    temp = args_list;
     while (temp)
     {
         if (ft_strcmp(temp->string, ">") == 0 && temp->next)
