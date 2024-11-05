@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:35:49 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 17:54:25 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/05 15:29:55 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		g_signal_status(int sig)
 
 void	handle_signal(int sig)
 {
-	/*if (sig == SIGINT)
+	if (sig == SIGINT)
 	{
 		if (RL_ISSTATE(RL_STATE_READCMD))
 			ioctl(STDIN_FILENO, TIOCSTI, "\n"); // This simulates pressing an enter
@@ -34,8 +34,8 @@ void	handle_signal(int sig)
 		rl_on_new_line();
 		g_signal_status(130);
 		g_signal_received = 130;		
-	}*/
-	
+	}
+	/*
 	if (sig == SIGINT)
     {
         g_signal_received = 130;
@@ -43,7 +43,7 @@ void	handle_signal(int sig)
         rl_on_new_line();
         rl_replace_line("", 0);
         rl_redisplay();
-    }
+    }*/
 	/*if (sig == SIGINT)
 	{
 		g_signal_received = 1;

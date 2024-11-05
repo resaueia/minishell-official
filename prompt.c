@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 17:30:23 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/05 15:28:47 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ void	prompt(char **envp)
 	signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
 	while (1) // loop the shell.
 	{
-		g_signal_received = 0;
+		//g_signal_received = 0;
 		prompt = readline(PROGRAM_NAME); // the prompt
 		if (g_signal_received == 130)
 		{
-			//g_signal_received = 0;
+			g_signal_received = 0;
 			free(prompt);
 			continue;
 		}
