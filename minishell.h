@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/05 16:30:57 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/05 19:22:43 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void				free_list(t_init_input *list);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
 int					tackle_heredoc(char *delim);
 int					setup_redirection(t_init_input *args_list);
-int					g_signal_status(int sig);
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);

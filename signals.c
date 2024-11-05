@@ -6,21 +6,11 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:35:49 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/05 16:29:44 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/05 19:23:20 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		g_signal_status(int sig)
-{
-	static int	g_status;
-
-	g_status = 0;
-	if (sig >= 0)
-		g_status = sig;
-	return (g_status);
-}
 
 void	handle_signal(int sig)
 {
@@ -32,8 +22,7 @@ void	handle_signal(int sig)
 			write(1, "\n", 1);
 		rl_replace_line("", 1);
 		rl_on_new_line();
-		g_signal_status(130);
-		g_signal_received = 130;		
+		g_signal_received = 130;	
 	}
 	/*
 	if (sig == SIGINT)
