@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/10/29 22:15:31 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/11/04 23:03:05 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ HEADER = minishell.h
 
 SRCS = main.c \
 	   prompt.c \
-	   signals.c \
 	   envp.c \
 	   utils.c \
 	   builtins.c \
@@ -25,6 +24,10 @@ SRCS = main.c \
 	   input_check.c \
 	   split.utils.c \
 	   exec.c \
+	   lexer.c \
+	   libft.c \
+	   to_free.c \
+	   the_split.c \
 	   parser.c \
 
 OBJS = $(SRCS:.c=.o)

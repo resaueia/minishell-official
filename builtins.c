@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/29 19:29:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/04 19:46:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ void	ft_echo(char *args, t_envp **env_list)
 			args = &dollar; //changing the pointer to the char '$'
 		else //if echo come with $ and args, need check what kind of args it is
 		{
-			if (ft_islower(args) == 1) //if echo come with $ and args in lower case, it will print just a newline
+			if (is_lower(args) == 1) //if echo come with $ and args in lower case, it will print just a newline
 			{
 				printf("\n");
 				return ;
 			}
-			else if (ft_islower(args) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
+			else if (is_lower(args) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
 			{
 				if (is_key(args, *env_list) == 1) //if is a key, it will get the value of the key
 					args = get_value(args, *env_list); //changing the pointer to the value of the key
@@ -96,7 +96,7 @@ void	ft_cd(char *path, t_envp **env_list)
 	else if (ft_strlen(path) >= 2) //caminho para um diretório específico
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
-			path = ft_joinpath(path + 2, "HOME", env_list); //para atualizar o path do envp
+			path = joinpath(path + 2, "HOME", env_list); //para atualizar o path do envp
 		if (chdir(path) == 0)
 		{
 			char	cwd[1024];

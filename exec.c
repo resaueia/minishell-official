@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/29 22:30:09 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/04 23:26:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,58 +33,46 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list)
 		ft_unset(cmd + 5, &tmp);
 }
 
-void    process_input(t_init_input *input_list, char *prompt, t_envp *env_list)
+void    to_exec(t_init_input *input_list, t_envp *env_list)
 {
-    t_init_input            *args_list;
-    char                    **cmds;
+    (void) input_list;
+    char    **env;
 
-    input_list = delim_split(prompt); // split the input for pipe
-    cmds = list_to_char(input_list); 
+    env = env_to_char(env_list);
 
-	(void) env_list;
-    printf("\n----\nconvertion of list to char**:\n");
-    int i;
-    for (i = 0; cmds[i]; i++)
-        printf("cmds[%i]: %s\n", i, cmds[i]);
-    
-    printf("\n----\nprint the input_list:\n");
-    print_the_stack(input_list);
-
-    args_list = parser(input_list, cmds); //a ideia aqui é interpretar cada strg a partir do split de pipe
-    //será preciso splitar por estaço e tokenizar os comandos.
-    printf("\n----\nprint the args_list:\n");
-    print_the_stack(args_list);
+    for (int i = 0; env[i]; i++)
+        printf("[%s]\n", env[i]);
 
     while (input_list)
     {
         printf("input_list->string: [%s] - token: [%u]\n", input_list->string, input_list->token);
 
-        if (input_list->token == 4)
+        if (input_list->token == 44) //heredoc
         {
             //executa heredoc
             printf("has heredoc\n");
             //tackle_heredoc(cmd_list);
         }
-        else if (input_list->token == 0)
+        else if (input_list->token == 11) //pipe
         {
             //executa em cenário de pipe
             printf("has pipe\n");
+            //args_list = split_commands(cmds, &head, &tail);
+            //printf("\n----\nprint the args_list:\n");
+            //print_the_stack(args_list);
         }
-        else if (input_list->token == IN || input_list->token == OUT || input_list->token == APPEND)
+        else if (input_list->token == 04 || input_list->token == 07 || input_list->token == 77) //redirects
         {
             //executa redirect
             printf("has redirect\n");
         }
-        else if (input_list->token == 7)
-        {
-
-            execute_builtin(input_list->string, env_list, input_list);
-        }
-        else if (input_list->token == 8)
+        else if (input_list->token == 03) //exec
         {
             //executa o comando
             printf("has exec\n");
         }
+        else //builtin
+            execute_builtin(input_list->string, env_list, input_list);
         input_list = input_list->next;
     }
     free_list(input_list);

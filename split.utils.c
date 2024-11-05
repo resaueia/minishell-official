@@ -6,11 +6,41 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/10/25 19:09:54 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/04 23:11:19 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char    **env_to_char(t_envp *env_list)
+{
+    t_envp    *temp;
+    char            **list;
+    int             i;
+    int             count;
+
+    temp = env_list;
+    i = 0;
+    count = 0;
+    while(temp)
+    {
+        count++;
+        temp = temp->next;
+    }
+    list = (char **)malloc(sizeof(char *) * count + 1);
+    if (!list)
+        return (NULL);
+    temp = env_list;
+    while (temp)
+    {
+        list[i] = ft_strjoin(temp->key, "=");
+        list[i] = ft_strjoin(list[i], temp->value);
+        temp = temp->next;
+        i++;
+    }
+    list[i] = NULL;
+    return (list);
+}
 
 char    **list_to_char(t_init_input *list)
 {
@@ -42,7 +72,7 @@ char    **list_to_char(t_init_input *list)
 }
 
 //talvez alterar para retornar uma t_init_input
-void    split_commands(char **commands, t_init_input **head, t_init_input **tail)
+t_init_input    *split_commands(char **commands, t_init_input **head, t_init_input **tail)
 {
     int             i;
     t_init_input    *split_cmd_list;
@@ -63,4 +93,5 @@ void    split_commands(char **commands, t_init_input **head, t_init_input **tail
         //free the list (create a function for it);
         i++;
     }
+    return(*head);
 }
