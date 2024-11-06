@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 23:20:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/05 23:30:01 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,4 +176,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	new[i] = '\0';
 	return (new);
+}
+
+int	ft_isprint(int c)
+{
+	if (!(c >= 32 && c <= 126))
+		return (0);
+	else
+		return (1);
 }

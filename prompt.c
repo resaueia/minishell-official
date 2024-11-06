@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 23:34:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/05 23:37:04 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	prompt(char **envp)
 			{
 				printf("\n----\nsending to process_input:\n");
 				//processe_inut(struct, char**, struct);
-				process_input(input_list, prompt_dup, env_list);
+				process_input(input_list, input_list->types, prompt_dup, env_list);
 			}
 			else
 			{

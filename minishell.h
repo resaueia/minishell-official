@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/04 23:23:56 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/06 00:36:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ typedef struct s_envp
 }					t_envp;
 
 // for tokenization to exec
-typedef struct s_ttypes
+typedef struct s_types
 {
 	char			*cmd;
 	int				type;
-	struct s_ttypes	*next;
-	struct s_ttypes	*prev;
-}				t_ttypes;
+	struct s_types	*next;
+	struct s_types	*prev;
+}				t_types;
 
 // for parser
 typedef struct s_init_input
@@ -78,7 +78,7 @@ typedef struct s_init_input
 	int						fd_in;
 	int						fd_out;
 	t_token					token;
-	t_ttypes				*types;
+	t_types					*types;
 	struct s_init_input		*prev;
 	struct s_init_input		*next;
 }					t_init_input;	
@@ -116,6 +116,7 @@ int					is_whitspace(char c);
 int					is_space(char *args);
 int					is_number(char c);
 int					is_lower(char *args);
+int					to_quotes(char c, int quotes);
 void 				remove_quotes(char **str);
 char				*joinpath(char *path, char *key, t_envp **env_list);
 char				*custom_dup(char *str, int start, int finish);
@@ -125,15 +126,17 @@ char				*ft_strjoin(char *s1, char *s2);
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 void				print_envp_list(t_envp *head);
+void				lets_expander(t_types *types, t_envp *env_list);
+
 
 /* EXEC */
 void				to_exec(t_init_input *input_list, t_envp *env_list);
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list);
-void				exec_cmd(char *cmd, t_envp *envp, t_init_input *list);
+void				exec_cmd(char **args, char **env);
 
 /* OTHERS */
 //int					is_delimiter(char c);
-void				process_input(t_init_input *input_list, char *prompt, t_envp *env_list);
+void				process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list);
 t_init_input		*split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
 /* PARSER AND TOKENIZATION */

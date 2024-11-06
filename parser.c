@@ -6,41 +6,138 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 23:22:56 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/06 00:52:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    process_input(t_init_input *input_list, char *prompt, t_envp *env_list)
+static int	is_builtin(char *wrd)
 {
-    //t_init_input    *args_list;
-    //t_init_input    *head;
-    //t_init_input    *tail;
-    //char            **args;
-    char            **cmds;
+    if (ft_strcmp(wrd, "echo") == 0)
+        return (1);
+    else if (ft_strcmp(wrd, "cd") == 0)
+        return (1);
+    else if (ft_strcmp(wrd, "pwd") == 0)
+        return (1);
+    else if (ft_strcmp(wrd, "export") == 0)
+        return (1);
+    else if (ft_strcmp(wrd, "unset") == 0)
+        return (1);
+    else if (ft_strcmp(wrd, "env") == 0)
+        return (1);
+    else if (ft_strcmp(wrd, "exit") == 0)
+        return (1);
+    else
+        return (0);
+}
 
-    cmds = lexer(prompt); // split the input for space and quotes
-    input_list = delim_split(prompt); // split the input for pipe
-    //args = list_to_char(input_list); // convert the list to char**
+static int	what_type(char *wrd)
+{
+    if (ft_strcmp(wrd, "|") == 0)
+        return (PIPE);
+    else if (ft_strcmp(wrd, ">") == 0)
+        return (OUT);
+    else if (ft_strcmp(wrd, ">>") == 0)
+        return (APPEND);
+    else if (ft_strcmp(wrd, "<") == 0)
+        return (IN);
+    else if (ft_strcmp(wrd, "<<") == 0)
+        return (HDOC);
+    else if (is_builtin(wrd))
+        return (BUILTIN);
+    else
+        return (WORD);
+}
 
-    //printf("\n----\nprint the input_list:\n");
-    //print_the_stack(input_list);
+static void	insert_types(t_types **head, char *wrd)
+{
+    printf("\n----\non insert_types\n");
+	t_types	*new;
+	t_types	*temp;
+    
+    //printf("head: [%p]\n", *head);
+
+	new = (t_types *)malloc(sizeof(t_types));
+	new->cmd = ft_strdup(wrd);
+    new->type = what_type(wrd);
+	new->prev = NULL;
+	new->next = NULL;
+	if (!*head)
+	{
+		*head = new;
+		return ;
+	}
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	new->prev = temp;
+	temp->next = new;
+}
+
+static char	**args_split(char *input)
+{
+	int		i;
+	int		quotes;
+	char	*temp;
+	char	**ret;
+
+	i = -1;
+	quotes = 0;
+	temp = NULL;
+	while (input[++i])
+	{
+		if (input[i] == ' ' && !quotes)
+			input[i] = 29;
+		else if (input[i] == '\"' || input[i] == '\'')
+			quotes = to_quotes(input[i], quotes);
+	}
+	ret = the_split(input, 29);
+	temp = free_char_ptr(temp);
+	return (ret);
+}
+
+
+void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
+{
+    char    **args;
+    char    **cmds;
+    int     i;
+    int     j;
 
     (void) env_list;
-    printf("\n----\ncmds from lexer:\n");
-    int i;
-    for (i = 0; cmds[i]; i++)
-        printf("args[%i]: [%s]\n", i, cmds[i]);
+    (void) input_list;
 
-    if (!cmds)
+    cmds = lexer(prompt); // split the input for delim and quotes
+    input_list = delim_split(prompt); // split the input for pipe
+
+    i = -1;
+    int k = 1;
+    //printf("\n----\nafter lexer:\n");
+    while(cmds[++i])
     {
-        ft_putstr_fd("Error: unclosed quotes\n", 2);
-        cmds = free_from_split(cmds);
-        return ;
+        printf("\n---\n[%i]º command\n", k++);
+        //printf("cmds[%i]: [%s]\n", i, cmds[i]);
+        j = -1;
+        args = args_split(cmds[i]); // split the input for space
+        //printf("\n----\nafter args_split:\n");
+        while (args[++j])
+            insert_types(&types, args[j]);
+        args = free_from_split(args);
     }
+    cmds = free_from_split(cmds);
+    //define_tokens(input_list, types);
     
-    to_exec(input_list, env_list);
+    lets_expander(types, env_list);
+    //to_exec(input_list, env_list);
+
+    printf("\n----\nprint the types list:\n");
+    t_types *temp = types;
+    while (temp)
+    {
+        printf("cms: [%s] - types: [%u]\n", temp->cmd, temp->type);
+        temp = temp->next;
+    }
 	
     /*printf("\n----\nconvertion of list to char**:\n");
     int j;

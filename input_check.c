@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/04 19:41:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/05 21:01:37 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,24 +136,24 @@ int	quotes_check(char *str)
 
 int	input_check(char *input)
 {
-	if (is_empty_string(input))
+	/*if (is_empty_string(input))
 	{
-		printf("Error: Empty input.\n");
+		ft_putstr_fd("Error: Empty input.\n");
 		return (1);
-	}
+	}*/
 	if (is_double_delim(input))
 	{
-		printf("Error: Double delimiters were found.\n");
+		ft_putstr_fd("Error: Double delimiters were found.\n", 2);
 		return (1);
 	}
 	if (has_end_delim(input))
 	{
-		printf("Error: Delimiter at the end of input.\n");
+		ft_putstr_fd("Error: Delimiter at the end of input.\n", 2);
 		return (1);
 	}
 	if (!quotes_check(input))
 	{
-		printf("Error: Quotes haven't been properly closed.\n");
+		ft_putstr_fd("Error: Quotes haven't been properly closed.\n", 2);
 		return (1);
 	}
 	return (0);

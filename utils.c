@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 22:45:04 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/05 22:22:01 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void print_the_stack(t_init_input *list)
 	t_init_input *current = list;
 
 	// Traverse and print the linked list
-	while (current != NULL)
-	{
-		printf("string: [%s] - token [%u]\n", current->string, current->token);
-		current = current->next;
-	}
+	printf("string: [%s]\n", current->string);
+	//printf("args: [%s]\n", *current->args);
+	printf("fd_in: [%d]\n", current->fd_in);
+	printf("fd_out: [%d]\n", current->fd_out);
+	printf("token: [%i]\n", current->token);
+	//printf("types: [%s]\n", current->types->cmd);
+	//printf("types: [%i]\n", current->types->type);	
 }
 
 int	is_whitspace(char c)

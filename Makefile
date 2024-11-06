@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/11/04 23:03:05 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/11/05 23:46:44 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS = main.c \
 	   to_free.c \
 	   the_split.c \
 	   parser.c \
+	   expander.c \
 
 OBJS = $(SRCS:.c=.o)
 

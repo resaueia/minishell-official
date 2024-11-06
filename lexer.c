@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 21:58:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/05 20:14:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	to_quotes(char c, int quotes)
+int	to_quotes(char c, int quotes)
 {
 	if (c == '\'')
 	{

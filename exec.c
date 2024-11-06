@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 23:26:51 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/05 21:19:21 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,39 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list)
 		ft_unset(cmd + 5, &tmp);
 }
 
+void	exec_cmd(char **args, char **env)
+{
+    pid_t	pid;
+    int		status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        if (execve(args[0], args, env) == -1)
+        {
+            ft_putstr_fd("Error: command not found\n", 2);
+            exit(1);
+        }
+    }
+    else if (pid < 0)
+    {
+        ft_putstr_fd("Error: fork failed\n", 2);
+        exit(1);
+    }
+    else
+    {
+        waitpid(pid, &status, 0);
+    }
+}
+
 void    to_exec(t_init_input *input_list, t_envp *env_list)
 {
+    printf("\n----\nto_exec\n");
     (void) input_list;
     char    **env;
 
     env = env_to_char(env_list);
-
-    for (int i = 0; env[i]; i++)
-        printf("[%s]\n", env[i]);
+    (void) env;
 
     while (input_list)
     {
@@ -70,6 +94,7 @@ void    to_exec(t_init_input *input_list, t_envp *env_list)
         {
             //executa o comando
             printf("has exec\n");
+            //exec_cmd(args, env);
         }
         else //builtin
             execute_builtin(input_list->string, env_list, input_list);
