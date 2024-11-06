@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/06 00:47:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/06 12:16:20 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ int	is_key(char *key, t_envp *head)
 }
 char	*get_value(char *name, t_envp *list)
 {
+	printf("\n----\n");
+	printf("get_value\n");
 	printf("name is: [%s]\n", name);
 	t_envp	*current;
 	char	*new_value;

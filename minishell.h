@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/06 00:36:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/06 10:18:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ typedef struct s_types
 {
 	char			*cmd;
 	int				type;
-	struct s_types	*next;
 	struct s_types	*prev;
+	struct s_types	*next;
 }				t_types;
 
 // for parser
