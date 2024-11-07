@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/06 10:18:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:38:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,18 @@ void 				remove_quotes(char **str);
 char				*joinpath(char *path, char *key, t_envp **env_list);
 char				*custom_dup(char *str, int start, int finish);
 char				*ft_strjoin(char *s1, char *s2);
+char				*ft_strndup(char *str, int	len);
 
 /* ENVP */
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
+int					is_key(char *key, t_envp *head);
 void				print_envp_list(t_envp *head);
 void				lets_expander(t_types *types, t_envp *env_list);
+void				*create_new_node(t_envp **env_list, char *key, char *value);
+char				*get_value(char *name, t_envp *list);
+char				*change_path(char *path, char *src, t_envp **head);
+
 
 
 /* EXEC */
@@ -159,14 +165,11 @@ int 				has_pipe(t_init_input *cmd);
 int					has_builtin(t_init_input *cmd);
 
 /* Built-in functions */
+int					is_builtin(char *wrd);
 void				ft_cd(char *path, t_envp **env_list);
 void				ft_pwd(void);
 void				ft_echo(char *args, t_envp **env_list);
 void				ft_export(char *var, t_envp **env_list);
-int					is_key(char *key, t_envp *head);
-char				*get_value(char *name, t_envp *list);
-char				*change_path(char *path, char *src, t_envp **head);
-void				*create_new_node(t_envp **env_list, char *key, char *value);
 void				ft_unset(char *var, t_envp **env_list);
 
 /* TO FREE */

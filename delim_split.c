@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/05 23:31:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:45:15 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_token         get_token(char *c)
         return (OUT);
     else if (c[i] == '<' && c[i + 1] != '<')
         return (IN);
+    else if (is_builtin(c))
+        return (BUILTIN);
     else
         return (WORD);
 }

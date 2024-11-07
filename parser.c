@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/06 11:54:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:06:09 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_builtin(char *wrd)
+int	is_builtin(char *wrd)
 {
     if (ft_strcmp(wrd, "echo") == 0)
         return (1);

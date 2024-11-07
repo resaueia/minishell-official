@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/05 22:22:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:37:11 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,3 +113,23 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 	return (new_path); //retorna o novo path
 }
 
+char	*ft_strndup(char *str, int	len)
+{
+	printf("\n----\nft_strndup\n");
+	printf("str: [%s]\n", str);
+	char	*new;
+	int		i;
+
+	i = 0;
+	new = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new)
+		return (NULL);
+	while (str[i] && i < len)
+	{
+		new[i] = str[i];
+		i++;
+	}
+	new[i] = '\0';
+	printf("new: [%s]\n", new);
+	return (new);
+}
