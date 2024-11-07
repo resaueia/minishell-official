@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/05 19:22:43 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:27:18 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # include <sys/ioctl.h>
 # include <unistd.h>
 
-extern volatile sig_atomic_t g_signal_received;
-
 /* COLORS */
 
 # define RESET "\033[m"
@@ -43,17 +41,17 @@ extern volatile sig_atomic_t g_signal_received;
 // for token
 typedef enum e_token
 {
-	PIPE,
-	IN,
-	OUT,
-	APPEND,
-	HDOC,
-	WORD,
-	ERROR,
-	//FILE,
-	BUILTIN,
-	EXEC,
-	//EOF (?)
+	PIPE = 11,
+	IN = 04,
+	OUT = 07,
+	APPEND = 77,
+	HDOC = 44,
+	WORD = 01,
+	ERROR = 00,
+	//FILE = 02,
+	BUILTIN = 05,
+	EXEC = 03,
+	//EOF = 99, (?)
 }					t_token;
 
 // for environment variables
@@ -64,6 +62,14 @@ typedef struct s_envp
 	struct s_envp	*next;
 }					t_envp;
 
+typedef struct s_types
+{
+	char			*cmd;
+	int				type;
+	struct s_types	*prev;
+	struct s_types	*next;
+}					t_types;
+
 // for parser
 typedef struct s_init_input
 {
@@ -72,6 +78,7 @@ typedef struct s_init_input
 	int						fd_in;
 	int						fd_out;
 	t_token					token;
+	t_types					*types;
 	struct s_init_input		*prev;
 	struct s_init_input		*next;
 }					t_init_input;	
@@ -111,6 +118,12 @@ void				free_list(t_init_input *list);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
 int					tackle_heredoc(char *delim);
 int					setup_redirection(t_init_input *args_list);
+void				handle_signals(int sig, siginfo_t *info, void *context);
+t_init_input		*init_list(void);
+void				ft_bzero(void *str, size_t n);
+void				*ft_memset(void *dest, int c, size_t n);
+void				ft_putstr_fd(char *s, int fd);
+void				ft_putchar_fd(char c, int fd);
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);

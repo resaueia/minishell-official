@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/05 16:29:52 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:37:38 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,12 @@ int     is_heredoc(t_init_input *input_list)
     }
     return (0);
 }
-void    heredoc_sig_handler(int sig)
-{
-    if (sig == SIGINT)
-	{
-		if (RL_ISSTATE(RL_STATE_READCMD))
-			ioctl(STDIN_FILENO, TIOCSTI, "\n"); // This simulates pressing an enter
-		else
-			write(1, "\n", 1);
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		g_signal_status(130);
-		g_signal_received = 130;		
-	}
-}
 
 int    tackle_heredoc(char *delim)
 {
     char            *line;
     int             pipe_fd[2];
 
-    signal(SIGINT, heredoc_sig_handler);
     if (pipe(pipe_fd) == -1)
     {
         perror("Error creating pipe\n");
@@ -98,8 +83,6 @@ int    tackle_heredoc(char *delim)
     close(pipe_fd[1]);
     //if (input_list->fd_in != STDIN_FILENO)
       //  close(input_list->fd_in);
-
-    signal(SIGINT, SIG_DFL);
     
     return (pipe_fd[0]);
     //dup2(pipe_fd[0], STDIN_FILENO);

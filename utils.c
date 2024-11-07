@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/10/17 21:55:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:27:00 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,4 +191,41 @@ int	is_space(char *args)
 	else if (*args == ' ' && (args + 1 != NULL))
 		return (2);
 	return (0);
+}
+void	ft_bzero(void *str, size_t n)
+{
+	ft_memset(str, '\0', n);
+}
+
+void	*ft_memset(void *dest, int c, size_t n)
+{
+	unsigned long int	i;
+	unsigned char		*_dest;
+	unsigned char		_c;
+
+	i = 0;
+	_dest = (unsigned char *)dest;
+	_c = (unsigned char)c;
+	while (i < n)
+	{
+		_dest[i++] = _c;
+	}
+	return (dest);
+}
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (fd < 0 || !s)
+		return ;
+	while (s[i])
+		ft_putchar_fd(s[i++], fd);
+}
+
+void	ft_putchar_fd(char c, int fd)
+{
+	if (fd < 0)
+		return ;
+	write(fd, &c, sizeof(c));
 }

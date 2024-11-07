@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/05 15:28:47 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:17:00 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,11 @@ void	prompt(char **envp)
 	t_envp			*env_list;
 
 	env_list = get_envp(envp); 	// get the envp list
-	// for signal handling
-	signal(SIGINT, handle_signal); // SIGINT is the signal sent by pressing Ctrl+C
-	signal(SIGQUIT, SIG_IGN); // SIGQUIT is the signal sent by pressing Ctrl+D.
+	input_list = init_list();
 	while (1) // loop the shell.
 	{
 		//g_signal_received = 0;
 		prompt = readline(PROGRAM_NAME); // the prompt
-		if (g_signal_received == 130)
-		{
-			g_signal_received = 0;
-			free(prompt);
-			continue;
-		}
 		if (!prompt)
 		{
 			printf("exit\n");
