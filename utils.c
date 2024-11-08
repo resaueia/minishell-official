@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/07 15:37:11 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:50:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,4 +132,14 @@ char	*ft_strndup(char *str, int	len)
 	new[i] = '\0';
 	printf("new: [%s]\n", new);
 	return (new);
+}
+
+int	is_expander(types)
+{
+	printf("\n----\nis_expander\n");
+	printf("types->cmd: [%s]\n", types->cmd);
+	if (types->cmd[0] == '$' && types->cmd[1] == '?')
+		return (1);
+	else
+		return (0);
 }

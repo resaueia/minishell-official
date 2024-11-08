@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/07 19:00:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:23:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,51 +51,46 @@ static void    print_types(t_types *types)
     }
 }*/
 
-static char *remove_if_quotes(char *cmd)
+static char *expander_or_not(char *cmd)
 {
     char *temp;
     
     
+        //se for seguido por aspas (duplas ou simples), remover o $ e não expandir
+        //se for seguido por um caractere alfabético, expandir ou concatenar
+        //se não for seguido de caracteres alfabéticos, não expandir
     if (cmd[0] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
     {
         printf("cmd: [%s]\n", cmd);
-        temp = remove_quotes(char &cmd);
-        cmd = ft_strndup(&temp[1], ft_strlen(temp) - 2);
-        temp = free_char_ptr(temp);
-        printf("cmd: [%s]\n", cmd);
+        temp = remove_quotes(&cmd);
+        //cmd = ft_strndup(&temp[1], ft_strlen(temp) - 2);
+        //temp = free_char_ptr(temp);
+        printf("tmp: [%s]\n", tmp);
     }
     else if (cmd[i] == '\'') //se começar com aspas simples e estiver fechada, remover aspas apenas e não expandir
     {
         printf("cmd: [%s]\n", cmd);
-        temp = remove_quotes(char &cmd);
-        cmd = ft_strndup(&temp[1], ft_strlen(temp) - 2);
-        temp = free_char_ptr(temp);
-        printf("cmd: [%s]\n", cmd);
+        temp = remove_quotes(&cmd);
+        //cmd = ft_strndup(&temp[1], ft_strlen(temp) - 2);
+        //temp = free_char_ptr(temp);
+        printf("tmp: [%s]\n", tmp);
     }
-    else if (cmd[i] == '$' && (cmd[i + 1] == '\"' || cmd[i + 1] == '\'')) //se começar com $ seguido por aspas (duplas ou simples), remover o $ e não expandir
+    else if (cmd[i] == '$') //se começar com $, verificar a str completa
     {
-        temp = ft_strdup(cmd);
-        cmd = ft_strdup(&temp[1]);
-        temp = free_char_ptr(temp);
-    }
-
-    remove_quotes(&args); //to remove quotes from the args
-	if (*args == '$') //if echo come with $, it will print the value of the env variable
-	{
-		args++; //incrementing the pointer to the next character for check next conditions
-		if (*args == '\0') //if echo come with $ and no args, it will print just a char '$'
-			args = &dollar; //changing the pointer to the char '$'
+        cmd++; //incrementing the pointer to the next character for check next conditions
+		if (*cmd == '\0') //if echo come with $ and no args, it will print just a char '$'
+			cmd = &dollar; //changing the pointer to the char '$'
 		else //if echo come with $ and args, need check what kind of args it is
 		{
-			if (is_lower(args) == 1) //if echo come with $ and args in lower case, it will print just a newline
+			if (ft_is_alpha(cmd) == 1) //if echo come with $ and args in lower case, it will print just a newline
 			{
 				printf("\n");
 				return ;
 			}
-			else if (is_lower(args) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
+			else if (is_lower(cmd) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
 			{
-				if (is_key(args, *env_list) == 1) //if is a key, it will get the value of the key
-					args = get_value(args, *env_list); //changing the pointer to the value of the key
+				if (is_key(cmd, *env_list) == 1) //if is a key, it will get the value of the key
+					cmd = get_value(args, *env_list); //changing the pointer to the value of the key
 				else //if is not a key, it will print just a newline
 				{
 					printf("\n");
@@ -103,11 +98,11 @@ static char *remove_if_quotes(char *cmd)
 				}
 			}
 		}
-	}
+    }
 }
 
 
-static char	*ft_mattstr_copy(char **mat)
+static char	*split_copy(char **mat)
 {
 	char	*str;
 	char	*temp;
@@ -151,7 +146,7 @@ static char	*to_quotes_expand(char *cmd)
 		ret = free_from_split(ret);
 		return (ft_strdup(""));
 	}
-	return (ft_mattstr_copy(ret));
+	return (split_copy(ret));
 }
 
 void	lets_expander(t_types *types, t_envp *env_list)
@@ -160,21 +155,12 @@ void	lets_expander(t_types *types, t_envp *env_list)
 
     t_envp  *env;
     char    *value;
-    char     quotes;
 
     env = env_list;
+    types->cmd = expander_or_not(types->cmd);
     while (types)
     {
         printf("cmd: [%s]\n", types->cmd);
-        //incluir verificação da quantidade de aspas
-        types->cmd = remove_if_quotes(types->cmd);
-        //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
-        //se começar com aspas simples e estiver fechada, remover aspas apenas e não expandir
-        //se começar com $, verificar a str completa
-            //se for seguido por aspas (duplas ou simples), remover o $ e não expandir
-            //se for seguido por um caractere alfabético, expandir ou concatenar
-            //se não for seguido de caracteres alfabéticos, não expandir
-
         // adequar lógica abaixo com a de cima
         if (ft_strchr(types->cmd, '$'))
         {

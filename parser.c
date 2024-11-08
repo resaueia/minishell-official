@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/07 15:06:09 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:51:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,17 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     cmds = free_from_split(cmds);
     //define_tokens(input_list, types);
     
-    lets_expander(types, env_list);
+    if (is_expander(types) == 1)
+    {
+        printf("status code");
+        //executar status code
+    }
+    else
+    {
+        printf("expander");
+        lets_expander(types, env_list);
+    }
+    //enviar para execução
     //to_exec(input_list, env_list);
 
     printf("\n----\nprint the types list:\n");

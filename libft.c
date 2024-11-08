@@ -6,11 +6,40 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/05 23:30:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:20:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_bzero(void *str, size_t n)
+{
+	ft_memset(str, '\0', n);
+}
+
+int	ft_isalpha(int c)
+{
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
+	else
+		return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (2048);
+	else
+		return (0);
+}
+
+int	ft_isalnum(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (8);
+	else
+		return (0);
+}
 
 int	ft_strlen(char *str)
 {
@@ -143,11 +172,6 @@ void	*ft_memset(void *dest, int c, size_t n)
 		_dest[i++] = _c;
 	}
 	return (dest);
-}
-
-void	ft_bzero(void *str, size_t n)
-{
-	ft_memset(str, '\0', n);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
