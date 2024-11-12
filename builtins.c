@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/04 19:46:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:17:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,12 @@ void	ft_echo(char *args, t_envp **env_list)
 		//args += 3; //incrementing the pointer to the next character for check next conditions
 	}
 	remove_quotes(&args); //to remove quotes from the args
-	if (*args == '$') //if echo come with $, it will print the value of the env variable
-	{
-		args++; //incrementing the pointer to the next character for check next conditions
-		if (*args == '\0') //if echo come with $ and no args, it will print just a char '$'
-			args = &dollar; //changing the pointer to the char '$'
-		else //if echo come with $ and args, need check what kind of args it is
-		{
-			if (is_lower(args) == 1) //if echo come with $ and args in lower case, it will print just a newline
-			{
-				printf("\n");
-				return ;
-			}
-			else if (is_lower(args) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
-			{
-				if (is_key(args, *env_list) == 1) //if is a key, it will get the value of the key
-					args = get_value(args, *env_list); //changing the pointer to the value of the key
-				else //if is not a key, it will print just a newline
-				{
-					printf("\n");
-					return ;
-				}
-			}
-		}
-	}
 	if (newline == 1) //if newline is 1, it will print a newline
 		printf("%s\n", args); //printing the args with a newline
 	else if (newline == 0) //if newline is 0, it will not print a newline
 		printf("%s", args); //printing the args without a newline
 }
+
 void	ft_cd(char *path, t_envp **env_list)
 {
 	while (*path == ' ' )

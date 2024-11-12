@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/12 12:21:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:48:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ char				**the_split(char const *s, char c);
 
 /* UTILS */
 int					is_whitspace(char c);
+int					is_special(char c);
 int					is_space(char *args);
 int					is_lower(char *args);
 int					to_quotes(char c, int quotes);

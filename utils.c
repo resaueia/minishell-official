@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/12 12:19:37 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:45:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void print_the_stack(t_init_input *list)
 int	is_whitspace(char c)
 {
 	return (c == '\t' || c == '\v' || c == '\r' || c == ' ');
+}
+
+int	is_special(char c)
+{
+	return (c == '!' || c == '*' || c == '@');
 }
 
 int	is_space(char *args)
