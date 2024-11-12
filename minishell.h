@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/08 17:48:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:21:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ int					quotes_check(char *str);
 int					input_check(char *input);
 
 /* FROM LIBFT */
+int					ft_isalpha(int c);
+int					ft_isdigit(int c);
+int					ft_isalnum(int c);
 int					ft_strlen(char *str);
 int					ft_strcmp(char *str, char *value);
 int					ft_strncmp(char *s1, char *s2, size_t n);
@@ -114,7 +117,6 @@ char				**the_split(char const *s, char c);
 /* UTILS */
 int					is_whitspace(char c);
 int					is_space(char *args);
-int					is_number(char c);
 int					is_lower(char *args);
 int					to_quotes(char c, int quotes);
 int					is_expander(t_types *types);
@@ -129,11 +131,10 @@ t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 int					is_key(char *key, t_envp *head);
 void				print_envp_list(t_envp *head);
-void				les_expander(t_types *types, t_envp *env_list);
+void				lets_expander(t_types *types, t_envp *env_list);
 void				*create_new_node(t_envp **env_list, char *key, char *value);
 char				*get_value(char *name, t_envp *list);
 char				*change_path(char *path, char *src, t_envp **head);
-
 
 
 /* EXEC */

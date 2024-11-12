@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/08 17:50:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:19:37 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ int	is_space(char *args)
 	else if (*args == ' ' && (args + 1 != NULL))
 		return (2);
 	return (0);
-}
-
-int	is_number(char c)
-{
-	return (c >= '0' && c <= '9');
 }
 
 int	is_lower(char *args)
@@ -134,7 +129,7 @@ char	*ft_strndup(char *str, int	len)
 	return (new);
 }
 
-int	is_expander(types)
+int	is_expander(t_types *types)
 {
 	printf("\n----\nis_expander\n");
 	printf("types->cmd: [%s]\n", types->cmd);

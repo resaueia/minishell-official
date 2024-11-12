@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/05 23:37:04 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:18:03 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,12 @@ void	prompt(char **envp)
 					printf("exit\nminishell: exit: too many arguments\n");
 					exit(1);
 				}
-				if (!is_number(prompt[i]))
+				if (!ft_isdigit(prompt[i]))
 				{
 					printf("exit\nminishell: exit: %s: numeric argument required\n", prompt + 4);
 					exit(255);
 				}
-				else if (is_number(prompt[i]))
+				else if (ft_isdigit(prompt[i]))
 				{
 					ret = ret * 10 + prompt[i] - '0';
 					i++;
