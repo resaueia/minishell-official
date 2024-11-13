@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/12 16:48:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:38:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef enum e_token
 	WORD = 01,
 	ERROR = 00,
 	FLE = 02,
-	BUILTIN = 05,
-	EXEC = 03,
+	BUILTIN = 03,
+	EXEC = 05,
 	ENDOF = 99,
 }					t_token;
 
@@ -139,8 +139,8 @@ char				*change_path(char *path, char *src, t_envp **head);
 
 
 /* EXEC */
-void				to_exec(t_init_input *input_list, t_envp *env_list);
-void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list);
+void    			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
+void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(char **args, char **env);
 
 /* OTHERS */
@@ -166,6 +166,12 @@ int					has_heredoc(t_init_input *cmd);
 int					has_redirect(t_init_input *cmd);
 int 				has_pipe(t_init_input *cmd);
 int					has_builtin(t_init_input *cmd);
+/* ******************************************************* */
+int					is_hdoc(t_types *type);
+int					is_pp(t_types *type);
+int					is_rdrct(t_types *type);
+int					is_btin(t_types *type);
+int					is_exec(t_types *type);
 
 /* Built-in functions */
 int					is_builtin(char *wrd);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/12 17:17:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:54:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ void	ft_echo(char *args, t_envp **env_list)
 {
 	(void)env_list;
 	int	newline;
-	char	dollar;
 	char	*tmp;
 
 	newline = 1;
-	dollar = '$';
 	while (*args == ' ' )
 		args++;
 	if (args == NULL) //if echo come without args, it will print just a newline

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/12 12:51:54 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:02:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	ft_bzero(void *str, size_t n)
 
 int	ft_isalpha(int c)
 {
-	printf("on ft_isalpha\n");
-	printf("char is: [%c]\n", c);
+	//printf("on ft_isalpha\n");
+	//printf("char is: [%c]\n", c);
 	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
 		return (1);
 	else

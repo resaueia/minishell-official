@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/12 12:18:03 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:32:03 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ static void	handle_signals(int sig, siginfo_t *info, void *context)
 		rl_redisplay ();
 	}
 }
+
+/*static t_types	*init_types(void)
+{
+	t_types	*types;
+
+	types = (t_types *)malloc(sizeof(t_types));
+	if (!types)
+		return (NULL);
+	types->cmd = NULL;
+	types->type = 0;
+	types->prev = NULL;
+	types->next = NULL;
+	return (types);
+}*/
 
 static t_init_input	*init_list(void)
 {

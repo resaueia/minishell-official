@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/12 16:45:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:33:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_the_stack(t_init_input *list)
+void	print_the_stack(t_init_input *list)
 {
 	t_init_input *current = list;
 
@@ -136,7 +136,7 @@ char	*ft_strndup(char *str, int	len)
 
 int	is_expander(t_types *types)
 {
-	printf("\n----\nis_expander\n");
+	//printf("\n----\nis_expander\n");
 	printf("types->cmd: [%s]\n", types->cmd);
 	if (types->cmd[0] == '$' && types->cmd[1] == '?')
 		return (1);
