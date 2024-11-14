@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/07 17:17:00 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:06:23 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,50 @@ int	add_to_history(char *line)
 	return (0);
 }
 
-void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list)
+void	execute_builtin(char *args, t_envp *env_list, t_init_input *list)
 {
-	t_envp	*tmp;
-
-	tmp = env_list;
-	if (ft_strcmp(cmd, "print") == 0)
+	int saved_stdout;
+    //int saved_stdin;
+	
+	saved_stdout = dup(STDOUT_FILENO);
+	//saved_stdin = dup(STDIN_FILENO);
+    if (list->fd_out != STDOUT_FILENO)
+    {
+		if (dup2(list->fd_out, STDOUT_FILENO) == -1)
+		{
+			perror("dup2 error encountered in builtin");
+			close(saved_stdout);
+			return ;
+		}
+        close(list->fd_out);
+    }
+    /*if (list->fd_in != STDIN_FILENO)
+    {
+        dup2(list->fd_in, STDIN_FILENO);
+        close(list->fd_in);
+    }*/
+	if (ft_strcmp(args, "print") == 0)
 		print_stack(list);
-	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
-		print_envp_list(tmp);
-	else if (ft_strcmp(cmd, "pwd") == 0)
-		ft_pwd();
-	else if (ft_strncmp(cmd, "echo", 4) == 0)
-		ft_echo(cmd + 4, &tmp);
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		ft_cd(cmd + 2, &tmp);
-	else if (ft_strncmp(cmd, "export", 6) == 0)
-		ft_export(cmd + 6, &tmp);
-	else if (ft_strncmp(cmd, "unset", 5) == 0)
-		ft_unset(cmd + 5, &tmp);
+	else if (ft_strcmp(args, "env") == 0 || ft_strcmp(args, "envp") == 0)
+		print_envp_list(env_list);
+	else if (ft_strcmp(args, "pwd") == 0)
+		ft_pwd(STDOUT_FILENO);
+	else if (ft_strncmp(args, "echo", 4) == 0)
+		ft_echo(args + 4, &env_list, STDOUT_FILENO);
+	else if (ft_strncmp(args, "cd", 2) == 0)
+		ft_cd(args + 2, &env_list);
+	else if (ft_strncmp(args, "export", 6) == 0)
+		ft_export(args + 6, &env_list);
+	else if (ft_strncmp(args, "unset", 5) == 0)
+		ft_unset(args + 5, &env_list);
+	dup2(saved_stdout, STDOUT_FILENO);
+	//dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	//close(saved_stdin);
 }
+
+
+
 void	prompt(char **envp)
 {
 	char			*prompt;
@@ -98,10 +122,10 @@ void	prompt(char **envp)
 				input_list = delim_split(prompt_dup); // split the input into a linked list
 				
 				cmds = list_to_char(input_list);
-				process_input(input_list, cmds);
+				process_input(prompt_dup, input_list, cmds, env_list);
 				
 				//print_the_stack(input_list);
-				execute_builtin(prompt, env_list, input_list); // execute the command line
+				//execute_builtin(prompt, env_list, input_list); // execute the command line
 			}
 			else
 			{

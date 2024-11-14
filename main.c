@@ -6,27 +6,13 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/01 18:19:14 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/13 17:46:14 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t g_signal_received = 0;
-
-void	free_list(t_init_input *list)
-{
-	t_init_input *temp;
-
-	while (list)
-	{
-		temp = list;
-		list = list->next;
-		if (temp->string)
-			free(temp->string);
-		free(temp);
-	}
-}
 
 void	print_stack(t_init_input *stack)
 {

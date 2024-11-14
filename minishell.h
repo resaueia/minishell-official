@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/07 17:27:18 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:46:29 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_init_input
 
 
 /* FUNCTION PROTOTYPES */
-void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list);
+void				execute_builtin(char *args, t_envp *envp, t_init_input *list);
 void				handle_signal(int sig);
 void				prompt(char **envp);
 void 				remove_quotes(char **str);
@@ -124,10 +124,18 @@ void				ft_bzero(void *str, size_t n);
 void				*ft_memset(void *dest, int c, size_t n);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putchar_fd(char c, int fd);
+char				*ft_strjoin(char *s1, char *s2);
+int					has_pipe(t_init_input *args_list);
+void				split_by_pipes(t_init_input *args_list, t_init_input **cmds);
+void				execute_pipeline(t_init_input **cmds, char **envp);
+void				exec_command(t_init_input *cmd, char **envp);
+void				free_env_list(t_envp *env_list);
+void				close_fds(t_init_input *cmd_list);
 
 /* SPLIT UTILS */
 char    			**list_to_char(t_init_input *list);
-void				process_input(t_init_input *cmd_list, char **cmds);
+char				**env_to_char(t_envp *env_list);
+void				process_input(char *input, t_init_input *cmd_list, char **cmds, t_envp *env_list);
 void				split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
 /* INPUT CHECK */
@@ -140,10 +148,11 @@ int					is_heredoc(t_init_input *input_list);
 
 /* Built-in functions */
 void				ft_cd(char *path, t_envp **env_list);
-void				ft_pwd(void);
-void				ft_echo(char *args, t_envp **env_list);
+void				ft_pwd(int fd_out);
+void				ft_echo(char *args, t_envp **env_list, int fd_out);
 void				ft_export(char *var, t_envp **env_list);
 void				ft_unset(char *var, t_envp **env_list);
+int					is_builtin(char *cmd);
 
 void				print_the_stack(t_init_input *list);
 

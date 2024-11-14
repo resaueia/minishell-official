@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/07 17:37:38 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:30:42 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int    tackle_heredoc(char *delim)
 
     if (pipe(pipe_fd) == -1)
     {
-        perror("Error creating pipe\n");
+        perror("Error creating heredoc pipe\n");
         return (-1);
     }
     while (1)

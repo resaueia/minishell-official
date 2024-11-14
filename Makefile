@@ -6,7 +6,7 @@
 #    By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/10/28 18:50:31 by rsaueia          ###   ########.fr        #
+#    Updated: 2024/11/13 18:11:07 by rsaueia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,10 @@ SRCS = main.c \
 	   input_check.c \
 	   split.utils.c \
 	   heredoc.c \
-	   redirects.c
+	   redirects.c \
+	   exec.c \
+	   pipe.c \
+	   free_functions.c
 
 OBJS = $(SRCS:.c=.o)
 

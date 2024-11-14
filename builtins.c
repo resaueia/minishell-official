@@ -3,26 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/10/17 21:42:46 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:52:03 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+int		is_builtin(char *cmd)
+{
+    return (
+        ft_strcmp(cmd, "pwd") == 0 ||
+        ft_strncmp(cmd, "echo", 4) == 0 ||
+        ft_strncmp(cmd, "cd", 2) == 0 ||
+        ft_strncmp(cmd, "export", 6) == 0 ||
+        ft_strncmp(cmd, "unset", 5) == 0 ||
+        ft_strcmp(cmd, "env") == 0
+    );
+}
+
+void	ft_pwd(int fd_out)
 {
 	char cwd[1024]; // variable where we'll store the path of the current dir
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("%s\n", cwd);
+	{
+		ft_putstr_fd(cwd, fd_out);
+		ft_putchar_fd('\n', fd_out);
+	}
 	else
 		perror("getcwd() incurred in unexpected error");
 }
-void	ft_echo(char *args, t_envp **env_list)
+
+void ft_echo(char *args, t_envp **env_list, int fd_out)
 {
-	(void)env_list;
+    int newline = 1;
+    char dollar = '$';
+
+    while (*args == ' ')
+        args++;
+
+    // Verifica flag -n
+    if (ft_strncmp(args, "-n", 2) == 0)
+    {
+        newline = 0;
+        args += 2;
+        while (*args == ' ')
+            args++;
+    }
+
+    remove_quotes(&args);
+
+    // Verifica se o argumento começa com '$'
+    if (*args == '$')
+    {
+        args++;
+        if (*args == '\0')
+            args = &dollar;
+        else if (is_key(args, *env_list) == 1)
+            args = get_value(args, *env_list);
+    }
+
+    ft_putstr_fd(args, fd_out);
+    if (newline)
+        ft_putchar_fd('\n', fd_out);
+}
+
+
+/*void	ft_echo(char *args, t_envp **env_list, int fd_out)
+{
+	//(void)env_list;
 	int	newline;
 	char	dollar;
 
@@ -32,13 +83,13 @@ void	ft_echo(char *args, t_envp **env_list)
 		args++;
 	if (args == NULL) //if echo come without args, it will print just a newline
 	{
-		printf("\n");
+		ft_putchar_fd('\n', fd_out);
 		return ;
 	}
 	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
 	{
 		newline = 0; //flag to not print a newline
-		args += 3; //incrementing the pointer to the next character for check next conditions
+		args += 2; //incrementing the pointer to the next character for check next conditions
 	}
 	remove_quotes(&args); //to remove quotes from the args
 	if (*args == '$') //if echo come with $, it will print the value of the env variable
@@ -50,7 +101,7 @@ void	ft_echo(char *args, t_envp **env_list)
 		{
 			if (ft_islower(args) == 1) //if echo come with $ and args in lower case, it will print just a newline
 			{
-				printf("\n");
+				ft_putchar_fd('\n', fd_out);
 				return ;
 			}
 			else if (ft_islower(args) == 0) //if echo come with $ and args in upper case, it will check if is a key of env list
@@ -59,17 +110,24 @@ void	ft_echo(char *args, t_envp **env_list)
 					args = get_value(args, *env_list); //changing the pointer to the value of the key
 				else //if is not a key, it will print just a newline
 				{
-					printf("\n");
+					ft_putchar_fd('\n', fd_out);
 					return ;
 				}
 			}
 		}
 	}
+	//ft_putstr_fd(args, fd_out);
+	//if (newline)
+		//ft_putchar_fd('\n', fd_out);
 	if (newline == 1) //if newline is 1, it will print a newline
-		printf("%s\n", args); //printing the args with a newline
+	{
+		ft_putstr_fd(args, fd_out); //printing the args with a newline
+		ft_putchar_fd('\n', fd_out);
+	}
 	else if (newline == 0) //if newline is 0, it will not print a newline
-		printf("%s", args); //printing the args without a newline
-}
+		ft_putstr_fd(args, fd_out); //printing the args without a newline
+}*/
+
 void	ft_cd(char *path, t_envp **env_list)
 {
 	while (*path == ' ' )
@@ -98,6 +156,7 @@ void	ft_cd(char *path, t_envp **env_list)
 		chdir(path);//aplicar chdir para modificação do diretório.
 	}
 }
+
 void	ft_export(char *var, t_envp **env_list)
 {
 	while (*var == ' ' )
@@ -124,6 +183,7 @@ void	ft_export(char *var, t_envp **env_list)
 		// If 'key' is not present, we create it, by adding a new node to our var list.
 	}
 }
+
 void	ft_unset(char *var, t_envp **env_list)
 {
 	while (*var == ' ' )

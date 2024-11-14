@@ -6,11 +6,41 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/01 17:48:21 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/13 21:41:48 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char    **env_to_char(t_envp *env_list)
+{
+    t_envp      *temp;
+    char        **list;
+    int         i;
+    int         count;
+
+    temp = env_list;
+    i = 0;
+    count = 0;
+    while(temp)
+    {
+        count++;
+        temp = temp->next;
+    }
+    list = (char **)malloc(sizeof(char *) * count + 1);
+    if (!list)
+        return (NULL);
+    temp = env_list;
+    while (temp)
+    {
+        list[i] = ft_strjoin(temp->key, "=");
+        list[i] = ft_strjoin(list[i], temp->value);
+        temp = temp->next;
+        i++;
+    }
+    list[i] = NULL;
+    return (list);
+}
 
 char    **list_to_char(t_init_input *list)
 {
@@ -65,25 +95,46 @@ void    split_commands(char **commands, t_init_input **head, t_init_input **tail
     }
 }
 
-void    process_input(t_init_input *cmd_list, char **cmds)
+void    process_input(char *input, t_init_input *cmd_list, char **cmds, t_envp *env_list)
 {
     t_init_input    *args_list;
     t_init_input    *args_tail;
-    //char            *args;  Ideia que o allan deu de guardar o input inteiro
+    t_init_input    *pipe_cmds[256];
+    char            **envp;
+    //char            **args;
     
     args_list = NULL;
     args_tail = NULL;
+    envp = env_to_char(env_list); //write a env_list_to_char
+    //args = cmds;
     split_commands(cmds, &args_list, &args_tail); 
     //print_the_stack(args_list);
     if (is_heredoc(args_list) == -1)
     {
         perror ("Error setting up heredoc");
+        free_list(args_list);
+        free_list(cmd_list);
         return ;
     }
     if (setup_redirection(args_list) == -1)
     {
         perror("Error whule setting up redirection\n");
+        free_list(args_list);
+        free_list(cmd_list);
         return ;
+    }
+    if (has_pipe(args_list))
+    {
+        split_by_pipes(args_list, pipe_cmds);
+        execute_pipeline(pipe_cmds, envp);
+    }
+    else if (is_builtin(args_list->string))
+    {
+        execute_builtin(input, env_list, args_list);
+    }
+    else
+    {
+        exec_command(args_list, envp);
     }
 
     //para enviar para execução
