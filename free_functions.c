@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:46:31 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/13 18:15:49 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/14 19:07:36 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	free_list(t_init_input *list)
 void    free_env_list(t_envp *env_list)
 {
     t_envp  *temp;
-    
+
+    temp = env_list;
     while (temp)
     {
         temp = env_list;

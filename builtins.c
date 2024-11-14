@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/13 21:52:03 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/14 19:33:28 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_pwd(int fd_out)
 		perror("getcwd() incurred in unexpected error");
 }
 
-void ft_echo(char *args, t_envp **env_list, int fd_out)
+/*void ft_echo(char *args, t_envp **env_list, int fd_out)
 {
     int newline = 1;
     char dollar = '$';
@@ -68,10 +68,10 @@ void ft_echo(char *args, t_envp **env_list, int fd_out)
     ft_putstr_fd(args, fd_out);
     if (newline)
         ft_putchar_fd('\n', fd_out);
-}
+}*/
 
 
-/*void	ft_echo(char *args, t_envp **env_list, int fd_out)
+void	ft_echo(char *args, t_envp **env_list, int fd_out)
 {
 	//(void)env_list;
 	int	newline;
@@ -126,7 +126,7 @@ void ft_echo(char *args, t_envp **env_list, int fd_out)
 	}
 	else if (newline == 0) //if newline is 0, it will not print a newline
 		ft_putstr_fd(args, fd_out); //printing the args without a newline
-}*/
+}
 
 void	ft_cd(char *path, t_envp **env_list)
 {
