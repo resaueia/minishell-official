@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/13 15:02:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:15:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ int	ft_isalnum(int c)
 		return (8);
 	else
 		return (0);
+}
+
+int	ft_isprint(int c)
+{
+	if (!(c >= 32 && c <= 126))
+		return (0);
+	else
+		return (1);
 }
 
 int	ft_strlen(char *str)
@@ -204,10 +212,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (new);
 }
 
-int	ft_isprint(int c)
+char	*ft_itoa(int n) 
 {
-	if (!(c >= 32 && c <= 126))
-		return (0);
-	else
-		return (1);
+    char buffer[12]; // Buffer para um int de até 10 dígitos + sinal + null terminator
+    sprintf(buffer, "%d", n);
+    return ft_strdup(buffer); // Retorna uma cópia do buffer
 }

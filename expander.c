@@ -6,15 +6,18 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/13 16:29:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:45:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *expander_or_not(char *cmd, t_envp *env_list)
+static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
 {
     char    *temp;
+    char    *expanded;
+    char    *key;
+    char    *suffix;
     
     temp = ft_strdup(cmd);
     if (temp[0] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
@@ -33,6 +36,15 @@ static char *expander_or_not(char *cmd, t_envp *env_list)
 			temp = cmd; //changing the pointer to the char '$'
 		else //if cmd come with $ and args, need check what kind of args it is
 		{
+            // Caso especial para `$?`
+            if (temp[0] == '?') 
+            {
+                char *status_str = ft_itoa(last_exit_status); // Converte o status para string
+                cmd = ft_strdup(status_str); 
+                free(status_str);
+                free(temp - 1); // Liberar a memória original de temp
+                return (cmd);
+            }
             if ((ft_isalpha(temp[0]) == 0) && ft_strncmp(temp, "_", 1)) //if echo come with $ and args in lower case, it will print just a newline
 			{
                 if(ft_strncmp(temp, "\'", 1) == 0 || ft_strncmp(temp, "\"", 1) == 0)
@@ -46,13 +58,20 @@ static char *expander_or_not(char *cmd, t_envp *env_list)
 			}
 			else if (ft_isalpha(temp[0]) || (ft_strncmp(temp, "_", 1) == 0)) //if echo come with $ and args in upper case, it will check if is a key of env list
 			{
+                // Caso seja uma variável de ambiente com ou sem caracteres adicionais
+                key = extract_key(temp); // Extrai a chave da variável (ex: "USER" de "USER_123")
+                suffix = temp + ft_strlen(key); // O restante após a chave (ex: "_123" de "USER_123")
 				if (is_key(temp, env_list) == 1) //if is a key, it will get the value of the key
                 {
-                    //se a key estiver seguida por um caractere especial, expandir e concatenar com o restante da string, contando com o caractere especial
-					temp = get_value(temp, env_list); //changing the pointer to the value of the key
+                    expanded = get_value(key, env_list); // Obtém o valor da variável
+                    cmd = ft_strjoin(expanded, suffix); // Concatena o valor expandido com o sufixo
+                    free(expanded); // Libera a memória do valor expandido
                 }
 				else //if is not a key, it will print just a newline
                     temp = ft_strdup("\n");
+                free(key);
+                //free(temp - 1); // Liberar a memória original de temp
+                return (cmd);
 			}
 		}
     }
@@ -61,14 +80,14 @@ static char *expander_or_not(char *cmd, t_envp *env_list)
     return (cmd);
 }
 
-void	lets_expander(t_types *types, t_envp *env_list)
+void    lets_expander(t_types *types, t_envp *env_list, int last_exit_status)
 {
     t_envp  *env;
 
     env = env_list;
     while (types)
     {
-        types->cmd = expander_or_not(types->cmd, env);
+        types->cmd = expander_or_not(types->cmd, env, last_exit_status);
         types = types->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/13 16:33:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:16:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,4 +142,13 @@ int	is_expander(t_types *types)
 		return (1);
 	else
 		return (0);
+}
+
+char	*extract_key(char *str) 
+{
+    int len = 0;
+
+    while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
+        len++;
+    return ft_substr(str, 0, len); // Retorna a chave extraída
 }

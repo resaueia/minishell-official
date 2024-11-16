@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/13 17:38:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:37:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,12 @@ int					ft_strncmp(char *s1, char *s2, size_t n);
 char				*ft_strdup(char *s);
 char				*ft_strchr(char *s, int c);
 char				*ft_substr(char *str, unsigned int start, size_t len);
+char				*ft_itoa(int n);
+char				**the_split(char const *s, char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				*ft_memset(void *dest, int c, size_t n);
 void				ft_bzero(void *str, size_t n);
-char				**the_split(char const *s, char c);
 
 /* UTILS */
 int					is_whitspace(char c);
@@ -126,22 +127,24 @@ char				*joinpath(char *path, char *key, t_envp **env_list);
 char				*custom_dup(char *str, int start, int finish);
 char				*ft_strjoin(char *s1, char *s2);
 char				*ft_strndup(char *str, int	len);
+char 				*extract_key(char *str);
 
 /* ENVP */
 t_envp				*create_node(char *key, char *value);
 t_envp				*get_envp(char **envp);
 int					is_key(char *key, t_envp *head);
 void				print_envp_list(t_envp *head);
-void				lets_expander(t_types *types, t_envp *env_list);
+void				lets_expander(t_types *types, t_envp *env_list, int last_exit_status);
 void				*create_new_node(t_envp **env_list, char *key, char *value);
 char				*get_value(char *name, t_envp *list);
 char				*change_path(char *path, char *src, t_envp **head);
 
 
 /* EXEC */
-void    			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
+int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
-void				exec_cmd(char **args, char **env);
+void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
+//static char 		*find_command_path(char *cmd, t_envp *env_list);
 
 /* OTHERS */
 //int					is_delimiter(char c);
@@ -157,6 +160,7 @@ void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t
 
 
 /* TO CONVERT LIST TO CHAR** */
+char    			**types_to_char(t_types *list);
 char    			**list_to_char(t_init_input *list);
 char				**env_to_char(t_envp *env_list);
 
@@ -175,9 +179,9 @@ int					is_exec(t_types *type);
 
 /* Built-in functions */
 int					is_builtin(char *wrd);
+void				ft_pwd(int fd_out);
+void				ft_echo(char *args, t_envp **env_list, int fd_out);
 void				ft_cd(char *path, t_envp **env_list);
-void				ft_pwd(void);
-void				ft_echo(char *args, t_envp **env_list);
 void				ft_export(char *var, t_envp **env_list);
 void				ft_unset(char *var, t_envp **env_list);
 

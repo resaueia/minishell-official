@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/13 17:36:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:26:13 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,14 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     char    **cmds;
     int     i;
     int     j;
+    int     last_exit_status;
 
     (void) env_list;
     (void) input_list;
 
+    last_exit_status = 0;
     cmds = lexer(prompt); // split the input for delim and quotes
-    //input_list = delim_split(prompt); // split the input for pipe
+    input_list = delim_split(prompt); // split the input for pipe
 
     i = -1;
     //int k = 1;
@@ -138,7 +140,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("input_list->types: [%p]\n", input_list->types);
     //printf("types: [%p]\n", types);
     //send to expander, rever $? e $ENV~xpto
-    lets_expander(types, env_list);
+    lets_expander(types, env_list, last_exit_status);
     printf("\n----\nprint the types list:\n");
     t_types *temp = types;
     while (temp)
@@ -151,7 +153,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     //enviar para execução
-    to_exec(input_list, types, env_list);
+    last_exit_status = to_exec(input_list, types, env_list);
 	
     /*printf("\n----\nconvertion of list to char**:\n");
     int j;

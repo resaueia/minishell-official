@@ -6,21 +6,24 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/13 14:54:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:37:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+void	ft_pwd(int fd_out)
 {
 	char cwd[1024]; // variable where we'll store the path of the current dir
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("%s\n", cwd);
+	{
+		ft_putstr_fd(cwd, fd_out);
+		ft_putchar_fd('\n', fd_out);
+	}
 	else
 		perror("getcwd() incurred in unexpected error");
 }
-void	ft_echo(char *args, t_envp **env_list)
+void	ft_echo(char *args, t_envp **env_list, int fd_out)
 {
 	(void)env_list;
 	int	newline;
@@ -31,7 +34,7 @@ void	ft_echo(char *args, t_envp **env_list)
 		args++;
 	if (args == NULL) //if echo come without args, it will print just a newline
 	{
-		printf("\n");
+		ft_putstr_fd("\n", fd_out);
 		return ;
 	}
 	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
@@ -54,9 +57,12 @@ void	ft_echo(char *args, t_envp **env_list)
 	}
 	remove_quotes(&args); //to remove quotes from the args
 	if (newline == 1) //if newline is 1, it will print a newline
-		printf("%s\n", args); //printing the args with a newline
+	{
+		ft_putstr_fd(args, fd_out); //printing the args with a newline
+		ft_putchar_fd('\n', fd_out);
+	}
 	else if (newline == 0) //if newline is 0, it will not print a newline
-		printf("%s", args); //printing the args without a newline
+		ft_putstr_fd(args, fd_out); //printing the args without a newline
 }
 
 void	ft_cd(char *path, t_envp **env_list)
