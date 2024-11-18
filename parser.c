@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:26:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:00:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     //enviar para execução
-    last_exit_status = to_exec(input_list, types, env_list);
+    last_exit_status = to_exec(cmds, input_list, types, env_list);
 	
     /*printf("\n----\nconvertion of list to char**:\n");
     int j;

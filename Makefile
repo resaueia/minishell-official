@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/11/13 17:27:14 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/11/18 16:24:15 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,9 @@ SRCS = main.c \
 	   parser.c \
 	   expander.c \
 	   what_type.c \
+	   pipe.c \
+	   redirects.c \
+	   heredoc.c \
 
 OBJS = $(SRCS:.c=.o)
 

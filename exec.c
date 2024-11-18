@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:44:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:21:19 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,51 @@ static void find_command_path(t_types *type, t_envp *env_list)
     free(path_dup); // Libera a cópia do PATH
 }
 
+void    exec_command(t_init_input *cmd, char **envp)
+{
+    pid_t   pid;
+    int     status;
+
+    pid = fork();
+    if (pid == -1)
+    {
+        perror("Fork in exec function has failed");
+        exit(EXIT_FAILURE);
+    }
+    else if (pid == 0)
+    {
+        if (cmd->fd_in != STDIN_FILENO)
+        {
+            if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+            {
+                perror("dup2 fd_in has failed in exec function");
+                exit(EXIT_FAILURE);
+            }
+            close(cmd->fd_in);
+        }
+        if (cmd->fd_out != STDOUT_FILENO)
+        {
+            if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+            {
+                perror("dup2 fd_out has failed in exec function");
+                exit(EXIT_FAILURE);
+            }
+            close(cmd->fd_out);
+        }
+        if (execve(cmd->args[0], cmd->args, envp) == -1)
+        {
+            perror("Execution has failed");
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        waitpid(pid, &status, 0);
+        if (WIFEXITED(status))
+            printf("Child has exited with status: %d\n", WEXITSTATUS(status));
+    }
+}
+
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
     char    **args;
@@ -159,7 +204,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
     }
 }
 
-int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
+int    to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env_list)
 {
     //printf("\n----\nto_exec\n");
     //printf("input_list: [%p]\n", input_list);
@@ -167,13 +212,22 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     //printf("type: [%p]\n", type);
     //printf("input_list->types: [%p]\n", input_list->types);
     (void) input_list;
-    char  **env;
-    t_types     *tmp;
+    t_init_input    *args_list;
+    t_init_input    *args_tail;
+    t_init_input    *pipe_cmds[256];
+    t_types         *tmp;
+    char            **env;
+    //char            **args;
     
+    args_list = NULL;
+    args_tail = NULL;
+    env = env_to_char(env_list); //write a env_list_to_char
+    //args = cmds;
+    split_commands(cmds, &args_list, &args_tail); 
+    //print_the_stack(args_list);    
     //printf("\n----\nafter declarations\n");
     input_list->fd_in = 0;
     input_list->fd_out = 1;
-    env = env_to_char(env_list);
     tmp = type;
     (void) env;
     (void) type;
@@ -191,24 +245,34 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
         printf("cms: [%s] - types: [%u]\n", tmp->cmd, tmp->type);
         tmp = tmp->next;
     }*/
-    if (is_hdoc(type)) //heredoc
+    if (is_heredoc(args_list) == -1)
     {
         //executa heredoc
-        printf("has heredoc\n");
+        //printf("has heredoc\n");
         //tackle_heredoc(cmd_list);
+        perror ("Error setting up heredoc");
+        free_list(args_list);
+        //free_list(input_list);
+        return (1);
     }
-    if (is_pp(type)) //pipe
+    if (has_pipe(args_list))
     {
         //executa em cenário de pipe
-        printf("has pipe\n");
+        //printf("has pipe\n");
         //args_list = split_commands(cmds, &head, &tail);
         //printf("\n----\nprint the args_list:\n");
         //print_the_stack(args_list);
+        split_by_pipes(args_list, pipe_cmds);
+        execute_pipeline(pipe_cmds, env);
     }
-    else if (is_rdrct(type)) //redirects
+    if (setup_redirection(args_list) == -1)
     {
         //executa redirect
         printf("has redirect\n");
+        perror("Error whule setting up redirection\n");
+        free_list(args_list);
+        //free_list(input_list);
+        return (1);
     }
     else if (is_btin(type)) //builtin
     {
