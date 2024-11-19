@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/15 21:33:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 11:58:54 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ char    **list_to_char(t_init_input *list)
 //talvez alterar para retornar uma t_init_input
 t_init_input    *split_commands(char **commands, t_init_input **head, t_init_input **tail)
 {
+    printf("\n----\nsplit_commands\n");
     int             i;
     t_init_input    *split_cmd_list;
     t_init_input    *current_node;

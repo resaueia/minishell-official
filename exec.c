@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/18 16:21:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:09:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,11 +206,13 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    //printf("\n----\nto_exec\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("env_list: [%p]\n", env_list);
-    //printf("type: [%p]\n", type);
-    //printf("input_list->types: [%p]\n", input_list->types);
+    printf("\n----\nto_exec\n");
+    printf("input_list: [%p]\n", input_list);
+    printf("env_list: [%p]\n", env_list);
+    printf("type: [%p]\n", type);
+    printf("input_list->types: [%p]\n", input_list->types);
+    printf("input_list->fd_in: %i [%p]\n", input_list->fd_in, &input_list->fd_in);
+    printf("input_list->fd_out: %i [%p]\n", input_list->fd_out, &input_list->fd_out);
     (void) input_list;
     t_init_input    *args_list;
     t_init_input    *args_tail;
@@ -221,13 +223,27 @@ int    to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env
     
     args_list = NULL;
     args_tail = NULL;
+    
+    printf("before env_to_char\n");
     env = env_to_char(env_list); //write a env_list_to_char
     //args = cmds;
-    split_commands(cmds, &args_list, &args_tail); 
-    //print_the_stack(args_list);    
+    
+    cmds = list_to_char(input_list);
+    
+    printf("before split_commands\n");
+    split_commands(cmds, &args_list, &args_tail);
+    
+    printf("\n----\nprint the args_list:\n");
+    t_init_input *temp = args_list;
+    while (temp)
+    {
+        printf("string: [%s]\n", temp->string);
+        temp = temp->next;
+    }
+    
     //printf("\n----\nafter declarations\n");
-    input_list->fd_in = 0;
-    input_list->fd_out = 1;
+    //input_list->fd_in = 0;
+    //input_list->fd_out = 1;
     tmp = type;
     (void) env;
     (void) type;
@@ -245,6 +261,8 @@ int    to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env
         printf("cms: [%s] - types: [%u]\n", tmp->cmd, tmp->type);
         tmp = tmp->next;
     }*/
+
+    printf("\n----\nbefore verifications of types\n");
     if (is_heredoc(args_list) == -1)
     {
         //executa heredoc
@@ -252,7 +270,7 @@ int    to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env
         //tackle_heredoc(cmd_list);
         perror ("Error setting up heredoc");
         free_list(args_list);
-        //free_list(input_list);
+        free_list(input_list);
         return (1);
     }
     if (has_pipe(args_list))
@@ -271,7 +289,7 @@ int    to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env
         printf("has redirect\n");
         perror("Error whule setting up redirection\n");
         free_list(args_list);
-        //free_list(input_list);
+        free_list(input_list);
         return (1);
     }
     else if (is_btin(type)) //builtin
