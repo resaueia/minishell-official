@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/19 11:48:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:35:54 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_builtin(char *wrd)
     else
         return (0);
 }
-
+/*
 static int	what_type(char *wrd)
 {
     if (ft_strcmp(wrd, "|") == 0)
@@ -48,8 +48,8 @@ static int	what_type(char *wrd)
         return (BUILTIN);
     else
         return (WORD);
-}
-
+}*/
+/*
 static void	insert_types(t_types **head, char *wrd)
 {
     //printf("\n----\non insert_types\n");
@@ -95,99 +95,62 @@ static char	**args_split(char *input)
 	ret = the_split(input, 29);
 	temp = free_char_ptr(temp);
 	return (ret);
-}
+}*/
 
 
-void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
+void process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
-    printf("\n----\nprocess_input\n");
-    printf("input_list: [%p]\n", input_list);
-    printf("input_list->types: [%p]\n", input_list->types);
-    printf("types: [%p]\n", types);
-    printf("env_list: [%p]\n", env_list);
-    char    **args;
-    char    **cmds;
-    int     i;
-    int     j;
-    int     last_exit_status;
+    t_init_input *args_list = NULL;
+    t_init_input *args_tail = NULL;
+    t_init_input *pipe_cmds[256];
+    char **env;
+    char **cmds;
 
-    (void) env_list;
-    (void) input_list;
+    (void)prompt;
+    env = env_to_char(env_list); // Converte env_list para char **
+    cmds = list_to_char(input_list);
 
-    //printf("\n----\nbefore delim_split:\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
-    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
-    //print_the_stack(input_list);
+    // Divide os comandos
+    split_commands(cmds, &args_list, &args_tail);
 
-    last_exit_status = 0;
-    cmds = lexer(prompt); // split the input for delim and quotes
-    input_list = delim_split(prompt); // split the input for pipe
-    input_list->fd_in = STDIN_FILENO;
-    input_list->fd_out = STDOUT_FILENO;
-
-    //printf("\n----\nafter delim_split:\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
-    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
-    print_the_stack(input_list);
-
-    i = -1;
-    //int k = 1;
-    printf("\n----\nafter lexer:\n");
-    while(cmds[++i])
-    {
-        //printf("\n---\n[%iº command]\n", k++);
-        //printf("cmds[%i]: [%s]\n", i, cmds[i]);
-        j = -1;
-        args = args_split(cmds[i]); // split the input for space
-        //printf("\n----\nafter args_split:\n");
-        while (args[++j])
-            insert_types(&types, args[j]);
-        args = free_from_split(args);
-    }
-    cmds = free_from_split(cmds);
-    //define_tokens(input_list, types);
-    
-    //printf("\n----\nprint the ptr of lists:\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
-    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
-    //printf("types: [%p]\n", types);
-
-    //send to expander, rever $?(OK) e $ENV~xpto(still NOK)
-    lets_expander(types, env_list, last_exit_status);
-
-    print_the_stack(input_list);
-    printf("\n----\nprint the types list:\n");
-    t_types *temp = types;
-    while (temp)
-    {
-        printf("cms: [%s] - types: [%u]\n", temp->cmd, temp->type);
-        temp = temp->next;
+    // Verifica Heredoc
+    if (is_heredoc(args_list) == -1) {
+        perror("Error setting up heredoc");
+        free_list(args_list);
+        free_list(input_list);
+        return;
     }
 
-    printf("\n----\npre send to exec\n");
-    printf("input_list: [%p]\n", input_list);
-    printf("input_list->types: [%p]\n", input_list->types);
-    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
-    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
-    printf("types: [%p]\n", types);
-    printf("env_list: [%p]\n", env_list);
+    // Configura redirecionamentos
+    if (setup_redirection(args_list) == -1) {
+        perror("Error while setting up redirection");
+        free_list(args_list);
+        free_list(input_list);
+        return;
+    }
 
-    //enviar para execução
-    last_exit_status = to_exec(cmds, input_list, types, env_list);
-	
-    /*printf("\n----\nconvertion of list to char**:\n");
-    int j;
-    for (j = 0; args[j]; j++)
-        printf("args[%i]: [%s]\n", j, args[j]);
-    */
-    //args_list = parser(prompt); //a ideia aqui é interpretar cada strg a partir do split de pipe
-    //será preciso splitar por estaço e tokenizar os comandos.
+    // Verifica Pipes
+    if (has_pipe(args_list)) {
+        split_by_pipes(args_list, pipe_cmds);
+        execute_pipeline(pipe_cmds, env);
+        free_list(args_list);
+        free_list(input_list);
+        return;
+    }
 
+    // Verifica e executa Built-in
+    if (is_btin(types)) {
+        execute_builtin(types->cmd, env_list, args_list);
+    } else {
+        // Executa com execve
+        find_command_path(types, env_list);
+        exec_cmd(args_list, types, env);
+    }
+
+    // Libera memória
+    free_list(args_list);
+    free_list(input_list);
+    free(cmds);
+    free(env);
 }
 

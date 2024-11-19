@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/19 10:39:49 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:24:59 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,12 @@ char				*change_path(char *path, char *src, t_envp **head);
 
 
 /* EXEC */
-int 	   			to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env_list);
-void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
+//int 	   			to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env_list);
+int 				to_exec(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list);
+void 				execute_builtin(char *args, t_envp *env_list, t_init_input *list);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
 void				exec_command(t_init_input *cmd, char **envp);
+void				find_command_path(t_types *type, t_envp *env_list);
 
 /* OTHERS */
 //int					is_delimiter(char c);
@@ -168,7 +170,7 @@ char				**env_to_char(t_envp *env_list);
 char				**lexer(char *input);
 int					has_heredoc(t_init_input *cmd);
 int					has_redirect(t_init_input *cmd);
-int 				has_pipe(t_init_input *cmd);
+//int 				has_pipe(t_init_input *cmd);
 int					has_builtin(t_init_input *cmd);
 /* ******************************************************* */
 int					is_hdoc(t_types *type);

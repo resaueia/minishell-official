@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/15 22:37:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:46:24 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,47 +23,39 @@ void	ft_pwd(int fd_out)
 	else
 		perror("getcwd() incurred in unexpected error");
 }
-void	ft_echo(char *args, t_envp **env_list, int fd_out)
-{
-	(void)env_list;
-	int	newline;
-	char	*tmp;
 
-	newline = 1;
-	while (*args == ' ' )
-		args++;
-	if (args == NULL) //if echo come without args, it will print just a newline
-	{
-		ft_putstr_fd("\n", fd_out);
-		return ;
-	}
-	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
-	{
-		tmp = args;
-		args++; //incrementando o ponteiro para pular o '-';
-		while (*args == 'n')
-			args++; //incrementando o ponteiro para pular o 'n';
-		if (*args == ' ')
-		{
-			newline = 0; //flag to not print a newline	
-			args++; //incrementa para o próximo caractere
-		}
-		else
-		{
-			args = tmp; //se não for um espaço, volta para o início da string
-			newline = 1; //flag to print a newline
-		}
-		//args += 3; //incrementing the pointer to the next character for check next conditions
-	}
-	remove_quotes(&args); //to remove quotes from the args
-	if (newline == 1) //if newline is 1, it will print a newline
-	{
-		ft_putstr_fd(args, fd_out); //printing the args with a newline
-		ft_putchar_fd('\n', fd_out);
-	}
-	else if (newline == 0) //if newline is 0, it will not print a newline
-		ft_putstr_fd(args, fd_out); //printing the args without a newline
+void ft_echo(char *args, t_envp **env_list, int fd_out)
+{
+    int newline = 1;
+    char dollar = '$';
+
+    while (*args == ' ')
+        args++;
+
+    if (ft_strncmp(args, "-n", 2) == 0)
+    {
+        newline = 0;
+        args += 2;
+        while (*args == ' ')
+            args++;
+    }
+
+    remove_quotes(&args);
+
+    if (*args == '$')
+    {
+        args++;
+        if (*args == '\0')
+            args = &dollar;
+        else if (is_key(args, *env_list))
+            args = get_value(args, *env_list);
+    }
+
+    ft_putstr_fd(args, fd_out);
+    if (newline)
+        ft_putchar_fd('\n', fd_out);
 }
+
 
 void	ft_cd(char *path, t_envp **env_list)
 {

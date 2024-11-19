@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/18 16:21:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:45:08 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,58 +47,31 @@ void    split_by_pipes(t_init_input *args_list, t_init_input **cmds)
     cmds[i + 1] = NULL;
 }
 
-void    execute_pipeline(t_init_input **cmds, char **envp)
+void execute_pipeline(t_init_input **pipe_cmds, char **envp)
 {
-    int     pipe_fd[2];
-    int     input_fd;
-    pid_t   pid;
-    int     i;
-    
-    input_fd = STDIN_FILENO;
-    i = 0;
-    while (cmds[i])
+    int pipe_fd[2];
+    pid_t pid;
+    int status;
+    int input_fd = STDIN_FILENO;
+
+    for (int i = 0; pipe_cmds[i]; i++)
     {
-        if (cmds[i + 1] != NULL)
-        {
-            if (pipe(pipe_fd) == -1)
-            {
-                perror("Pipe has failed!");
-                exit(EXIT_FAILURE);
-            }
-        }
-        else
-        {
-            pipe_fd[0] = STDIN_FILENO;
-            pipe_fd[1] = STDOUT_FILENO;
-        }
+        pipe(pipe_fd);
         pid = fork();
-        if (pid == -1)
+        if (pid == 0)
         {
-            perror("Fork has failed!");
-            exit(EXIT_FAILURE);
-        }
-        else if (pid == 0)
-        {
-            if (input_fd != STDIN_FILENO)
-            {
-                dup2(input_fd, STDIN_FILENO);
-                close(input_fd);
-            }
-            if (cmds[i + 1] != NULL)
-            {
+            dup2(input_fd, STDIN_FILENO);
+            if (pipe_cmds[i + 1] != NULL)
                 dup2(pipe_fd[1], STDOUT_FILENO);
-                close(pipe_fd[1]);
-            }
-            exec_command(cmds[i], envp);
-            perror("Execution has failed.");
+            close(pipe_fd[0]);
+            exec_command(pipe_cmds[i], envp);
             exit(EXIT_FAILURE);
         }
         else
         {
-            wait(NULL);
+            waitpid(pid, &status, 0);
             close(pipe_fd[1]);
             input_fd = pipe_fd[0];
         }
-        i++;
     }
 }
