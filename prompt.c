@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:44:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 11:00:20 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static t_init_input	*init_list(void)
 		return (NULL);
 	list->string = NULL;
 	list->args = NULL;
-	list->fd_in = 0;
-	list->fd_out = 1;
+	list->fd_in = STDIN_FILENO;
+	list->fd_out = STDOUT_FILENO;
 	list->token = (t_token){0};
 	list->types = NULL;
 	list->prev = NULL;
@@ -130,6 +130,12 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt_dup)) // check if the input is valid
 			{
+				printf("\n----\n");
+				printf("input_list: [%p]\n", input_list);
+				printf("input_list->types: [%p]\n", input_list->types);
+				printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
+    			printf("input_list->fd_out: [%p]\n", &input_list->fd_out);	
+				printf("env_list: [%p]\n", env_list);
 				printf("\n----\nsending to process_input:\n");
 				//processe_inut(struct, char**, struct);
 				process_input(input_list, input_list->types, prompt_dup, env_list);

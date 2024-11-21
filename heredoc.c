@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/21 16:16:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:40:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ int     is_heredoc(t_init_input *input_list, t_types *type)
             input_list->fd_in = heredoc_fd;
             return (1);
         }
+        }
         temp = temp->next;
     }
     return (0);
 }
 
+int    tackle_heredoc(char *delim)
 int    tackle_heredoc(char *delim)
 {
     printf("\n----\ntackle_heredoc\n");
@@ -73,12 +75,15 @@ int    tackle_heredoc(char *delim)
     {
         perror("Error creating heredoc pipe\n");
         return (-1);
+        perror("Error creating heredoc pipe\n");
+        return (-1);
     }
     while (1)
     {
         line = readline("heredoc> ");
         if (!line)
         {
+            perror("Error reading line\n");
             perror("Error reading line\n");
             break ;
         }
@@ -97,11 +102,16 @@ int    tackle_heredoc(char *delim)
       //  close(input_list->fd_in);
     
     return (pipe_fd[0]);
+    //if (input_list->fd_in != STDIN_FILENO)
+      //  close(input_list->fd_in);
+    
+    return (pipe_fd[0]);
     //dup2(pipe_fd[0], STDIN_FILENO);
     //close(pipe_fd[0]);
     /*After writing stuff on the pipe, I close its writing end, use
     the dup2 function to set its reading end to the standard input (which used to be the keyboard)
     and then proceed to close the actual read end of the pipe, hence finishing the whole process.*/
 
+    //Not sure if the execution part of this should be written here already or elsewhere.
     //Not sure if the execution part of this should be written here already or elsewhere.
 }

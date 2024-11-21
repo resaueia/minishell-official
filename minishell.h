@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/21 16:03:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:41:04 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 # include <unistd.h>
 
 /* COLORS */
@@ -141,10 +142,10 @@ char				*change_path(char *path, char *src, t_envp **head);
 
 
 /* EXEC */
-int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
+int 	   			to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env_list);
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
-//static char 		*find_command_path(char *cmd, t_envp *env_list);
+void				exec_command(t_init_input *cmd, char **envp);
 
 /* OTHERS */
 //int					is_delimiter(char c);
@@ -157,7 +158,6 @@ t_init_input		*ft_split(char *s);
 t_init_input		*delim_split(char *s);
 t_token				get_token(char *c);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
-
 
 /* TO CONVERT LIST TO CHAR** */
 char    			**types_to_char(t_types *list);
@@ -195,6 +195,7 @@ char				**free_from_split(char **str);
 void				free_list(t_init_input *list);
 void				free_env(t_envp *env_list);
 void				exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list);
+void				close_fds(t_init_input *cmd_list);
 
 /* just suport */
 void				print_the_stack(t_init_input *list);

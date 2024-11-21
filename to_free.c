@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 22:12:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/19 10:38:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,20 @@ void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_l
 		free_char_ptr(prompt_dup);
 	if (env_list)
 		free_env(env_list);
+}
+
+void    close_fds(t_init_input *cmd_list)
+{
+    t_init_input    *temp;
+
+    temp = cmd_list;
+    while (temp)
+    {
+        if (temp->fd_in != STDIN_FILENO)
+            close(temp->fd_in);
+        if (temp->fd_out != STDOUT_FILENO)
+            close(temp->fd_out);
+        temp = temp->next;
+    }
 }
 

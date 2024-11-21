@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/21 12:46:51 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:41:25 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ static char	**args_split(char *input)
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
     printf("\n----\nprocess_input\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
-    //printf("env_list: [%p]\n", env_list);
+    printf("input_list: [%p]\n", input_list);
+    printf("input_list->types: [%p]\n", input_list->types);
+    printf("types: [%p]\n", types);
+    printf("env_list: [%p]\n", env_list);
     char    **args;
     char    **cmds;
     int     i;
@@ -113,6 +113,13 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
 
     (void) env_list;
     (void) input_list;
+
+    //printf("\n----\nbefore delim_split:\n");
+    //printf("input_list: [%p]\n", input_list);
+    //printf("input_list->types: [%p]\n", input_list->types);
+    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
+    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
+    //print_the_stack(input_list);
 
     last_exit_status = 0;
     cmds = lexer(prompt); // split the input for delim and quotes
@@ -124,7 +131,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
 
     i = -1;
     //int k = 1;
-    //printf("\n----\nafter lexer:\n");
+    printf("\n----\nafter lexer:\n");
     while(cmds[++i])
     {
         //printf("\n---\n[%iº command]\n", k++);
@@ -139,12 +146,17 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     cmds = free_from_split(cmds);
     //define_tokens(input_list, types);
     
-    //printf("\n----\nprint the ptr of list:\n");
+    //printf("\n----\nprint the ptr of lists:\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
+    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
+    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
     //printf("types: [%p]\n", types);
-    //send to expander, rever $? e $ENV~xpto
+
+    //send to expander, rever $?(OK) e $ENV~xpto(still NOK)
     lets_expander(types, env_list, last_exit_status);
+
+    print_the_stack(input_list);
     printf("\n----\nprint the types list:\n");
     t_types *temp = types;
     while (temp)
@@ -152,12 +164,17 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
         printf("cms: [%s] - types: [%u]\n", temp->cmd, temp->type);
         temp = temp->next;
     }
-    //printf("\n----\npre send to exec\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("types: [%p]\n", types);
-    //printf("env_list: [%p]\n", env_list);
+
+    printf("\n----\npre send to exec\n");
+    printf("input_list: [%p]\n", input_list);
+    printf("input_list->types: [%p]\n", input_list->types);
+    //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
+    //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
+    printf("types: [%p]\n", types);
+    printf("env_list: [%p]\n", env_list);
+
     //enviar para execução
-    last_exit_status = to_exec(input_list, types, env_list);
+    last_exit_status = to_exec(cmds, input_list, types, env_list);
 	
     /*printf("\n----\nconvertion of list to char**:\n");
     int j;
@@ -168,3 +185,4 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //será preciso splitar por estaço e tokenizar os comandos.
 
 }
+
