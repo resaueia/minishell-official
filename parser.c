@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:26:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:46:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,10 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     last_exit_status = 0;
     cmds = lexer(prompt); // split the input for delim and quotes
     input_list = delim_split(prompt); // split the input for pipe
+    input_list->fd_in = 0;
+    input_list->fd_out = 1;
+    printf("exec_cmd >>> file descriptor in: [%d]\n", input_list->fd_in);
+    printf("exec_cmd >>> file descriptor out: [%d]\n", input_list->fd_out);
 
     i = -1;
     //int k = 1;

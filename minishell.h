@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/15 22:37:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:03:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,10 @@ int					is_pp(t_types *type);
 int					is_rdrct(t_types *type);
 int					is_btin(t_types *type);
 int					is_exec(t_types *type);
+
+/* HEREDOC */
+int					is_heredoc(t_init_input *input_list, t_types *type);
+int					tackle_heredoc(char *delim);
 
 /* Built-in functions */
 int					is_builtin(char *wrd);

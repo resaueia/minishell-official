@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:44:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:07:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
 {
+    printf("\n----\nexecute_builtin\n");
     (void)cmd;
 	t_envp	*tmp;
     int     saved_stdout;
@@ -21,6 +22,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 
     printf("exec_bi >>> file descriptor in: [%d]\n", list->fd_in);
     printf("exec_bi >>> file descriptor out: [%d]\n", list->fd_out);
+    printf("\n----\n\n");
 
 	tmp = env_list;
 	saved_stdout = dup(STDOUT_FILENO);
@@ -115,10 +117,6 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 
     args = types_to_char(type);
     (void)args;
-    cmd->fd_in = 0;
-    cmd->fd_out = 1;
-    printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
-    printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
     pid = fork();
     if (pid == -1)
     {
@@ -161,18 +159,22 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    //printf("\n----\nto_exec\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("env_list: [%p]\n", env_list);
-    //printf("type: [%p]\n", type);
+    printf("\n----\nto_exec\n");
+    printf("input_list: [%p]\n", input_list);
+    printf("env_list: [%p]\n", env_list);
+    printf("type: [%p]\n", type);
     //printf("input_list->types: [%p]\n", input_list->types);
     (void) input_list;
+    
     char  **env;
     t_types     *tmp;
+
+    //INCLUIR ARGS_LIST PARA O EXEC_CMD DO HEREDOC OU NÃO
+    
     
     //printf("\n----\nafter declarations\n");
-    input_list->fd_in = 0;
-    input_list->fd_out = 1;
+    //input_list->fd_in = 0;
+    //input_list->fd_out = 1;
     env = env_to_char(env_list);
     tmp = type;
     (void) env;
@@ -195,6 +197,13 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         //executa heredoc
         printf("has heredoc\n");
+        if (is_heredoc(input_list, type) == -1)
+        {
+            perror ("Error setting up heredoc");
+            //free_list(args_list);
+            free_list(input_list);
+            return (1);
+        }
         //tackle_heredoc(cmd_list);
     }
     if (is_pp(type)) //pipe
