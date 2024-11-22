@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/21 16:41:04 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 11:34:32 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,10 @@ char				*change_path(char *path, char *src, t_envp **head);
 
 
 /* EXEC */
-int 	   			to_exec(char **cmds, t_init_input *input_list, t_types *type, t_envp *env_list);
+int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
-void				exec_command(t_init_input *cmd, char **envp);
+//void				exec_command(t_init_input *cmd, char **envp);
 
 /* OTHERS */
 //int					is_delimiter(char c);
@@ -195,7 +195,7 @@ char				**free_from_split(char **str);
 void				free_list(t_init_input *list);
 void				free_env(t_envp *env_list);
 void				exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list);
-void				close_fds(t_init_input *cmd_list);
+//void				close_fds(t_init_input *cmd_list);
 
 /* just suport */
 void				print_the_stack(t_init_input *list);

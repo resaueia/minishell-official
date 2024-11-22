@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/19 10:38:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:03:41 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_l
 		free_env(env_list);
 }
 
-void    close_fds(t_init_input *cmd_list)
+/*void    close_fds(t_init_input *cmd_list)
 {
     t_init_input    *temp;
 
@@ -90,5 +90,5 @@ void    close_fds(t_init_input *cmd_list)
             close(temp->fd_out);
         temp = temp->next;
     }
-}
+}*/
 

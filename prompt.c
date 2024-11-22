@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/19 11:00:20 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 11:53:56 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,12 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt_dup)) // check if the input is valid
 			{
-				printf("\n----\n");
-				printf("input_list: [%p]\n", input_list);
-				printf("input_list->types: [%p]\n", input_list->types);
-				printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
-    			printf("input_list->fd_out: [%p]\n", &input_list->fd_out);	
-				printf("env_list: [%p]\n", env_list);
+				//printf("\n----\n");
+				//printf("input_list: [%p]\n", input_list);
+				//printf("input_list->types: [%p]\n", input_list->types);
+				//printf("input_list->fd_in: [%i]\n", input_list->fd_in);
+    			//printf("input_list->fd_out: [%i]\n", input_list->fd_out);	
+				//printf("env_list: [%p]\n", env_list);
 				printf("\n----\nsending to process_input:\n");
 				//processe_inut(struct, char**, struct);
 				process_input(input_list, input_list->types, prompt_dup, env_list);

@@ -6,11 +6,11 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/18 16:21:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 11:49:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+/*#include "minishell.h"
 
 int     has_pipe(t_init_input *args_list)
 {
@@ -101,4 +101,4 @@ void    execute_pipeline(t_init_input **cmds, char **envp)
         }
         i++;
     }
-}
+}*/

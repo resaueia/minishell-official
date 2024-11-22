@@ -6,11 +6,11 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/18 16:02:35 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 11:54:10 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+/*#include "minishell.h"
 
 int setup_redirection(t_init_input *args_list)
 {
@@ -71,4 +71,4 @@ int setup_redirection(t_init_input *args_list)
         temp = temp->next;
     }
     return (0);
-}
+}*/
