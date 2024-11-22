@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:26:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:30:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,12 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     cmds = lexer(prompt); // split the input for delim and quotes
     input_list = delim_split(prompt); // split the input for pipe
 
+    input_list->fd_in = 0;
+    input_list->fd_out = 1;
+    printf("\n----\nfds\n");
+    printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+    printf("input_list->fd_out: [%d]\n", input_list->fd_out);
+
     i = -1;
     //int k = 1;
     //printf("\n----\nafter lexer:\n");
@@ -139,6 +145,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
     //printf("types: [%p]\n", types);
+    
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
     printf("\n----\nprint the types list:\n");
