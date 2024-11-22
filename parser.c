@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/19 11:48:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 16:40:09 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,12 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     int     i;
     int     j;
     int     last_exit_status;
+    t_init_input    *new_input_list;
 
     (void) env_list;
-    (void) input_list;
+    //(void) input_list;
 
-    //printf("\n----\nbefore delim_split:\n");
+    printf("\n----\nbefore delim_split:\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
     //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
@@ -123,16 +124,35 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
 
     last_exit_status = 0;
     cmds = lexer(prompt); // split the input for delim and quotes
-    input_list = delim_split(prompt); // split the input for pipe
-    input_list->fd_in = STDIN_FILENO;
-    input_list->fd_out = STDOUT_FILENO;
+    if (!cmds)
+    {
+        fprintf(stderr, "Lexer failed to properly process input.\n");
+        return ;
+    }
+    for (int k = 0; cmds[k]; k++)
+    {
+    printf("cmds[%d]: %s\n", k, cmds[k]);
+    }
+    new_input_list = delim_split(prompt);
+    if (!new_input_list)
+    {
+        fprintf(stderr, "Failed to split input.\n");
+        return ;
+    }
+    free_list(input_list);
+    input_list = new_input_list;
+    if (input_list)
+    {
+        input_list->fd_in = STDIN_FILENO;
+        input_list->fd_out = STDOUT_FILENO;
+    }
 
     //printf("\n----\nafter delim_split:\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
     //printf("input_list->fd_in: [%p]\n", &input_list->fd_in);
     //printf("input_list->fd_out: [%p]\n", &input_list->fd_out);
-    print_the_stack(input_list);
+    //print_the_stack(input_list);
 
     i = -1;
     //int k = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/19 11:00:20 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:58:21 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,14 @@ void	prompt(char **envp)
 	while (1) // loop the shell.
 	{
 		prompt = readline(PROGRAM_NAME); // the prompt
+		if (!prompt)
+		{
+			printf("Exiting minishell...\n");
+			break ;
+		}
+		if(input_list)
+			free_list(input_list);
+		input_list = init_list();
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 			prompt_dup = ft_strdup(prompt);
 		printf("prompt: [%s]\n", prompt);
