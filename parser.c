@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/22 19:30:55 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:46:07 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static char	**args_split(char *input)
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
-    printf("\n----\nprocess_input\n");
+    //printf("\n----\nprocess_input\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
     //printf("types: [%p]\n", types);
@@ -120,9 +120,9 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
 
     input_list->fd_in = 0;
     input_list->fd_out = 1;
-    printf("\n----\nfds\n");
-    printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    printf("input_list->fd_out: [%d]\n", input_list->fd_out);
+    //printf("\n----\nfds\n");
+    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
 
     i = -1;
     //int k = 1;
@@ -148,13 +148,13 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    printf("\n----\nprint the types list:\n");
-    t_types *temp = types;
+    //printf("\n----\nprint the types list:\n");
+    /*t_types *temp = types;
     while (temp)
     {
         printf("cms: [%s] - types: [%u]\n", temp->cmd, temp->type);
         temp = temp->next;
-    }
+    }*/
     //printf("\n----\npre send to exec\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("types: [%p]\n", types);

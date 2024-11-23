@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/22 19:38:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:52:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 
 static void find_command_path(t_types *type, t_envp *env_list) 
 {
-    printf("\n----\non find_command_path\n\n");
+    //printf("\n----\non find_command_path\n\n");
     (void)env_list;
     char *path = getenv("PATH"); // Obtém o PATH do sistema
     char *path_dup;
@@ -119,8 +119,8 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
     args = types_to_char(type);
     (void)args;
     
-    printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
-    printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
+    //printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
+    //printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
     pid = fork();
     if (pid == -1)
     {
@@ -163,7 +163,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    printf("\n----\non to_exec\n\n");
+    //printf("\n----\non to_exec\n\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("env_list: [%p]\n", env_list);
     //printf("type: [%p]\n", type);
@@ -196,7 +196,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     if (is_hdoc(type)) //heredoc
     {
         //executa heredoc
-        printf("has heredoc\n");
+        //printf("has heredoc\n");
         if (is_heredoc(input_list, type) == -1)
         {   
             perror ("Error setting up heredoc");
@@ -204,6 +204,9 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
             free_list(input_list);
             return (1);
         }
+        //printf("heredoc has been executed\n");
+        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
     }
     if (is_pp(type)) //pipe
     {
@@ -213,22 +216,22 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
         //printf("\n----\nprint the args_list:\n");
         //print_the_stack(args_list);
     }
-    else if (is_rdrct(type)) //redirects
+    if (is_rdrct(type)) //redirects
     {
         //executa redirect
         printf("has redirect\n");
     }
-    else if (is_btin(type)) //builtin
+    if (is_btin(type)) //builtin
     {
         execute_builtin(type->cmd, env_list, input_list, type);
         //executa o comando
     }
     else //if (is_exec(type)) //execve
     {
-        printf("has execve\n");
+        //printf("has execve\n");
         //procura o path do comando na env_list
         find_command_path(type, env_list);
-        printf("cmd_path: [%s]\n", type->cmd);
+        //printf("cmd_path: [%s]\n", type->cmd);
         //executa execve
         exec_cmd(input_list, type, env);
     }

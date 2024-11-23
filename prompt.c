@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/15 22:44:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:45:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	prompt(char **envp)
 		{
 			if (!input_check(prompt_dup)) // check if the input is valid
 			{
-				printf("\n----\nsending to process_input:\n");
+				//printf("\n----\nsending to process_input:\n");
 				//processe_inut(struct, char**, struct);
 				process_input(input_list, input_list->types, prompt_dup, env_list);
 			}

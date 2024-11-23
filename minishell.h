@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/22 19:37:56 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:41:23 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int					is_exec(t_types *type);
 
 /* HEREDOC */
 int					is_heredoc(t_init_input *input_list, t_types *type);
-int					tackle_heredoc(char *delim);
+//int					tackle_heredoc(char *delim);
+int					tackle_heredoc(t_types *type, char *delim);
 
 /* Built-in functions */
 int					is_builtin(char *wrd);
