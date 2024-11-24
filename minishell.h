@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/23 14:41:23 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:11:20 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void				ft_unset(char *var, t_envp **env_list);
 char				*free_char_ptr(char *ptr);
 char				**free_from_split(char **str);
 void				free_list(t_init_input *list);
+void				free_types(t_types *types);
 void				free_env(t_envp *env_list);
 void				exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list);
 

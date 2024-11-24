@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/23 14:45:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 13:44:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ void	prompt(char **envp)
 		prompt = readline(PROGRAM_NAME); // the prompt
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 			prompt_dup = ft_strdup(prompt);
-		printf("prompt: [%s]\n", prompt);
+		//printf("prompt: [%s]\n", prompt);
 		if (ft_strncmp(prompt, "exit", 4) == 0) //if the user types exit, the shell will exit.
 		{
 			int ret;
 			int i;
-
+			
 			ret = 0;
 			i = 4;
 			while (prompt[i] == ' ')

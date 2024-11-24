@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/23 14:46:07 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 14:44:38 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("\n----\nprocess_input\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
+    printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     char    **args;
     char    **cmds;
@@ -144,20 +144,20 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("\n----\nprint the ptr of list:\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
+    printf("types: [%p]\n", types);
     
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    //printf("\n----\nprint the types list:\n");
-    /*t_types *temp = types;
+    printf("\n----\nprint the types list:\n");
+    t_types *temp = types;
     while (temp)
     {
-        printf("cms: [%s] - types: [%u]\n", temp->cmd, temp->type);
+        printf("cms: [%p]_[%s]_[%u]\n", temp->cmd, temp->cmd, temp->type);
         temp = temp->next;
-    }*/
-    //printf("\n----\npre send to exec\n");
+    }
+    printf("\n----\npre send to exec\n");
     //printf("input_list: [%p]\n", input_list);
-    //printf("types: [%p]\n", types);
+    printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     //enviar para execução
     last_exit_status = to_exec(input_list, types, env_list);

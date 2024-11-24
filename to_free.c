@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 22:12:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:46:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ void	free_list(t_init_input *list)
 		list = list->next;
 		if (temp->string)
 			free(temp->string);
+		free(temp);
+	}
+}
+
+void	free_types(t_types *types)
+{
+	t_types *temp;
+
+	while (types)
+	{
+		temp = types;
+		types = types->next;
+		if (temp->cmd)
+			free(temp->cmd);
 		free(temp);
 	}
 }
