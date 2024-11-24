@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 15:53:34 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 18:55:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 	//close(saved_stdin);
 }
 
-static ind find_command_path(t_types *type, t_envp *env_list) 
+static void find_command_path(t_types *type, t_envp *env_list) 
 {
     //transformar para salvar o statuscode em caso de erro no diretório.
     //printf("\n----\non find_command_path\n\n");
@@ -70,21 +70,18 @@ static ind find_command_path(t_types *type, t_envp *env_list)
     char    *path_dup;
     char    *dir;
     char    *full_path;
-    int     status;
 
     if (!path)
     {
         fprintf(stderr, "minishell: PATH not found\n");
         return ;
     }
-
     path_dup = strdup(path); //faz uma cópia do path para manipulação
     if (!path_dup)
     {
         perror("Erro ao duplicar PATH");
         exit(EXIT_FAILURE);
     }
-
     dir = strtok(path_dup, ":");
     while (dir != NULL) 
     {
@@ -109,7 +106,6 @@ static ind find_command_path(t_types *type, t_envp *env_list)
     // Caso o comando não seja encontrado, imprime uma mensagem de erro
     fprintf(stderr, "minishell: command not found: %s\n", type->cmd);
     free(path_dup); // Libera a cópia do PATH
-    return (WIFEXITED);
 }
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
@@ -239,7 +235,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         printf("has execve\n");
         //procura o path do comando na env_list
-        find_command_path(type, env_list); //transfirir para dentro do exec_cmd salvando o WIFEEXITED no status
+        find_command_path(type, env_list); 
         //printf("cmd_path: [%s]\n", type->cmd);
         //executa execve
         exec_cmd(input_list, type, env);
