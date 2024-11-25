@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 18:55:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 21:02:48 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
 {
-    printf("\n----\non execute_builtin\n\n");
+    //printf("\n----\non execute_builtin\n\n");
     (void)cmd;
 	t_envp	*tmp;
     int     saved_stdout;
     //int   saved_stdin;
 
-    printf("exec_bi >>> file descriptor in: [%d]\n", list->fd_in);
-    printf("exec_bi >>> file descriptor out: [%d]\n", list->fd_out);
+    //printf("exec_bi >>> file descriptor in: [%d]\n", list->fd_in);
+    //printf("exec_bi >>> file descriptor out: [%d]\n", list->fd_out);
 
 	tmp = env_list;
 	saved_stdout = dup(STDOUT_FILENO);
@@ -104,7 +104,8 @@ static void find_command_path(t_types *type, t_envp *env_list)
         dir = strtok(NULL, ":");
     }
     // Caso o comando não seja encontrado, imprime uma mensagem de erro
-    fprintf(stderr, "minishell: command not found: %s\n", type->cmd);
+    //fprintf(stderr, "minishell: command not found: %s\n", type->cmd);
+    printf("minishell: %s: %s\n", strerror(errno), type->cmd);
     free(path_dup); // Libera a cópia do PATH
 }
 
@@ -148,6 +149,8 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
             }
             close(cmd->fd_out);
         }
+        //INCLUIR VERIFICAÇÃO DO ARGUMENTO APÓS O EXECUTÁVEL.
+        //SE FOR UM REDIR, ENVIAR O PRÓXIMO NÓ COMO ARGUMENTO.
         if (execve(type->cmd, args, env) == -1)
         {
             perror("Execution has failed");
@@ -175,8 +178,10 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     t_types     *tmp;
     
     //printf("\n----\nafter declarations\n");
-    input_list->fd_in = 0;
-    input_list->fd_out = 1;
+    //input_list->fd_in = 0;
+    //input_list->fd_out = 1;
+    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
     env = env_to_char(env_list);
     tmp = type;
     (void) env;
@@ -204,7 +209,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
             perror ("Error setting up heredoc");
             //free_list(args_list);
             //free_list(input_list);
-            return (1);
+            exit(EXIT_FAILURE);
         }
         //printf("\n----\n");
         //printf("heredoc has been executed\n");
@@ -224,21 +229,33 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     if (is_rdrct(type)) //redirects
     {
         //executa redirect
-        printf("has redirect\n");
+        //printf("has redirect\n");
+        if (setup_redirection(input_list, type) == -1)
+        {
+            perror("Error whule setting up redirection\n");
+            //free_list(args_list);
+            //free_list(cmd_list);
+            exit(EXIT_FAILURE);
+        }
     }
     if (is_btin(type)) //builtin
     {
-        execute_builtin(type->cmd, env_list, input_list, type);
-        //executa o comando
+        //printf("has builtin\n");
+        //printf("cmd: [%s]\n", type->cmd);
+        //printf("cmd next: [%s]\n", type->next->cmd);
+        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
+        execute_builtin(type->cmd, env_list, input_list, type); //executa o comando
     }
     else //if (is_exec(type)) //execve
     {
-        printf("has execve\n");
+        //printf("has execve\n");
         //procura o path do comando na env_list
         find_command_path(type, env_list); 
         //printf("cmd_path: [%s]\n", type->cmd);
         //executa execve
         exec_cmd(input_list, type, env);
+        //verificar se tem algum temporário heredoc_*.tmp e deleta
     }
     free_list(input_list);
     free_types(type);

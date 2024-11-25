@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/24 14:56:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/24 21:04:50 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ if (pipe(pipe_fd) == -1)
 
 static void change_value(t_types *type, char *value)
 {
-    printf("\n----\non change_value\n\n");
-    printf("type: [%p]\n", type);
-    printf("value: [%s]\n", value);
+    //printf("\n----\non change_value\n\n");
+    //printf("type: [%p]\n", type);
+    //printf("value: [%s]\n", value);
     t_types *head;
 
     head = type;
@@ -131,26 +131,26 @@ static void change_value(t_types *type, char *value)
 
 int     is_heredoc(t_init_input *input_list, t_types *type)
 {
-    printf("\n----\non is_heredoc\n\n");
-    printf("input_list: [%p]\n", input_list);
-    printf("type: [%p]\n", type);
+    //printf("\n----\non is_heredoc\n\n");
+    //printf("input_list: [%p]\n", input_list);
+    //printf("type: [%p]\n", type);
     t_types    *head;
     int             heredoc_fd;
 
     (void) input_list;
 
     head = type;
-    printf("head: [%p]\n", head);
+    //printf("head: [%p]\n", head);
     while(type)
     {
         //printf("cmd: [%s]\n", temp->cmd);
         //printf("delim: [%s]\n", temp->next->cmd);
         if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
         {
-            printf("\n----\ntype is hdoc && has next node\n");
+            //printf("\n----\ntype is hdoc && has next node\n");
 
-            printf("cmd is: [%s]\n", type->cmd);
-            printf("delim: [%s]\n", type->next->cmd);
+            //printf("cmd is: [%s]\n", type->cmd);
+            //printf("delim: [%s]\n", type->next->cmd);
                         
             heredoc_fd = tackle_heredoc(head, type->next->cmd);
             if (heredoc_fd == -1)
@@ -160,9 +160,9 @@ int     is_heredoc(t_init_input *input_list, t_types *type)
                 return (-1);
             }
             input_list->fd_in = heredoc_fd; // Configura o fd_in
-            printf("\n----\nback to is_heredoc\n\n");
-            printf("cmd: [%s]\n", type->cmd);
-            printf("delim: [%s]\n", type->next->cmd);
+            //printf("\n----\nback to is_heredoc\n\n");
+            //printf("cmd: [%s]\n", type->cmd);
+            //printf("delim: [%s]\n", type->next->cmd);
             type = head;
             return (1);
         }
@@ -174,9 +174,9 @@ int     is_heredoc(t_init_input *input_list, t_types *type)
 
 int tackle_heredoc(t_types *type, char *delim) 
 {
-    printf("\n----\ntackle_heredoc\n");
-    printf("delim: [%s]\n", delim);
-    printf("type: [%p]\n", type);
+    //printf("\n----\ntackle_heredoc\n");
+    //printf("delim: [%s]\n", delim);
+    //printf("type: [%p]\n", type);
     char *line;
     char temp_file[64]; // Buffer para o nome do arquivo
     int temp_fd;
@@ -216,10 +216,10 @@ int tackle_heredoc(t_types *type, char *delim)
     // Reposicionar o cursor no início do arquivo para leitura futura
     lseek(temp_fd, 0, SEEK_SET);
 
-    printf("\n");
-    printf("pre type->cmd: [%s]\n", type->next->cmd);
+    //printf("\n");
+    //printf("pre type->cmd: [%s]\n", type->next->cmd);
     change_value(type, temp_file); // Substitui o `cmd` no nó do heredoc pelo caminho do arquivo temporário
-    printf("\n--\npos type->cmd: [%s]\n", type->next->cmd);
+    //printf("\n--\npos type->cmd: [%s]\n", type->next->cmd);
 
     // Retorna o descritor de arquivo
     //printf("Temporary file descriptor: %d\n", temp_fd);
