@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 20:59:38 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:55:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,10 @@ static char	**args_split(char *input)
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
-    //printf("\n----\nprocess_input\n");
-    //printf("input_list: [%p]\n", input_list);
+    printf("\n----\nprocess_input\n");
+    printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
+    printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     char    **args;
     char    **cmds;
@@ -117,6 +117,9 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     last_exit_status = 0;
     cmds = lexer(prompt); // split the input for delim and quotes
     input_list = delim_split(prompt); // split the input for pipe
+
+    printf("\n----\nafter delim_split:\n");
+    print_the_stack(input_list);
 
     input_list->fd_in = 0;
     input_list->fd_out = 1;

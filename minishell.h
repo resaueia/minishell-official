@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/24 19:02:28 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:25:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,9 @@ int					tackle_heredoc(t_types *type, char *delim);
 
 /* REDIRECTS */
 int					setup_redirection(t_init_input *args_list, t_types *type);
+
+/* PIPES */
+int					setup_pipeline(t_init_input *input_list, t_envp *env_list);
 
 /* Built-in functions */
 int					is_builtin(char *wrd);

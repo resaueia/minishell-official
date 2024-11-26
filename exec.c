@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 21:02:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:37:20 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,8 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    //printf("\n----\non to_exec\n\n");
-    //printf("input_list: [%p]\n", input_list);
+    printf("\n----\non to_exec\n\n");
+    printf("input_list: [%p]\n", input_list);
     //printf("env_list: [%p]\n", env_list);
     //printf("type: [%p]\n", type);
     //printf("input_list->types: [%p]\n", input_list->types);
@@ -222,9 +222,10 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         //executa em cenário de pipe
         printf("has pipe\n");
-        //args_list = split_commands(cmds, &head, &tail);
-        //printf("\n----\nprint the args_list:\n");
-        //print_the_stack(args_list);
+        if (setup_pipeline(input_list, env_list) == -1) {
+            perror("Error while setting up pipeline");
+            return (-1);
+        }
     }
     if (is_rdrct(type)) //redirects
     {
