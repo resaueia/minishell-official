@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 21:02:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:26:47 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,8 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         //executa em cenário de pipe
         printf("has pipe\n");
+        handle_pipes(input_list, type, env);
+        return (0); // Já lidamos com todos os pipes, não precisamos continuar
         //args_list = split_commands(cmds, &head, &tail);
         //printf("\n----\nprint the args_list:\n");
         //print_the_stack(args_list);
@@ -260,4 +262,67 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     free_list(input_list);
     free_types(type);
     return (0);
+}
+
+void handle_pipes(t_init_input *input_list, t_types *type, char **env) 
+{
+    int pipe_fds[2];
+    int prev_fd = -1; // Para armazenar o lado de leitura do pipe anterior
+    pid_t pid;
+    t_types *current = type;
+
+    while (current) {
+        // Cria o pipe se o próximo comando for um pipe
+        if (current->next && current->next->type == PIPE) {
+            if (pipe(pipe_fds) == -1) {
+                perror("pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // Cria o processo filho
+        pid = fork();
+        if (pid == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        } else if (pid == 0) { // Código do processo filho
+            // Redireciona entrada se não for o primeiro comando
+            if (prev_fd != -1) {
+                if (dup2(prev_fd, STDIN_FILENO) == -1) {
+                    perror("dup2 prev_fd");
+                    exit(EXIT_FAILURE);
+                }
+                close(prev_fd);
+            }
+
+            // Redireciona saída se houver um próximo comando com pipe
+            if (current->next && current->next->type == PIPE) {
+                if (dup2(pipe_fds[1], STDOUT_FILENO) == -1) {
+                    perror("dup2 pipe_fds[1]");
+                    exit(EXIT_FAILURE);
+                }
+                close(pipe_fds[1]);
+                close(pipe_fds[0]); // Fecha o lado de leitura no filho
+            }
+
+            // Executa o comando
+            exec_cmd(input_list, current, env);
+            exit(EXIT_SUCCESS);
+        } else { // Código do processo pai
+            if (prev_fd != -1) {
+                close(prev_fd); // Fecha o fd anterior, já que foi redirecionado
+            }
+            if (current->next && current->next->type == PIPE) {
+                close(pipe_fds[1]); // Fecha o lado de escrita no pai
+                prev_fd = pipe_fds[0]; // Atualiza prev_fd para o próximo comando
+            }
+
+            // Avança para o próximo comando após o pipe
+            current = current->next->next;
+        }
+    }
+
+    // Espera pelos processos filhos
+    while (waitpid(-1, NULL, 0) > 0)
+        ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/24 19:02:28 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:23:37 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ char				*change_path(char *path, char *src, t_envp **head);
 int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
+void 				handle_pipes(t_init_input *input_list, t_types *type, char **env)
 //static char 		*find_command_path(char *cmd, t_envp *env_list);
 
 /* OTHERS */
