@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/26 17:55:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:59:28 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_builtin(char *wrd)
         return (0);
 }
 
-static int	what_type(char *wrd)
+int	what_type(char *wrd)
 {
     if (ft_strcmp(wrd, "|") == 0)
         return (PIPE);
@@ -50,7 +50,7 @@ static int	what_type(char *wrd)
         return (WORD);
 }
 
-static void	insert_types(t_types **head, char *wrd)
+void	insert_types(t_types **head, char *wrd)
 {
     //printf("\n----\non insert_types\n");
 	t_types	*new;
@@ -75,7 +75,7 @@ static void	insert_types(t_types **head, char *wrd)
 	temp->next = new;
 }
 
-static char	**args_split(char *input)
+char	**args_split(char *input)
 {
 	int		i;
 	int		quotes;
@@ -100,10 +100,10 @@ static char	**args_split(char *input)
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
-    printf("\n----\nprocess_input\n");
-    printf("input_list: [%p]\n", input_list);
+    //printf("\n----\nprocess_input\n");
+    //printf("input_list: [%p]\n", input_list);
     //printf("input_list->types: [%p]\n", input_list->types);
-    printf("types: [%p]\n", types);
+    //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     char    **args;
     char    **cmds;
@@ -118,8 +118,8 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     cmds = lexer(prompt); // split the input for delim and quotes
     input_list = delim_split(prompt); // split the input for pipe
 
-    printf("\n----\nafter delim_split:\n");
-    print_the_stack(input_list);
+    //printf("\n----\nafter delim_split:\n");
+    //print_the_stack(input_list);
 
     input_list->fd_in = 0;
     input_list->fd_out = 1;
@@ -151,13 +151,13 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    /*printf("\n----\nprint the types list:\n");
+    printf("\n----\nprint the types list:\n");
     t_types *temp = types;
     while (temp)
     {
         printf("cms: [%p]_[%s]_[%u]\n", temp->cmd, temp->cmd, temp->type);
         temp = temp->next;
-    }*/
+    }
     //printf("\n----\npre send to exec\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("types: [%p]\n", types);

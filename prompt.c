@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 13:44:55 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:09:58 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@ static void	handle_signals(int sig, siginfo_t *info, void *context)
 		rl_redisplay ();
 	}
 }
-
-/*static t_types	*init_types(void)
-{
-	t_types	*types;
-
-	types = (t_types *)malloc(sizeof(t_types));
-	if (!types)
-		return (NULL);
-	types->cmd = NULL;
-	types->type = 0;
-	types->prev = NULL;
-	types->next = NULL;
-	return (types);
-}*/
 
 static t_init_input	*init_list(void)
 {
@@ -92,7 +78,7 @@ void	prompt(char **envp)
 	input_list = init_list(); // initialize the input list
 	while (1) // loop the shell.
 	{
-		prompt = readline(PROGRAM_NAME); // the prompt
+		prompt = readline("minishell> "); // the prompt
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 			prompt_dup = ft_strdup(prompt);
 		//printf("prompt: [%s]\n", prompt);

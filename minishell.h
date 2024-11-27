@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/26 18:25:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:43:56 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,10 @@ t_init_input		*delim_split(char *s);
 t_token				get_token(char *c);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
 
+/* REPARSER */
+char				**args_split(char *input);
+void				insert_types(t_types **head, char *wrd);
+int					what_type(char *wrd);
 
 /* TO CONVERT LIST TO CHAR** */
 char    			**types_to_char(t_types *list);
