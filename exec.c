@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/26 16:26:47 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/11/27 16:53:42 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,6 +323,5 @@ void handle_pipes(t_init_input *input_list, t_types *type, char **env)
     }
 
     // Espera pelos processos filhos
-    while (waitpid(-1, NULL, 0) > 0)
-        ;
+    while (waitpid(-1, NULL, 0) > 0);
 }
