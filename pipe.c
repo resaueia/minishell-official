@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/28 17:13:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:38:13 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void    process_pipe(t_init_input *input_list, t_types *types, t_envp *en
     //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     //enviar para execução
-    last_exit_status = to_exec(input_list, types, env_list);
+    last_exit_status = to_exec_pipe(input_list, types, env_list);
 }
 
 int setup_pipeline(t_init_input *input_list, t_envp *env_list) 

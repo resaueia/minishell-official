@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 17:03:45 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:42:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 	//close(saved_stdin);
 }
 
-static void find_command_path(t_types *type, t_envp *env_list) 
+void find_command_path(t_types *type, t_envp *env_list) 
 {
     //transformar para salvar o statuscode em caso de erro no diretório.
     //printf("\n----\non find_command_path\n\n");
