@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/15 21:33:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:06:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char    **types_to_char(t_types *list)
     if (!cmds)
         return (NULL);
     temp = list;
-    while (temp)
+    while (temp && temp->type != 11)
     {
         cmds[i] = ft_strdup(temp->cmd);
         temp = temp->next;
