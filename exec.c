@@ -6,11 +6,13 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/27 16:53:42 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:26:09 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//static void	exec_cmd2(t_init_input *cmd, t_types *type, char **env);
 
 void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
 {
@@ -222,6 +224,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         //executa em cenário de pipe
         printf("has pipe\n");
+        find_command_path(type, env_list); 
         handle_pipes(input_list, type, env);
         return (0); // Já lidamos com todos os pipes, não precisamos continuar
         //args_list = split_commands(cmds, &head, &tail);
@@ -264,12 +267,13 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     return (0);
 }
 
-void handle_pipes(t_init_input *input_list, t_types *type, char **env) 
+/*void handle_pipes(t_init_input *input_list, t_types *type, char **env) 
 {
     int pipe_fds[2];
     int prev_fd = -1; // Para armazenar o lado de leitura do pipe anterior
     pid_t pid;
     t_types *current = type;
+    char    **args;
 
     while (current) {
         // Cria o pipe se o próximo comando for um pipe
@@ -306,7 +310,7 @@ void handle_pipes(t_init_input *input_list, t_types *type, char **env)
             }
 
             // Executa o comando
-            exec_cmd(input_list, current, env);
+            exec_cmd2(input_list, current, env);
             exit(EXIT_SUCCESS);
         } else { // Código do processo pai
             if (prev_fd != -1) {
@@ -318,10 +322,155 @@ void handle_pipes(t_init_input *input_list, t_types *type, char **env)
             }
 
             // Avança para o próximo comando após o pipe
+            if (!current->next)
+                break;
             current = current->next->next;
         }
     }
 
     // Espera pelos processos filhos
     while (waitpid(-1, NULL, 0) > 0);
+}*/
+
+void handle_pipes(t_init_input *input_list, t_types *type, char **env) {
+    int pipe_fds[2];
+    int prev_fd = -1; // Para armazenar o lado de leitura do pipe anterior
+    pid_t pid;
+
+    (void)input_list;
+    t_types *current = type;
+    t_types *command_start = type; // Marca o início de cada comando entre os pipes
+
+    while (current) {
+        // Identifica se o comando atual é um pipe
+        if (current->type == PIPE || current->next == NULL) {
+            // Se for o último comando, atualize o `command_start`
+            if (current->next == NULL)
+                current = current->next;
+
+            // Cria o pipe se não for o último comando
+            if (current && current->type == PIPE) {
+                if (pipe(pipe_fds) == -1) {
+                    perror("pipe");
+                    exit(EXIT_FAILURE);
+                }
+            }
+
+            // Cria o processo filho
+            pid = fork();
+            if (pid == -1) {
+                perror("fork");
+                exit(EXIT_FAILURE);
+            } else if (pid == 0) { // Código do processo filho
+                // Redireciona a entrada, se não for o primeiro comando
+                if (prev_fd != -1) {
+                    if (dup2(prev_fd, STDIN_FILENO) == -1) {
+                        perror("dup2 prev_fd");
+                        exit(EXIT_FAILURE);
+                    }
+                    close(prev_fd);
+                }
+
+                // Redireciona a saída, se não for o último comando
+                if (current && current->type == PIPE) {
+                    if (dup2(pipe_fds[1], STDOUT_FILENO) == -1) {
+                        perror("dup2 pipe_fds[1]");
+                        exit(EXIT_FAILURE);
+                    }
+                    close(pipe_fds[1]);
+                }
+
+                // Fecha os descritores desnecessários no filho
+                if (pipe_fds[0] != -1)
+                    close(pipe_fds[0]);
+
+                // Extraia o comando e argumentos entre command_start e current
+                char **args = types_to_char(command_start);
+
+                // Execute o comando
+                execve(args[0], args, env);
+                perror("execve failed");
+                exit(EXIT_FAILURE);
+            } else { // Código do processo pai
+                if (prev_fd != -1)
+                    close(prev_fd); // Fecha o descritor de leitura do comando anterior
+
+                if (current && current->type == PIPE) {
+                    close(pipe_fds[1]); // Fecha o lado de escrita do pipe
+                    prev_fd = pipe_fds[0]; // Atualiza prev_fd para o próximo comando
+                }
+
+                // Atualiza command_start para o próximo comando após o pipe
+                if (current)
+                    command_start = current->next;
+            }
+        }
+
+        // Avança para o próximo comando ou token
+        if (current)
+            current = current->next;
+    }
+
+    // Espera pelos processos filhos
+    while (waitpid(-1, NULL, 0) > 0)
+        ;
 }
+
+
+/*static void	exec_cmd2(t_init_input *cmd, t_types *type, char **env)
+{
+    //printf("\n----\non exec_cmd\n\n");
+    //printf("cmd: [%s]\n", type->cmd);
+    //printf("cmd next: [%s]\n", type->next->cmd);
+    char    **args;
+    //pid_t	pid;
+    //int		status;
+
+    args = types_to_char(type);
+    (void)args;
+    
+    //printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
+    //printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
+    //pid = fork();
+    //if (pid == -1)
+    //{
+    //    perror("Fork in exec function has failed");
+     //   exit(EXIT_FAILURE);
+    //}
+    //else if (pid == 0)
+    
+        if (cmd->fd_in != STDIN_FILENO)
+        {
+            if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+            {
+                perror("dup2 fd_in has failed in exec function");
+                exit(EXIT_FAILURE);
+            }
+            close(cmd->fd_in);
+        }
+        if (cmd->fd_out != STDOUT_FILENO)
+        {
+            if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+            {
+                perror("dup2 fd_out has failed in exec function");
+                exit(EXIT_FAILURE);
+            }
+            close(cmd->fd_out);
+        }
+        //INCLUIR VERIFICAÇÃO DO ARGUMENTO APÓS O EXECUTÁVEL.
+        //SE FOR UM REDIR, ENVIAR O PRÓXIMO NÓ COMO ARGUMENTO.
+        if (execve(type->cmd, args, env) == -1)
+        {
+            perror("Execution has failed");
+            exit(EXIT_FAILURE);
+        }
+    
+    //else
+    //{
+     //   waitpid(pid, &status, 0);
+        //exit(0);
+       // WIFEXITED(status);
+        if (WIFEXITED(status))
+            printf("Child has exited with status: %d\n", WEXITSTATUS(status));
+    //}
+}*/

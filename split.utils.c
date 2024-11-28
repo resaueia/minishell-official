@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/15 21:33:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:27:04 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char    **types_to_char(t_types *list)
     temp = list;
     i = 0;
     count = 0;
-    while(temp)
+    while(temp && temp->type != PIPE)
     {
         count++;
         temp = temp->next;
@@ -31,7 +31,7 @@ char    **types_to_char(t_types *list)
     if (!cmds)
         return (NULL);
     temp = list;
-    while (temp)
+    while (temp && temp->type != PIPE)
     {
         cmds[i] = ft_strdup(temp->cmd);
         temp = temp->next;
