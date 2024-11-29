@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 21:18:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:13:11 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,16 @@ void	insert_types(t_types **head, char *wrd)
 	t_types	*temp;
     
     //printf("head: [%p]\n", *head);
+    //printf("wrd: [%s]\n", wrd);
 
 	new = (t_types *)malloc(sizeof(t_types));
 	new->cmd = ft_strdup(wrd);
     new->type = what_type(wrd);
 	new->prev = NULL;
 	new->next = NULL;
-	if (!*head)
+	if (!*head || !(*head)->cmd)
 	{
+        //printf("head is NULL\n");
 		*head = new;
 		return ;
 	}
@@ -154,7 +156,10 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
         args = args_split(cmds[i]); // split the input for space
         //printf("\n----\nafter args_split:\n");
         while (args[++j])
+        {
+            //printf("args[%i]: [%s]\n", j, args[j]);
             insert_types(&types, args[j]);
+        }
         args = free_from_split(args);
     }
     cmds = free_from_split(cmds);
@@ -167,13 +172,15 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    printf("\n----\nprint the types list:\n");
+    /*printf("\n----\nprint the types list:\n");
     t_types *temp = types;
+    printf("%s\n", types->cmd);
+    printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%p]_[%s]_[%u]\n", temp->cmd, temp->cmd, temp->type);
         temp = temp->next;
-    }
+    }*/
     //printf("\n----\npre send to exec\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("types: [%p]\n", types);

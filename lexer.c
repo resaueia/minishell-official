@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/05 20:14:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:16:57 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static char	*to_replace(char *input, int positon)
 
 char	**lexer(char *input)
 {
+	//printf("\n----\non lexer\n\n");
+	//printf("input: [%s]\n", input);
 	int		i;
 	int		quotes;
 	char	*temp;

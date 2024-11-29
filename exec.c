@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 21:18:25 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:32:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
         {
             if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
             {
-                perror("dup2 fd_out has failed in exec function");
+                //perror("dup2 fd_out has failed in exec function");
                 exit(EXIT_FAILURE);
             }
             close(cmd->fd_out);
@@ -228,6 +228,9 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
             perror("Error while setting up pipeline");
             return (-1);
         }
+        free_list(input_list);
+        free_types(type);
+        return (0);
     }
     if (is_rdrct(type)) //redirects
     {

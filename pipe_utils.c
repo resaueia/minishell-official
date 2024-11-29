@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 21:48:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:39:56 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 {
-    printf("\n----\non exec_cmd_pipe\n\n");
+    //printf("\n----\non exec_cmd_pipe\n\n");
     //printf("cmd: [%s]\n", type->cmd);
     //printf("cmd next: [%s]\n", type->next->cmd);
     char    **args;
@@ -22,26 +22,8 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
     args = types_to_char(type);
     (void)args;
     
-    printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
-    printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
-    if (cmd->fd_in != STDIN_FILENO)
-    {
-        if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-        {
-            perror("dup2 fd_in has failed in exec function");
-            exit(EXIT_FAILURE);
-        }
-        close(cmd->fd_in);
-    }
-    if (cmd->fd_out != STDOUT_FILENO)
-    {
-        if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-        {
-            perror("dup2 fd_out has failed in exec function");
-            exit(EXIT_FAILURE);
-        }
-        close(cmd->fd_out);
-    }
+    //printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
+    //printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
     //INCLUIR VERIFICAÇÃO DO ARGUMENTO APÓS O EXECUTÁVEL.
     //SE FOR UM REDIR, ENVIAR O PRÓXIMO NÓ COMO ARGUMENTO.
     if (execve(type->cmd, args, env) == -1)
@@ -73,10 +55,10 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     (void) type;
     (void) tmp;
 
-    //printf("\n----\nafter insert values on vars\n");
-    //printf("env: [%p]\n", env);
-    //printf("tmp: [%p]\n", tmp);
-    /*if (!tmp)
+    /*printf("\n----\nafter insert values on vars\n");
+    printf("env: [%p]\n", env);
+    printf("tmp: [%p]\n", tmp);
+    if (!tmp)
         printf("type is NULL\n");
     else
         printf("type is not NULL\n");
@@ -126,8 +108,12 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     }
     else //if (is_exec(type)) //execve
     {
-        //printf("has execve\n");
+        printf("\nhas execve\n");
         //procura o path do comando na env_list
+        printf("cmd: [%s]\n", type->cmd);
+        //printf("cmd next: [%s]\n", type->next->cmd);
+        printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+        printf("input_list->fd_out: [%d]\n", input_list->fd_out);
         find_command_path(type, env_list); 
         //printf("cmd_path: [%s]\n", type->cmd);
         //executa execve
