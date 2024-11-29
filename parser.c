@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/27 19:59:28 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 21:18:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,19 @@ char	**args_split(char *input)
 	return (ret);
 }
 
+static void include_fds(t_init_input *input_list)
+{
+    t_init_input *temp;
+
+    temp = input_list;
+    while (temp)
+    {
+        temp->fd_in = 0;
+        temp->fd_out = 1;
+        temp = temp->next;
+    }
+}
+
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
@@ -121,8 +134,11 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     //printf("\n----\nafter delim_split:\n");
     //print_the_stack(input_list);
 
-    input_list->fd_in = 0;
-    input_list->fd_out = 1;
+    include_fds(input_list);
+    //printf("\n----\nafter include_fds:\n");
+    //print_the_stack(input_list);
+
+    
     //printf("\n----\nfds\n");
     //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
     //printf("input_list->fd_out: [%d]\n", input_list->fd_out);

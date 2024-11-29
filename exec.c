@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 17:42:51 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 21:18:25 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         //executa em cenário de pipe
         //printf("has pipe\n");
+        //print_the_stack(input_list);
         if (setup_pipeline(input_list, env_list) == -1) 
         {
             perror("Error while setting up pipeline");

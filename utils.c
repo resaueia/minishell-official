@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/26 17:55:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/11/28 21:06:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	print_the_stack(t_init_input *list)
 	while (current)
 	{
 		// Traverse and print the linked list
-		printf("string: [%s] || token: [%i]\n", current->string, current->token);
+		printf("string: [%s] || token: [%i] || ", current->string, current->token);
+		printf("fd_in: [%d] || fd_out: [%i]\n", current->fd_in, current->fd_out);
 		current = current->next;
 	}
 	//current = list;
