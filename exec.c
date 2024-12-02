@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 13:56:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:15:57 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,10 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
     else
     {
         waitpid(pid, &status, 0);
-        WIFEXITED(status);
+        if (WIFEXITED(status))
+            g_exit_status = WEXITSTATUS(status);
+        else
+            g_exit_status = 1;
         /*if (WIFEXITED(status))
             printf("Child has exited with status: %d\n", WEXITSTATUS(status));*/
     }

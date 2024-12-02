@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/27 18:32:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:01:26 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
     char    *key;
     char    *suffix;
     
+    (void)last_exit_status;
     temp = ft_strdup(cmd);
     if (temp[0] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
         remove_quotes(&temp);
@@ -37,9 +38,9 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
 		else //if cmd come with $ and args, need check what kind of args it is
 		{
             // Caso especial para `$?`
-            if (temp[0] == '?') 
+            if (*temp == '?') 
             {
-                char *status_str = ft_itoa(last_exit_status); // Converte o status para string
+                char *status_str = ft_itoa(g_exit_status); // Converte o status para string
                 cmd = ft_strdup(status_str); 
                 free(status_str);
                 free(temp - 1); // Liberar a memória original de temp
