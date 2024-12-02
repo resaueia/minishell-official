@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 22:12:24 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 22:19:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 20:30:28 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 void remove_node(t_types **head)
 {
-    //printf("\n----\non the remove_node\n");
+    printf("\n----\non the remove_node\n");
     t_types *node;
     t_types *temp_node;
 
     node = *head;
     while (node)
     {
+        printf("node->cmd: [%s]\n", node->cmd);
+        printf("node->type: [%u]\n", node->type);
         temp_node = node->next; //save the next node
         if (node->type == 4 || node->type == 7 || node->type == 77) //check if the node is redirects
         {
@@ -33,7 +35,7 @@ void remove_node(t_types **head)
             free(node->cmd);
             free(node); //to node
             node = NULL;
-        } 
+        }
         node = temp_node;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 11:25:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:31:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
             //free_list(cmd_list);
             exit(EXIT_FAILURE);
         }
+        remove_node(&type);
     }
     if (is_btin(type)) //builtin
     {
