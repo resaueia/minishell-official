@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/29 13:32:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 22:36:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,29 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
     (void)cmd;
 	t_envp	*tmp;
     int     saved_stdout;
-    //int   saved_stdin;
 
     //printf("exec_bi >>> file descriptor in: [%d]\n", list->fd_in);
     //printf("exec_bi >>> file descriptor out: [%d]\n", list->fd_out);
+    /*printf("--\nprint the types on exec_builtin:\n");
+    t_types *temp = types;
+    while (temp)
+    {
+        printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }*/
 
 	tmp = env_list;
 	saved_stdout = dup(STDOUT_FILENO);
-	//saved_stdin = dup(STDIN_FILENO);
-    if (list->fd_out != STDOUT_FILENO)
+    if (types->fd[1] != STDOUT_FILENO)
     {
-		if (dup2(list->fd_out, STDOUT_FILENO) == -1)
+		if (dup2(types->fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error encountered in builtin");
 			close(saved_stdout);
 			return ;
 		}
-        close(list->fd_out);
+        close(types->fd[1]);
     }
-    /*if (list->fd_in != STDIN_FILENO)
-    {
-        dup2(list->fd_in, STDIN_FILENO);
-        close(list->fd_in);
-    }*/
 	if (ft_strcmp(types->cmd, "print") == 0)
 		print_stack(list);
 	else if (ft_strcmp(types->cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
@@ -56,9 +56,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 	else if (ft_strncmp(types->cmd, "unset", 5) == 0)
 		ft_unset(types->next->cmd, &tmp);
     dup2(saved_stdout, STDOUT_FILENO);
-	//dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
-	//close(saved_stdin);
 }
 
 void find_command_path(t_types *type, t_envp *env_list) 
@@ -111,18 +109,20 @@ void find_command_path(t_types *type, t_envp *env_list)
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
-    //printf("\n----\non exec_cmd\n\n");
-    //printf("cmd: [%s]\n", type->cmd);
-    //printf("cmd next: [%s]\n", type->next->cmd);
+    printf("\n----\non exec_cmd\n\n");
+    printf("cmd:       [%s]\n", type->cmd);
+    printf("cmd:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
+    printf("cmd->next: [%s]\n", type->next->cmd);
+    printf("cmd->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
+    printf("\n----\n");
     char    **args;
     pid_t	pid;
     int		status;
 
     args = types_to_char(type);
     (void)args;
+    (void)cmd;
     
-    //printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
-    //printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
     pid = fork();
     if (pid == -1)
     {
@@ -131,26 +131,24 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
     }
     else if (pid == 0)
     {
-        if (cmd->fd_in != STDIN_FILENO)
+        if (type->fd[0] != STDIN_FILENO)
         {
-            if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+            if (dup2(type->fd[0], STDIN_FILENO) == -1)
             {
                 perror("dup2 fd_in has failed in exec function");
                 exit(EXIT_FAILURE);
             }
-            close(cmd->fd_in);
+            close(type->fd[0]);
         }
-        if (cmd->fd_out != STDOUT_FILENO)
+        if (type->fd[1] != STDOUT_FILENO)
         {
-            if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+            if (dup2(type->fd[1], STDOUT_FILENO) == -1)
             {
                 //perror("dup2 fd_out has failed in exec function");
                 exit(EXIT_FAILURE);
             }
-            close(cmd->fd_out);
+            close(type->fd[1]);
         }
-        //INCLUIR VERIFICAÇÃO DO ARGUMENTO APÓS O EXECUTÁVEL.
-        //SE FOR UM REDIR, ENVIAR O PRÓXIMO NÓ COMO ARGUMENTO.
         if (execve(type->cmd, args, env) == -1)
         {
             perror("Execution has failed");
@@ -243,6 +241,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
             //free_list(cmd_list);
             exit(EXIT_FAILURE);
         }
+        remove_node(&type);
     }
     if (is_btin(type)) //builtin
     {
@@ -263,6 +262,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
         exec_cmd(input_list, type, env);
         //verificar se tem algum temporário heredoc_*.tmp e deleta
     }
+    //função para verificar fds abertos e fechar, nó por nó. 
     free_list(input_list);
     free_types(type);
     return (0);

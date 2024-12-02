@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/11/28 17:41:21 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/01 22:18:53 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS = main.c \
 	   what_type.c \
 	   heredoc.c \
 	   redirects.c \
+	   redirects_utils.c \
 	   pipe.c \
 	   pipe_utils.c \
 

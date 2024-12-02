@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/15 22:37:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 19:02:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	ft_pwd(int fd_out)
 }
 void	ft_echo(char *args, t_envp **env_list, int fd_out)
 {
+	//printf("args: [%s]\n", args);
+	//printf("fd_out: [%i]\n--\n", fd_out);
 	(void)env_list;
 	int	newline;
 	char	*tmp;

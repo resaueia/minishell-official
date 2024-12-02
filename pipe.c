@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/29 13:12:46 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 15:53:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_types	*init_types(void)
 
 static void    process_pipe(t_init_input *input_list, t_types *types, t_envp *env_list)
 {
-    printf("\n----\non process_pipe\n\n");
+    //printf("\n----\non process_pipe\n\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
@@ -41,6 +41,7 @@ static void    process_pipe(t_init_input *input_list, t_types *types, t_envp *en
     int     last_exit_status;
     //printf("input_list: [%s]\n", input_list->string);
     
+    (void)last_exit_status;
     prompt = ft_strdup(input_list->string);
     //printf("prompt: [%s]\n", prompt);
     cmds = lexer(prompt); // split the input for delim and quotes
@@ -52,9 +53,9 @@ static void    process_pipe(t_init_input *input_list, t_types *types, t_envp *en
     while (cmds[++i])
         printf("cmds[%i]: [%s]\n", i, cmds[i]);
     */
-    printf("\n----\nfds\n");
+    /*printf("\n----\nfds\n");
     printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    printf("input_list->fd_out: [%d]\n", input_list->fd_out);
+    printf("input_list->fd_out: [%d]\n", input_list->fd_out);*/
 
     i = -1;
     //int k = 1;
@@ -206,7 +207,7 @@ static void    process_pipe(t_init_input *input_list, t_types *types, t_envp *en
 
 int setup_pipeline(t_init_input *input_list, t_envp *env_list) 
 {
-    printf("\n----\non setup_pipeline\n\n");
+    //printf("\n----\non setup_pipeline\n\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("env_list: [%p]\n", env_list);
     int           pipe_fd[2];
@@ -232,18 +233,18 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             }
             current->fd_out = pipe_fd[1]; // Armazena o lado de escrita do pipe no nó atual
             current->next->next->fd_in = pipe_fd[0]; // Armazena o lado de leitura do pipe no próximo nó
-            printf("\n-- POS --\n");
+            /*printf("\n-- POS --\n");
             printf("current fd[in]: [%d]\n", current->fd_in);
             printf("current fd[out]: [%d]\n", current->fd_out);
             printf("next fd[in]: [%d]\n", current->next->next->fd_in);
             print_the_stack(current);
             printf("to write >> pipe_fd[0]: [%d]\n", pipe_fd[0]);
-            printf("to read  >> pipe_fd[1]: [%d]\n", pipe_fd[1]);
+            printf("to read  >> pipe_fd[1]: [%d]\n", pipe_fd[1]);*/
             //printf("\n--\n");
         }
-        printf("pre fork main -> %i\n", pid);
+        //printf("pre fork main -> %i\n", pid);
         pid = fork(); // Cria um processo filho para o comando atual
-        printf("pos fork main -> %i\n", pid);
+        //printf("pos fork main -> %i\n", pid);
         if (pid == -1) 
         {
             perror("Error during fork");
@@ -251,20 +252,20 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
         }
         if (pid == 0) // Processo filho
         {
-            printf("\n-- no filho -- [%i]\n", getpid());
-            printf("current->string: [%s]\n", current->string);
+            //printf("\n-- no filho -- [%i]\n", getpid());
+            //printf("current->string: [%s]\n", current->string);
             if (current == input_list) //condição de verificação do primeiro nó
             {
-                printf("\ncurrent == input_list\n");
-                printf("current: cmd[%s] | fd_in[%d] | fd_out[%d]\n", current->string, current->fd_in, current->fd_out);
+                //printf("\ncurrent == input_list\n");
+                //printf("current: cmd[%s] | fd_in[%d] | fd_out[%d]\n", current->string, current->fd_in, current->fd_out);
                 dup2(current->fd_out, STDOUT_FILENO);
                 close(current->fd_out);
                 //close(current->fd_in);
             }
             else if (current != input_list && current->next) //condição de verificação dos nós intermediários
             {
-                printf("\ncurrent->next != NULL\n");
-                printf("current: cmd[%s] | fd_in[%d] | fd_out[%d]\n", current->string, current->fd_in, current->fd_out);
+                //printf("\ncurrent->next != NULL\n");
+                //printf("current: cmd[%s] | fd_in[%d] | fd_out[%d]\n", current->string, current->fd_in, current->fd_out);
                 dup2(current->fd_in, STDIN_FILENO);
                 dup2(current->fd_out, STDOUT_FILENO);
                 close(current->fd_in);
@@ -272,8 +273,8 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             }
             else if (!current->next)
             {
-                printf("current->next == NULL\n");
-                printf("current: cmd[%s] | fd_in[%d] | fd_out[%d]\n", current->string, current->fd_in, current->fd_out);
+                //printf("current->next == NULL\n");
+                //printf("current: cmd[%s] | fd_in[%d] | fd_out[%d]\n", current->string, current->fd_in, current->fd_out);
                 //close(current->fd_out);
                 dup2(current->fd_in, STDIN_FILENO);
                 close(current->fd_in);
@@ -293,6 +294,6 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
         }
     }
     while (wait(NULL) > 0); // Espera todos os processos filhos terminarem*/
-    printf("setup_pipeline has been executed\n");
+    //printf("setup_pipeline has been executed\n");
     return (0);
 }

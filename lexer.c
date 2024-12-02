@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/29 13:16:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 22:29:08 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ int	to_quotes(char c, int quotes)
 	return (quotes);
 }
 
-static char	*to_replace(char *input, int positon)
+static char	*to_replace(char *input, int position)
 {
+	//printf("\n----\non to_replace\n\n");
 	char	*ret;
 	int		i;
 	int		j;
@@ -42,7 +43,7 @@ static char	*to_replace(char *input, int positon)
 		return (NULL);
 	i = -1;
 	j = -1;
-	while (++j < positon)
+	while (++j < position)
 		ret[j] = input[++i];
 	i++;
 	ret[j++] = 29;
@@ -69,11 +70,14 @@ char	**lexer(char *input)
 	i = -1;
 	quotes = 0;
 	temp = ft_strdup(input);
+	//printf("temp: [%s]\n", temp);
 	while (temp && temp[++i])
 	{
+		//printf("temp[%i]: [%c]\n", i, temp[i]);
 		if ((temp[i] == '|' || temp[i] == '>' || temp[i] == '<' ) && !quotes)
 		{
 			temp = to_replace(temp, i);
+			//printf("temp[%i]: [%c]\n", i, temp[i]);
 			i = i + 2;
 		}	
 		else if (temp[i] == '\"' || temp[i] == '\'')

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/28 18:46:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 22:17:32 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,11 @@ typedef struct s_envp
 // for tokenization to exec
 typedef struct s_types
 {
-	char			*cmd;
-	int				type;
-	struct s_types	*prev;
-	struct s_types	*next;
+	char			*cmd; //command or argument
+	int				type; //type of token
+	int				fd[2]; //fd[0] = in , fd[1] = out
+	struct s_types	*prev; //prev node
+	struct s_types	*next; //next node
 }				t_types;
 
 // for parser
@@ -188,6 +189,8 @@ int					tackle_heredoc(t_types *type, char *delim);
 
 /* REDIRECTS */
 int					setup_redirection(t_init_input *args_list, t_types *type);
+//void				remove_node(t_types *node);
+void				remove_node(t_types **node);
 
 /* PIPES */
 int					setup_pipeline(t_init_input *input_list, t_envp *env_list);

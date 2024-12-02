@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/29 13:39:56 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 15:54:01 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
     //printf("cmd: [%s]\n", type->cmd);
     //printf("cmd next: [%s]\n", type->next->cmd);
     char    **args;
+    (void)cmd;
 
     args = types_to_char(type);
     (void)args;
@@ -35,7 +36,7 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    printf("\n----\non to_exec_pipe\n\n");
+    //printf("\n----\non to_exec_pipe\n\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("env_list: [%p]\n", env_list);
     //printf("type: [%p]\n", type);
@@ -47,8 +48,8 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     //printf("\n----\nafter declarations\n");
     //input_list->fd_in = 0;
     //input_list->fd_out = 1;
-    printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    printf("input_list->fd_out: [%d]\n", input_list->fd_out);
+    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
     env = env_to_char(env_list);
     tmp = type;
     (void) env;
@@ -99,7 +100,7 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     }
     if (is_btin(type)) //builtin
     {
-        printf("has builtin\n");
+        //printf("has builtin\n");
         //printf("cmd: [%s]\n", type->cmd);
         //printf("cmd next: [%s]\n", type->next->cmd);
         //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
@@ -108,12 +109,12 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     }
     else //if (is_exec(type)) //execve
     {
-        printf("\nhas execve\n");
+        //printf("\nhas execve\n");
         //procura o path do comando na env_list
-        printf("cmd: [%s]\n", type->cmd);
+        //printf("cmd: [%s]\n", type->cmd);
         //printf("cmd next: [%s]\n", type->next->cmd);
-        printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-        printf("input_list->fd_out: [%d]\n", input_list->fd_out);
+        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
+        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
         find_command_path(type, env_list); 
         //printf("cmd_path: [%s]\n", type->cmd);
         //executa execve

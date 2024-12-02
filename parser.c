@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/29 13:13:11 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/01 22:05:09 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	insert_types(t_types **head, char *wrd)
 	new = (t_types *)malloc(sizeof(t_types));
 	new->cmd = ft_strdup(wrd);
     new->type = what_type(wrd);
+    new->fd[0] = STDIN_FILENO;
+    new->fd[1] = STDOUT_FILENO;
 	new->prev = NULL;
 	new->next = NULL;
 	if (!*head || !(*head)->cmd)
@@ -130,13 +132,17 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     (void) input_list;
 
     last_exit_status = 0;
+    //printf("before lexer\n");
+    //printf("prompt: [%s]\n", prompt);
     cmds = lexer(prompt); // split the input for delim and quotes
+    //printf("cmds was created\n");
     input_list = delim_split(prompt); // split the input for pipe
-
+    include_fds(input_list);
+    
     //printf("\n----\nafter delim_split:\n");
     //print_the_stack(input_list);
 
-    include_fds(input_list);
+    //include_fds(input_list);
     //printf("\n----\nafter include_fds:\n");
     //print_the_stack(input_list);
 
@@ -178,7 +184,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     printf("temp: [%p]\n", temp);
     while (temp)
     {
-        printf("cms: [%p]_[%s]_[%u]\n", temp->cmd, temp->cmd, temp->type);
+        printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
     }*/
     //printf("\n----\npre send to exec\n");
