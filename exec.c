@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 22:36:33 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:56:47 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,12 @@ void find_command_path(t_types *type, t_envp *env_list)
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
-    printf("\n----\non exec_cmd\n\n");
-    printf("cmd:       [%s]\n", type->cmd);
-    printf("cmd:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-    printf("cmd->next: [%s]\n", type->next->cmd);
-    printf("cmd->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
-    printf("\n----\n");
+    //printf("\n----\non exec_cmd\n\n");
+    //printf("cmd:       [%s]\n", type->cmd);
+    //printf("cmd:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
+    //printf("cmd->next: [%s]\n", type->next->cmd);
+    //printf("cmd->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
+    //printf("\n----\n");
     char    **args;
     pid_t	pid;
     int		status;
@@ -260,6 +260,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
         //printf("cmd_path: [%s]\n", type->cmd);
         //executa execve
         exec_cmd(input_list, type, env);
+        clear_heredoc_files();
         //verificar se tem algum temporário heredoc_*.tmp e deleta
     }
     //função para verificar fds abertos e fechar, nó por nó. 

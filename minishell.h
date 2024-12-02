@@ -6,13 +6,14 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/01 22:17:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:44:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -115,6 +116,8 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				*ft_memset(void *dest, int c, size_t n);
 void				ft_bzero(void *str, size_t n);
+size_t				ft_strlcpy(char *dest, const char *src, size_t sz);
+size_t				ft_strlcat(char *dest, const char *src, size_t sz);
 
 /* UTILS */
 int					is_whitspace(char c);
@@ -146,6 +149,7 @@ int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
 void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
 void				find_command_path(t_types *type, t_envp *env_list);
+void				clear_heredoc_files(void);
 
 /* OTHERS */
 //int					is_delimiter(char c);
@@ -163,6 +167,7 @@ void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t
 char				**args_split(char *input);
 void				insert_types(t_types **head, char *wrd);
 int					what_type(char *wrd);
+void				include_fds(t_init_input *input_list);
 
 /* TO CONVERT LIST TO CHAR** */
 char    			**types_to_char(t_types *list);
@@ -185,7 +190,7 @@ int					is_exec(t_types *type);
 /* HEREDOC */
 int					is_heredoc(t_init_input *input_list, t_types *type);
 //int					tackle_heredoc(char *delim);
-int					tackle_heredoc(t_types *type, char *delim);
+int					tackle_heredoc(t_types *type, char *start_delim, char *last_delim);
 
 /* REDIRECTS */
 int					setup_redirection(t_init_input *args_list, t_types *type);

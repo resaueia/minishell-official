@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 22:05:09 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:47:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	**args_split(char *input)
 	return (ret);
 }
 
-static void include_fds(t_init_input *input_list)
+void include_fds(t_init_input *input_list)
 {
     t_init_input *temp;
 

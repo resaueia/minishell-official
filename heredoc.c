@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/24 21:04:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:17:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,92 +20,63 @@ write said lines in a pipe - pipe needs to get redirectioned as an entry for the
 finally, those lines will get written on the terminal once said cmd is executed.
 */
 
-/*how to create a pipe:
-int pipe_fd[2];
-if (pipe(pipe_fd) == -1)
+static void include_eof(t_types *cmd)
 {
-    perror("pipe");
-    exit(EXIT_FAILURE);
-}
-*/
+    //printf("\n----\non include_eof\n\n");
+    //printf("cmd: [%p]\n", cmd);
+    t_types *head;
 
-/*int     is_heredoc(t_init_input *input_list, t_types *type)
-{
-    t_types    *temp;
-    int             heredoc_fd;
-
-    (void) input_list;
-
-    temp = type;
-    while(temp)
+    head = cmd;
+    while (cmd)
     {
-        printf("cmd: [%s]\n", temp->cmd);
-        //printf("delim: [%s]\n", temp->next->cmd);
-        if (ft_strcmp(temp->cmd, "<<") == 0 && temp->next->cmd)
+        if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
         {
-            printf("\n----\n type is hdoc && has next node\n");
-
-            printf("cmd is: [%s]\n", temp->cmd);
-            printf("delim: [%s]\n", temp->next->cmd);
-                        
-            heredoc_fd = tackle_heredoc(temp->next->cmd);
-            if (heredoc_fd == -1)
-            {
-                perror ("Error setting up heredoc");
-                return (-1);
-            }
-            input_list->fd_in = heredoc_fd;
-            return (1);
+            cmd = cmd->next;
+            cmd->type = ENDOF;
         }
+        cmd = cmd->next;
+    }
+    cmd = head;
+    /*t_types *temp = cmd;
+    while (temp)
+    {
+        printf("cms: [%p]_[%s]_[%u]\n", temp->cmd, temp->cmd, temp->type);
         temp = temp->next;
-    }
-    return (0);
-}*/
-
-/*int    tackle_heredoc(char *delim)
-{
-    printf("\n----\non tackle_heredoc\n\n");
-    printf("delim: [%s]\n", delim);
-    char            *line;
-    int             pipe_fd[2];
-
-    if (pipe(pipe_fd) == -1)
-    {
-        perror("Error creating heredoc pipe\n");
-        return (-1);
-    }
-    while (1)
-    {
-        line = readline("heredoc> ");
-        if (!line)
-        {
-            perror("Error reading line\n");
-            break ;
-        }
-        if (ft_strcmp(line, delim) == 0)
-        {
-            printf("delim found\n");
-            free(line);
-            break ;
-        }
-        write(pipe_fd[1], line, ft_strlen(line));
-        write(pipe_fd[1], "\n", 1);
-        free(line);
     }*/
-    //close(pipe_fd[1]);
-    //if (input_list->fd_in != STDIN_FILENO)
-      //  close(input_list->fd_in);
-    
-    //return (pipe_fd[0]);
-    //dup2(pipe_fd[0], STDIN_FILENO);
-    //close(pipe_fd[0]);
-    /*After writing stuff on the pipe, I close its writing end, use
-    the dup2 function to set its reading end to the standard input (which used to be the keyboard)
-    and then proceed to close the actual read end of the pipe, hence finishing the whole process.*/
+}
 
-    //Not sure if the execution part of this should be written here already or elsewhere.
-    //Not sure if the execution part of this should be written here already or elsewhere.
-//}
+static char **split_heredoc(t_types *type, int here_count)
+{
+    printf("\n----\non split_heredoc\n\n");
+    //printf("type: [%p]\n", type);
+    printf("here_count: [%d]\n", here_count);
+    t_types *head;
+    char    **delim;
+    int     i;
+
+    (void)head;
+    head = type;
+    delim = (char **)malloc(sizeof(*delim) * (here_count + 1));
+    i = 0;
+    while (type)
+    {
+        if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
+        {
+            delim[i] = ft_strdup(type->next->cmd);
+            //printf("delim[%i]: [%s]\n", i, delim[i]);
+            i++;
+        }
+        type = type->next;
+    }
+    delim[i] = NULL;
+    i = 0;
+    while (delim[i])
+    {
+        printf("delim[%i]: [%s]\n", i, delim[i]);
+        i++;
+    }
+    return (delim);
+}
 
 static void change_value(t_types *type, char *value)
 {
@@ -134,55 +105,112 @@ int     is_heredoc(t_init_input *input_list, t_types *type)
     //printf("\n----\non is_heredoc\n\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("type: [%p]\n", type);
-    t_types    *head;
-    int             heredoc_fd;
-
+    t_types *head;
+    char    **delim;
+    int     heredoc_fd;
+    int     here_count; //contador de << encontrados
     (void) input_list;
+    (void) delim;
 
     head = type;
-    //printf("head: [%p]\n", head);
-    while(type)
+    here_count = 0;
+    while (type) // loop de contagem de << encontrados
     {
-        //printf("cmd: [%s]\n", temp->cmd);
-        //printf("delim: [%s]\n", temp->next->cmd);
         if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
-        {
-            //printf("\n----\ntype is hdoc && has next node\n");
-
-            //printf("cmd is: [%s]\n", type->cmd);
-            //printf("delim: [%s]\n", type->next->cmd);
-                        
-            heredoc_fd = tackle_heredoc(head, type->next->cmd);
-            if (heredoc_fd == -1)
-            {
-                type = head;
-                perror ("Error setting up heredoc");
-                return (-1);
-            }
-            input_list->fd_in = heredoc_fd; // Configura o fd_in
-            //printf("\n----\nback to is_heredoc\n\n");
-            //printf("cmd: [%s]\n", type->cmd);
-            //printf("delim: [%s]\n", type->next->cmd);
-            type = head;
-            return (1);
-        }
+            here_count++;
         type = type->next;
     }
+    printf("here_count: [%d]\n", here_count);
+
+    type = head;
+    if (here_count == 1)
+    {
+        printf("one heredoc found\n");
+        include_eof(type);
+        while(type)
+        {
+            //printf("cmd: [%s]\n", temp->cmd);
+            //printf("delim: [%s]\n", temp->next->cmd);
+            if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
+            {
+                heredoc_fd = tackle_heredoc(head, NULL, type->next->cmd);
+                if (heredoc_fd == -1)
+                {
+                    type = head;
+                    perror ("Error setting up heredoc");
+                    return (-1);
+                }
+                type->fd[0] = heredoc_fd; // Configura o fd_in
+                type = head;
+                return (1);
+            }
+            type = type->next;
+        }
+    }
+    else if (here_count > 1)
+    {
+        printf("multiple heredoc found\n");
+        include_eof(type);
+        delim = split_heredoc(type, here_count);
+        while(type)
+        {
+            //printf("cmd: [%s]\n", temp->cmd);
+            //printf("delim: [%s]\n", temp->next->cmd);
+            if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
+            {
+                printf("heredoc found\n");
+                printf("start_delim: [%s]\n", delim[here_count - 2]);
+                printf("last_delim: [%s]\n", delim[here_count - 1]);
+                heredoc_fd = tackle_heredoc(head, delim[here_count - 2], delim[here_count - 1]);
+                if (heredoc_fd == -1)
+                {
+                    type = head;
+                    perror ("Error setting up heredoc");
+                    return (-1);
+                }
+                type->fd[0] = heredoc_fd; // Configura o fd_in
+                type = head;
+                return (1);
+            }
+            type = type->next;
+        }
+    }
+    
+    //type = head;
+    //printf("head: [%p]\n", head);
+    
     type = head;
     return (0);
 }
 
-int tackle_heredoc(t_types *type, char *delim) 
+int tackle_heredoc(t_types *type, char *start_delim, char *last_delim) 
 {
     //printf("\n----\ntackle_heredoc\n");
-    //printf("delim: [%s]\n", delim);
+    //printf("start_delim: [%s]\n", start_delim);
+    //printf("last_delim: [%s]\n", last_delim);
     //printf("type: [%p]\n", type);
-    char *line;
-    char temp_file[64]; // Buffer para o nome do arquivo
-    int temp_fd;
+    char    *line;
+    char    temp_file[64]; // Buffer para o nome do arquivo
+    int     temp_fd;
+    int     pid; // para gerar o identificador único do arquivo
+    int     start_write;
 
     // Gerar um nome único para o arquivo temporário
-    snprintf(temp_file, sizeof(temp_file), "/tmp/heredoc_%d.tmp", getpid());
+    pid = getpid();
+    int i = 0;
+    while (i < 64 && pid > 0) {
+        temp_file[i++] = (pid % 10) + '0';
+        pid /= 10;
+    }
+    temp_file[i++] = '_';
+    temp_file[i++] = 'h';
+    temp_file[i++] = 'e';
+    temp_file[i++] = 'r';
+    temp_file[i++] = 'e';
+    temp_file[i++] = 'd';
+    temp_file[i++] = 'o';
+    temp_file[i++] = 'c';
+    temp_file[i++] = '\0';
 
     // Criar o arquivo temporário
     temp_fd = open(temp_file, O_CREAT | O_RDWR | O_TRUNC, 0600);
@@ -194,27 +222,60 @@ int tackle_heredoc(t_types *type, char *delim)
     //printf("Temporary file created: %s\n", temp_file);
 
     // Escrever o conteúdo do heredoc no arquivo temporário
-    while (1) 
+    //incluir o verificador de quantidade de << encontrados
+    //flag para indicar que o arquivo temporário deve começar a ser escrito
+    if (start_delim == NULL)
     {
-        line = readline("heredoc> ");
-        if (!line) 
+        start_write = 1;
+        while (1) 
         {
-            perror("Error reading line");
-            break;
-        }
-        if (ft_strcmp(line, delim) == 0) 
-        {
-            //printf("delim found\n");
+            line = readline("heredoc> ");
+            if (!line) 
+            {
+                perror("Error reading line");
+                break;
+            }
+            if (ft_strcmp(line, last_delim) == 0 && start_write == 1)
+            {
+                //printf("delim found\n");
+                free(line);
+                break;
+            }
+            if (start_write == 1)
+            {
+                write(temp_fd, line, ft_strlen(line));
+                write(temp_fd, "\n", 1);
+            }
             free(line);
-            break;
         }
-        write(temp_fd, line, ft_strlen(line));
-        write(temp_fd, "\n", 1);
-        free(line);
     }
-
-    // Reposicionar o cursor no início do arquivo para leitura futura
-    lseek(temp_fd, 0, SEEK_SET);
+    else
+    {
+        start_write = 0;
+        while (1) 
+        {
+            line = readline("heredoc> ");
+            if (!line) 
+            {
+                perror("Error reading line");
+                break;
+            }
+            if (ft_strcmp(line, last_delim) == 0 && start_write == 1)
+            {
+                //printf("delim found\n");
+                free(line);
+                break;
+            }
+            if (start_delim == NULL || ft_strcmp(line, start_delim) == 0)
+                start_write = 1;
+            else if (start_write == 1)
+            {
+                write(temp_fd, line, ft_strlen(line));
+                write(temp_fd, "\n", 1);
+            }
+            free(line);
+        }
+    }
 
     //printf("\n");
     //printf("pre type->cmd: [%s]\n", type->next->cmd);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 15:54:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:25:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     {
         //executa heredoc
         //printf("has heredoc\n");
+        include_fds(input_list);
         if (is_heredoc(input_list, type) == -1)
         {   
             perror ("Error setting up heredoc");
@@ -85,6 +86,10 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
         //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
         //printf("cmd: [%s]\n", type->cmd);
         //printf("cmd next: [%s]\n", type->next->cmd);
+        free_list(input_list);
+        free_types(type);
+        return (0);
+
     }
     if (is_rdrct(type)) //redirects
     {
