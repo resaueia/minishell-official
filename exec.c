@@ -6,28 +6,270 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 18:15:57 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/03 19:22:31 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Função para gerenciar redirecionamento de descritores de arquivo
+static void handle_fd_redirection(t_types *types, int *saved_stdout)
+{
+	*saved_stdout = dup(STDOUT_FILENO);
+	if (types->fd[1] != STDOUT_FILENO)
+	{
+		if (dup2(types->fd[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 error encountered in builtin");
+			close(*saved_stdout);
+			return;
+		}
+		close(types->fd[1]);
+	}
+}
+
+// Função para executar um comando com execve (dividida)
+static void execve_child_process(t_types *type, char **args, char **env)
+{
+	if (type->fd[0] != STDIN_FILENO)
+	{
+		if (dup2(type->fd[0], STDIN_FILENO) == -1)
+		{
+			perror("dup2 fd_in failed");
+			exit(EXIT_FAILURE);
+		}
+		close(type->fd[0]);
+	}
+	if (type->fd[1] != STDOUT_FILENO)
+	{
+		if (dup2(type->fd[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 fd_out failed");
+			exit(EXIT_FAILURE);
+		}
+		close(type->fd[1]);
+	}
+	if (execve(type->cmd, args, env) == -1)
+	{
+		perror("Execution failed");
+		exit(EXIT_FAILURE);
+	}
+}
+
+// Função para executar um comando com execve
+void exec_cmd(t_init_input *cmd, t_types *type, char **env)
+{
+	char **args;
+	pid_t pid;
+	int status;
+
+	(void)cmd;
+    args = types_to_char(type);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("Fork failed");
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+		execve_child_process(type, args, env);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else
+			g_exit_status = 1;
+	}
+}
+
+// Função para encontrar o caminho do comando (dividida)
+static char *allocate_full_path(const char *dir, const char *cmd)
+{
+	char *full_path;
+
+	full_path = malloc(strlen(dir) + strlen(cmd) + 2);
+	if (!full_path)
+	{
+		perror("Error allocating memory for full_path");
+		return NULL;
+	}
+	sprintf(full_path, "%s/%s", dir, cmd);
+	return full_path;
+}
+
+
+// Função para executar comandos internos (dividida)
+static void execute_individual_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
+{
+	if (ft_strcmp(cmd, "print") == 0)
+		print_stack(list);
+	else if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "envp") == 0)
+		print_envp_list(env_list);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		ft_pwd(STDOUT_FILENO);
+	else if (ft_strncmp(cmd, "echo", 4) == 0)
+		ft_echo(types->next->cmd, &env_list, STDOUT_FILENO);
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
+		ft_cd(types->next->cmd, &env_list);
+	else if (ft_strncmp(cmd, "export", 6) == 0)
+		ft_export(types->next->cmd, &env_list);
+	else if (ft_strncmp(cmd, "unset", 5) == 0)
+		ft_unset(types->next->cmd, &env_list);
+	else
+		printf("minishell: %s: command not found\n", cmd);
+}
+
+// Função principal para executar comandos internos
+void execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
+{
+	int saved_stdout;
+
+    (void)cmd;
+	handle_fd_redirection(types, &saved_stdout);
+	execute_individual_builtin(types->cmd, env_list, list, types);
+	if (saved_stdout != STDOUT_FILENO)
+	{
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdout);
+	}
+}
+#include "minishell.h"
+
+// Função para verificar se um caminho é executável
+static int check_executable_path(char *full_path, t_types *type)
+{
+	if (access(full_path, X_OK) == 0)
+	{
+		free(type->cmd);
+		type->cmd = full_path;
+		return (1);
+	}
+	free(full_path);
+	return (0);
+}
+
+// Função auxiliar para percorrer diretórios no PATH
+static int search_in_path(char *path_dup, t_types *type)
+{
+	char *dir;
+	char *full_path;
+
+	dir = strtok(path_dup, ":");
+	while (dir != NULL)
+	{
+		full_path = allocate_full_path(dir, type->cmd);
+		if (!full_path)
+			return (0);
+		if (check_executable_path(full_path, type))
+			return (1);
+		dir = strtok(NULL, ":");
+	}
+	return (0);
+}
+
+// Função para encontrar o caminho de um comando
+void find_command_path(t_types *type, t_envp *env_list)
+{
+	char *path;
+	char *path_dup;
+
+	(void)env_list;
+	path = getenv("PATH");
+	if (!path)
+	{
+		fprintf(stderr, "minishell: PATH not found\n");
+		return;
+	}
+	path_dup = strdup(path);
+	if (!path_dup)
+	{
+		perror("Error duplicating PATH");
+		exit(EXIT_FAILURE);
+	}
+	if (!search_in_path(path_dup, type))
+		fprintf(stderr, "minishell: command not found: %s\n", type->cmd);
+	free(path_dup);
+}
+
+#include "minishell.h"
+
+// Função auxiliar para tratar heredoc
+static int handle_heredoc(t_init_input *input_list, t_types *type)
+{
+	if (is_heredoc(input_list, type) == -1)
+	{
+		perror("Error setting up heredoc");
+		return (-1);
+	}
+	return (0);
+}
+
+// Função auxiliar para tratar pipes
+static int handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
+{
+	if (setup_pipeline(input_list, env_list) == -1)
+	{
+		perror("Error setting up pipeline");
+		free_list(input_list);
+		free_types(type);
+		return (-1);
+	}
+	free_list(input_list);
+	free_types(type);
+	return (0);
+}
+
+// Função auxiliar para tratar redirecionamentos
+static int handle_redirection(t_init_input *input_list, t_types *type)
+{
+	if (setup_redirection(input_list, type) == -1)
+	{
+		perror("Error setting up redirection");
+		return (-1);
+	}
+	remove_node(&type);
+	return (0);
+}
+
+// Função auxiliar para execução de comandos
+static void execute_command(t_types *type, t_envp *env_list, t_init_input *input_list, char **env)
+{
+	if (is_btin(type))
+		execute_builtin(type->cmd, env_list, input_list, type);
+	else
+	{
+		find_command_path(type, env_list);
+		exec_cmd(input_list, type, env);
+		clear_heredoc_files();
+	}
+}
+
+// Função principal para execução de comandos
+int to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
+{
+	char **env;
+
+	env = env_to_char(env_list);
+	if (is_hdoc(type) && handle_heredoc(input_list, type) == -1)
+		return (-1);
+	if (is_pp(type))
+		return (handle_pipeline(input_list, env_list, type));
+	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
+		return (-1);
+	execute_command(type, env_list, input_list, env);
+	free_list(input_list);
+	free_types(type);
+	return (0);
+}
+
+
+/*
 void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
 {
-    //printf("\n----\non execute_builtin\n\n");
     (void)cmd;
 	t_envp	*tmp;
     int     saved_stdout;
-
-    //printf("exec_bi >>> file descriptor in: [%d]\n", list->fd_in);
-    //printf("exec_bi >>> file descriptor out: [%d]\n", list->fd_out);
-    /*printf("--\nprint the types on exec_builtin:\n");
-    t_types *temp = types;
-    while (temp)
-    {
-        printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }*/
 
 	tmp = env_list;
 	saved_stdout = dup(STDOUT_FILENO);
@@ -61,8 +303,6 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 
 void find_command_path(t_types *type, t_envp *env_list) 
 {
-    //transformar para salvar o statuscode em caso de erro no diretório.
-    //printf("\n----\non find_command_path\n\n");
     (void)env_list;
     char    *path = getenv("PATH"); // Obtém o PATH do sistema
     char    *path_dup;
@@ -74,7 +314,7 @@ void find_command_path(t_types *type, t_envp *env_list)
         fprintf(stderr, "minishell: PATH not found\n");
         return ;
     }
-    path_dup = strdup(path); //faz uma cópia do path para manipulação
+    path_dup = strdup(path);
     if (!path_dup)
     {
         perror("Erro ao duplicar PATH");
@@ -83,7 +323,7 @@ void find_command_path(t_types *type, t_envp *env_list)
     dir = strtok(path_dup, ":");
     while (dir != NULL) 
     {
-        full_path = malloc(strlen(dir) + strlen(type->cmd) + 2); // +2 para '/' e '\0'
+        full_path = malloc(strlen(dir) + strlen(type->cmd) + 2);
         if (!full_path) 
         {
             perror("Erro ao alocar memória para full_path");
@@ -91,30 +331,22 @@ void find_command_path(t_types *type, t_envp *env_list)
             exit(EXIT_FAILURE);
         }
         sprintf(full_path, "%s/%s", dir, type->cmd);
-        if (access(full_path, X_OK) == 0) // Verifica se o caminho é executável
+        if (access(full_path, X_OK) == 0)
         { 
-            free(type->cmd);        // Libera o conteúdo anterior de `type->cmd`
-            type->cmd = full_path;  // Atualiza `type->cmd` com o novo caminho completo
-            free(path_dup);         // Libera a cópia do PATH
-            return;                 // Sai da função após encontrar o comando
+            free(type->cmd);   
+            type->cmd = full_path;
+            free(path_dup);
+            return;
         }
-        free(full_path); // Libera full_path se não for válido
+        free(full_path);
         dir = strtok(NULL, ":");
     }
-    // Caso o comando não seja encontrado, imprime uma mensagem de erro
-    //fprintf(stderr, "minishell: command not found: %s\n", type->cmd);
-    printf("minishell: %s: %s\n", strerror(errno), type->cmd);
-    free(path_dup); // Libera a cópia do PATH
+    free(path_dup);
 }
+
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
-    //printf("\n----\non exec_cmd\n\n");
-    //printf("cmd:       [%s]\n", type->cmd);
-    //printf("cmd:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-    //printf("cmd->next: [%s]\n", type->next->cmd);
-    //printf("cmd->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
-    //printf("\n----\n");
     char    **args;
     pid_t	pid;
     int		status;
@@ -144,7 +376,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
         {
             if (dup2(type->fd[1], STDOUT_FILENO) == -1)
             {
-                //perror("dup2 fd_out has failed in exec function");
+                perror("dup2 fd_out has failed in exec function");
                 exit(EXIT_FAILURE);
             }
             close(type->fd[1]);
@@ -162,68 +394,30 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
             g_exit_status = WEXITSTATUS(status);
         else
             g_exit_status = 1;
-        /*if (WIFEXITED(status))
-            printf("Child has exited with status: %d\n", WEXITSTATUS(status));*/
     }
 }
 
 int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    //printf("\n----\non to_exec\n\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("env_list: [%p]\n", env_list);
-    //printf("type: [%p]\n", type);
-    //printf("input_list->types: [%p]\n", input_list->types);
     (void) input_list;
     char  **env;
     t_types     *tmp;
     
-    //printf("\n----\nafter declarations\n");
-    //input_list->fd_in = 0;
-    //input_list->fd_out = 1;
-    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
     env = env_to_char(env_list);
     tmp = type;
     (void) env;
     (void) type;
     (void) tmp;
-
-    //printf("\n----\nafter insert values on vars\n");
-    //printf("env: [%p]\n", env);
-    //printf("tmp: [%p]\n", tmp);
-    /*if (!tmp)
-        printf("type is NULL\n");
-    else
-        printf("type is not NULL\n");
-    while (tmp)
+    if (is_hdoc(type))
     {
-        printf("cms: [%s] - types: [%u]\n", tmp->cmd, tmp->type);
-        tmp = tmp->next;
-    }*/
-    if (is_hdoc(type)) //heredoc
-    {
-        //executa heredoc
-        //printf("has heredoc\n");
         if (is_heredoc(input_list, type) == -1)
         {   
             perror ("Error setting up heredoc");
-            //free_list(args_list);
-            //free_list(input_list);
             exit(EXIT_FAILURE);
         }
-        //printf("\n----\n");
-        //printf("heredoc has been executed\n");
-        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
-        //printf("cmd: [%s]\n", type->cmd);
-        //printf("cmd next: [%s]\n", type->next->cmd);
     }
-    if (is_pp(type)) //pipe
+    if (is_pp(type))
     {
-        //executa em cenário de pipe
-        //printf("has pipe\n");
-        //print_the_stack(input_list);
         if (setup_pipeline(input_list, env_list) == -1) 
         {
             perror("Error while setting up pipeline");
@@ -233,41 +427,26 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
         free_types(type);
         return (0);
     }
-    if (is_rdrct(type)) //redirects
+    if (is_rdrct(type))
     {
-        //executa redirect
-        //printf("has redirect\n");
         if (setup_redirection(input_list, type) == -1)
         {
             perror("Error whule setting up redirection\n");
-            //free_list(args_list);
-            //free_list(cmd_list);
             exit(EXIT_FAILURE);
         }
         remove_node(&type);
     }
-    if (is_btin(type)) //builtin
+    if (is_btin(type))
+        execute_builtin(type->cmd, env_list, input_list, type);
+    else
     {
-        //printf("has builtin\n");
-        //printf("cmd: [%s]\n", type->cmd);
-        //printf("cmd next: [%s]\n", type->next->cmd);
-        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
-        execute_builtin(type->cmd, env_list, input_list, type); //executa o comando
-    }
-    else //if (is_exec(type)) //execve
-    {
-        //printf("has execve\n");
-        //procura o path do comando na env_list
         find_command_path(type, env_list); 
-        //printf("cmd_path: [%s]\n", type->cmd);
-        //executa execve
         exec_cmd(input_list, type, env);
         clear_heredoc_files();
-        //verificar se tem algum temporário heredoc_*.tmp e deleta
     }
     //função para verificar fds abertos e fechar, nó por nó. 
     free_list(input_list);
     free_types(type);
     return (0);
-}
+}*/
+

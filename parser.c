@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 12:47:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:17:39 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,8 @@ int	what_type(char *wrd)
 
 void	insert_types(t_types **head, char *wrd)
 {
-    //printf("\n----\non insert_types\n");
 	t_types	*new;
 	t_types	*temp;
-    
-    //printf("head: [%p]\n", *head);
-    //printf("wrd: [%s]\n", wrd);
 
 	new = (t_types *)malloc(sizeof(t_types));
 	new->cmd = ft_strdup(wrd);
@@ -68,7 +64,6 @@ void	insert_types(t_types **head, char *wrd)
 	new->next = NULL;
 	if (!*head || !(*head)->cmd)
 	{
-        //printf("head is NULL\n");
 		*head = new;
 		return ;
 	}

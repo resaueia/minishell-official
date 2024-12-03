@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 18:13:07 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/03 17:12:02 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	check_command_line(int c)
 
 int	main(int c, char **v, char **envp)
 {
-	if (!check_command_line(c)) // check if there is more than one argument
+	if (!check_command_line(c))
 		return (0);
 	(void)v;
 	
-	prompt(envp); // looping the shell
+	prompt(envp);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 15:49:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:52:22 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,80 @@ int	add_to_history(char *line)
 	return (0);
 }
 
+static void	handle_exit_command(char *prompt, t_init_input *input_list, 
+                                char *prompt_dup, t_envp *env_list)
+{
+    int ret = 0;
+    int i = 4;
+
+    while (prompt[i] == ' ')
+        i++;
+    while (prompt[i])
+    {
+        if (is_whitspace(prompt[i]))
+        {
+            printf("exit\nminishell: exit: too many arguments\n");
+            exit(1);
+        }
+        if (!ft_isdigit(prompt[i]))
+        {
+            printf("exit\nminishell: exit: %s: numeric argument required\n", prompt + 4);
+            exit(255);
+        }
+        ret = ret * 10 + prompt[i] - '0';
+        i++;
+    }
+    exit_mini(input_list, prompt, prompt_dup, env_list);
+    exit(ret);
+}
+
+static void process_shell_input(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
+{
+    if (!input_check(prompt_dup)) // Validate input
+    {
+        process_input(input_list, input_list->types, prompt_dup, env_list);
+    }
+    else
+    {
+        printf("minishell: syntax error\n");
+    }
+}
+
 void	prompt(char **envp)
+{
+    char			*prompt;
+    char			*prompt_dup;
+    t_init_input	*input_list;
+    t_envp			*env_list;
+
+    env_list = get_envp(envp);
+    input_list = init_list();
+    while (1)
+    {
+        prompt = readline("minishell> ");
+        if (!prompt)
+        {
+            printf("exit\n");
+            rl_clear_history();
+            free_env(env_list);
+            free_list(input_list);
+            break;
+        }
+        if (add_to_history(prompt))
+            prompt_dup = ft_strdup(prompt);
+        if (ft_strncmp(prompt, "exit", 4) == 0)
+        {
+            handle_exit_command(prompt, input_list, prompt_dup, env_list);
+        }
+        else
+        {
+            process_shell_input(prompt_dup, input_list, env_list);
+        }
+        free(prompt);
+    }
+}
+
+/*void	prompt(char **envp)
 {
 	char			*prompt;
 	char			*prompt_dup;
@@ -79,6 +152,14 @@ void	prompt(char **envp)
 	while (1) // loop the shell.
 	{
 		prompt = readline("minishell> "); // the prompt
+		if (!prompt)
+		{
+			printf("exit\n");
+			rl_clear_history(); // Clear readline history
+        	free_env(env_list); // Free the environment list
+        	free_list(input_list); // Free the input list
+			break ;
+		}
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 			prompt_dup = ft_strdup(prompt);
 		//printf("prompt: [%s]\n", prompt);
@@ -128,4 +209,4 @@ void	prompt(char **envp)
 		}
 		free(prompt); // free the prompt
 	}
-}
+}*/
