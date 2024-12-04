@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/02 14:44:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:50:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void				exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env);
 /* Built-in functions */
 int					is_builtin(char *wrd);
 void				ft_pwd(int fd_out);
-void				ft_echo(char *args, t_envp **env_list, int fd_out);
+void				ft_echo(t_types *args, t_envp **env_list, int fd_out);
 void				ft_cd(char *path, t_envp **env_list);
 void				ft_export(char *var, t_envp **env_list);
 void				ft_unset(char *var, t_envp **env_list);

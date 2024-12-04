@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:57:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 14:43:21 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/03 22:24:50 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void    clear_heredoc_files(void)
 {
+    printf("\n----\non clear_heredoc_files\n\n");
     DIR *dir;
     struct dirent *entry;
-    char filepath[256]; // Tamanho suficiente para caminhos completos em /tmp
+    char filepath[64]; // Tamanho suficiente para caminhos completos em /tmp
 
     // Abre o diretório /tmp
     dir = opendir("/tmp");

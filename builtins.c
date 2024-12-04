@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/01 19:02:52 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/04 00:04:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,41 +23,59 @@ void	ft_pwd(int fd_out)
 	else
 		perror("getcwd() incurred in unexpected error");
 }
-void	ft_echo(char *args, t_envp **env_list, int fd_out)
+
+static char	*args_to_str(t_types *args)
 {
-	//printf("args: [%s]\n", args);
-	//printf("fd_out: [%i]\n--\n", fd_out);
+	char	*str;
+	t_types	*temp;
+
+	temp = args;
+	if (temp->type == 3)
+		temp = temp->next;
+	str = ft_strdup(temp->cmd);
+	temp = temp->next;
+	while (temp && temp->type == 1)
+	{
+		str = ft_strjoin(str, " ");
+		str = ft_strjoin(str, temp->cmd);
+		temp = temp->next;
+	}
+	return (str);
+}
+void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
+{
+	//alterar para t_types *args e alterar a lógica de verificação dos args. 
+	//será necessário um loop para percorrer os args e verificar todos os argumentos existentes.
 	(void)env_list;
-	int	newline;
+	char	*args;
+	int		newline;
 	char	*tmp;
 
-	newline = 1;
-	while (*args == ' ' )
-		args++;
-	if (args == NULL) //if echo come without args, it will print just a newline
+	newline = 1; //flag to print a newline
+	if (cmds->cmd == NULL) //if echo come without args, it will print just a newline
 	{
 		ft_putstr_fd("\n", fd_out);
 		return ;
 	}
+	args = args_to_str(cmds); //transforming the args to a string
 	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
 	{
 		tmp = args;
-		args++; //incrementando o ponteiro para pular o '-';
+		args++; //incrementing the pointer to check the next character
 		while (*args == 'n')
-			args++; //incrementando o ponteiro para pular o 'n';
+			args++; //incrementing the pointer to check the next character
 		if (*args == ' ')
 		{
 			newline = 0; //flag to not print a newline	
-			args++; //incrementa para o próximo caractere
+			args++; //incrementing the pointer to check the next character
 		}
 		else
 		{
-			args = tmp; //se não for um espaço, volta para o início da string
+			args = tmp; //if the next character is not a space, it will return to the original pointer
 			newline = 1; //flag to print a newline
 		}
-		//args += 3; //incrementing the pointer to the next character for check next conditions
 	}
-	remove_quotes(&args); //to remove quotes from the args
+	//remove_quotes(&args); //to remove quotes from the args
 	if (newline == 1) //if newline is 1, it will print a newline
 	{
 		ft_putstr_fd(args, fd_out); //printing the args with a newline
@@ -69,25 +87,23 @@ void	ft_echo(char *args, t_envp **env_list, int fd_out)
 
 void	ft_cd(char *path, t_envp **env_list)
 {
-	while (*path == ' ' )
-		path++;
-	if (ft_strlen(path) == 1 && *path == '/') //caminho para o diretório raiz
+	if (ft_strlen(path) == 1 && *path == '/') //path for root
 	{
 		chdir("/");
-		change_path("/", "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
+		change_path("/", "PWD", env_list); //change the value of the pwd in the env, and update the path of the oldpwd
 	}
-	else if (ft_strlen(path) >= 2) //caminho para um diretório específico
+	else if (ft_strlen(path) >= 2) //path for a specific directory
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
-			path = joinpath(path + 2, "HOME", env_list); //para atualizar o path do envp
+			path = joinpath(path + 2, "HOME", env_list); //for include the path of home in the path
 		if (chdir(path) == 0)
 		{
 			char	cwd[1024];
-			getcwd(cwd, sizeof(cwd)); // entrada do path a ser utilizado para alterar envp
-			change_path(cwd, "PWD", env_list); //alterar o value do pwd do env, e atualizar o path do oldpwd
+			getcwd(cwd, sizeof(cwd)); //get the current path
+			change_path(cwd, "PWD", env_list); //change the value of the pwd in the env, and update the path of the oldpwd
 		}
 		else 
-			printf("cd: %s: %s\n", strerror(errno), path);
+			printf("cd: %s: %s\n", strerror(errno), path); //print the error message
 	}
 	else if (!*path || *path == '~') //caminho para HOME
 	{

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 21:06:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/03 23:35:46 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,6 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 
 char	*ft_strndup(char *str, int	len)
 {
-	printf("\n----\nft_strndup\n");
-	printf("str: [%s]\n", str);
 	char	*new;
 	int		i;
 
@@ -138,8 +136,6 @@ char	*ft_strndup(char *str, int	len)
 
 int	is_expander(t_types *types)
 {
-	//printf("\n----\nis_expander\n");
-	printf("types->cmd: [%s]\n", types->cmd);
 	if (types->cmd[0] == '$' && types->cmd[1] == '?')
 		return (1);
 	else
