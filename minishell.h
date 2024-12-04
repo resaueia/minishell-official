@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/03 23:50:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:15:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ typedef enum e_token
 	APPEND = 77,
 	HDOC = 44,
 	WORD = 01,
+	ARGS = 20,
 	ERROR = 00,
-	FLE = 02,
+	FLE = 21,
 	BUILTIN = 03,
 	EXEC = 05,
 	ENDOF = 99,

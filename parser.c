@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 20:40:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:12:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,74 @@ void	insert_types(t_types **head, char *wrd)
 	temp->next = new;
 }
 
+static void args_of_cmds(t_types *cmd)
+{
+    printf("\n----\nargs_of_cmds\n");
+    t_types *head;
+    int     node_ref;
+
+    head = cmd;
+    node_ref = 1;
+    while (cmd)
+    {
+        if (node_ref == 1)
+        {
+            printf("frt node\n");
+            printf("node_ref: [%i]\n", node_ref);
+            if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
+                cmd->next->type = FLE;
+            else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
+                cmd->next->type = ENDOF;
+            else if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
+            {
+                while (cmd->next != NULL && (cmd->next->type == 1 || cmd->next->type == 3))
+                {
+                    cmd = cmd->next;
+                    cmd->type = ARGS;
+                }
+            }
+            else
+            {
+                cmd->type = EXEC;
+                cmd->next->type = ARGS;
+            }
+            printf("cmd->cmd: [%s]\n", cmd->cmd);
+            cmd = cmd->next;
+            node_ref = 0;
+        }
+        if (cmd->type == PIPE)
+        {
+            printf("node_ref: [%i]\n", node_ref);
+            printf("cmd->cmd: [%s]\n", cmd->cmd);
+            node_ref = 1;
+            cmd = cmd->next;
+        }
+        if (node_ref == 0)
+        {
+            if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
+                cmd->next->type = FLE;
+            else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
+                cmd->next->type = ENDOF;
+            else if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
+            {
+                while (cmd->next != NULL && (cmd->next->type == 1 || cmd->next->type == 3))
+                {
+                    cmd = cmd->next;
+                    cmd->type = ARGS;
+                }
+            }
+            else
+            {
+                cmd->type = EXEC;
+                cmd->next->type = ARGS;
+            }
+            cmd = cmd->next;
+            node_ref = 0;
+        }
+    }
+    cmd = head;
+}
+
 char	**args_split(char *input)
 {
 	int		i;
@@ -133,24 +201,15 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
 
     last_exit_status = 0;
     //printf("before lexer\n");
-    //printf("prompt: [%s]\n", prompt);
+    printf("prompt: [%s]\n", prompt);
     cmds = lexer(prompt); // split the input for delim and quotes
     //printf("cmds was created\n");
     input_list = delim_split(prompt); // split the input for pipe
     include_fds(input_list);
     
-    //printf("\n----\nafter delim_split:\n");
-    //print_the_stack(input_list);
-
-    //include_fds(input_list);
-    //printf("\n----\nafter include_fds:\n");
-    //print_the_stack(input_list);
-
+    printf("\n----\nafter delim_split:\n");
+    print_the_stack(input_list);
     
-    //printf("\n----\nfds\n");
-    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
-
     i = -1;
     //int k = 1;
     //printf("\n----\nafter lexer:\n");
@@ -169,7 +228,18 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
         args = free_from_split(args);
     }
     cmds = free_from_split(cmds);
-    //define_tokens(input_list, types);
+
+    printf("\n----\nprint the types frt list:\n");
+    t_types *temp = types;
+    //printf("%s\n", types->cmd);
+    //printf("temp: [%p]\n", temp);
+    while (temp)
+    {
+        printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }
+
+    args_of_cmds(types);
     
     //printf("\n----\nprint the ptr of list:\n");
     //printf("input_list: [%p]\n", input_list);
@@ -178,21 +248,21 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    /*printf("\n----\nprint the types list:\n");
-    t_types *temp = types;
-    printf("%s\n", types->cmd);
-    printf("temp: [%p]\n", temp);
+    printf("\n----\nprint the types list after args_cmds:\n");
+    temp = types;
+    //printf("%s\n", types->cmd);
+    //printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
-    }*/
+    }
     //printf("\n----\npre send to exec\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     //enviar para execução
-    last_exit_status = to_exec(input_list, types, env_list);
+    //last_exit_status = to_exec(input_list, types, env_list);
 	
     /*printf("\n----\nconvertion of list to char**:\n");
     int j;

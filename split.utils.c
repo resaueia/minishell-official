@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/28 18:28:58 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:05:19 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char    **types_to_char(t_types *list)
     temp = list;
     i = 0;
     count = 0;
-    while(temp && temp->type != 11)
+    while(temp && temp->type != 11 && temp->type != 4 && temp->type != 7 && temp->type != 77 && temp->type != 44)
     {
         count++;
         temp = temp->next;

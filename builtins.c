@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/04 00:04:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:34:04 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*args_to_str(t_types *args)
 		temp = temp->next;
 	str = ft_strdup(temp->cmd);
 	temp = temp->next;
-	while (temp && temp->type == 1)
+	while (temp && temp->type == 20)
 	{
 		str = ft_strjoin(str, " ");
 		str = ft_strjoin(str, temp->cmd);
