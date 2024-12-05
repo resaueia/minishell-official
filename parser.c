@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/04 20:12:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 00:16:08 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,23 @@ void	insert_types(t_types **head, char *wrd)
 	temp->next = new;
 }
 
+static int is_delim(int type)
+{
+    if (type == PIPE || type == IN || type == OUT || type == APPEND || type == HDOC)
+        return (1);
+    return (0);
+}
+
+static int  is_redirects(int type)
+{
+    if (type == IN || type == OUT || type == APPEND || type == HDOC)
+        return (1);
+    return (0);
+}
+
 static void args_of_cmds(t_types *cmd)
 {
-    printf("\n----\nargs_of_cmds\n");
+    printf("\n----\nargs_of_cmds\n\n");
     t_types *head;
     int     node_ref;
 
@@ -93,56 +107,86 @@ static void args_of_cmds(t_types *cmd)
         {
             printf("frt node\n");
             printf("node_ref: [%i]\n", node_ref);
-            if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
-                cmd->next->type = FLE;
-            else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
-                cmd->next->type = ENDOF;
-            else if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
+            if (is_redirects(cmd->type))
             {
-                while (cmd->next != NULL && (cmd->next->type == 1 || cmd->next->type == 3))
+                printf("is_redirects\n");
+                if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
+                    cmd->next->type = FLE;
+                else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
+                    cmd->next->type = ENDOF;
+            }
+            else if (is_builtin(cmd->cmd) == 1)
+            { 
+                printf("is_builtin\n");
+                if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
                 {
+                    printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                     cmd = cmd->next;
-                    cmd->type = ARGS;
+                    printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                    while (cmd && is_delim(cmd->type) == 0)
+                    {
+                        printf("while is not a delim\n");
+                        cmd->type = ARGS;
+                        printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                        cmd = cmd->next;
+                    }
+                    if (!cmd)
+                        break;
                 }
+                printf("after echo\ncmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
             }
             else
             {
+                printf("else\n");
                 cmd->type = EXEC;
-                cmd->next->type = ARGS;
             }
-            printf("cmd->cmd: [%s]\n", cmd->cmd);
-            cmd = cmd->next;
+            printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
             node_ref = 0;
         }
         if (cmd->type == PIPE)
         {
+            printf("\npipe node\n");
             printf("node_ref: [%i]\n", node_ref);
-            printf("cmd->cmd: [%s]\n", cmd->cmd);
+            printf("cmd->cmd: [%s]_[%i]\n\n", cmd->cmd, cmd->type);
             node_ref = 1;
-            cmd = cmd->next;
         }
         if (node_ref == 0)
         {
-            if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
-                cmd->next->type = FLE;
-            else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
-                cmd->next->type = ENDOF;
-            else if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
+            printf("scd node\n");
+            printf("node_ref: [%i]\n", node_ref);
+            if (is_redirects(cmd->type))
             {
-                while (cmd->next != NULL && (cmd->next->type == 1 || cmd->next->type == 3))
+                printf("is_redirects\n");
+                if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
+                    cmd->next->type = FLE;
+                else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
+                    cmd->next->type = ENDOF;
+            }
+            else if (is_builtin(cmd->cmd) == 1)
+            { 
+                printf("is_builtin\n");
+                if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
                 {
+                    printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                     cmd = cmd->next;
-                    cmd->type = ARGS;
+                    printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                    while (cmd && is_delim(cmd->type) == 0)
+                    {
+                        printf("while is not a delim\n");
+                        cmd->type = ARGS;
+                        printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                        cmd = cmd->next;
+                    }
+                    if (!cmd)
+                        break;
                 }
+                printf("after echo\ncmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
             }
-            else
-            {
-                cmd->type = EXEC;
-                cmd->next->type = ARGS;
-            }
-            cmd = cmd->next;
-            node_ref = 0;
+            else if (ft_strcmp(cmd->cmd, "Makefile") == 0)
+                cmd->type = FLE;
+            printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
         }
+        cmd = cmd->next;
     }
     cmd = head;
 }
