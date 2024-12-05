@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/05 12:13:21 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:17:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,19 @@
 
 int setup_redirection(t_init_input *args_list, t_types *type)
 {
-    //printf("\n----\non setup_redirection\n\n");
-    //printf("types: [%p]\n", type);
     (void)type;
     (void)args_list;
-    //t_init_input    *temp;
     t_types         *type_head;
     t_types         *type_echo;
     int             temp_fd;
 
-    //temp = args_list;
     if (ft_strncmp(type->cmd, "echo", 4) == 0)
             type_echo = type;
     type_head = type;
     while (type)
     {
-        //printf("type->cmd: [%s]       | fd_in: [%i] | fd_out: [%i]\n", type->cmd, type->fd[0], type->fd[1]);
-        //if (type->next)
-            //printf("type->next->cmd: [%s] | fd_in: [%i] | fd_out: [%i]\n", type->next->cmd, type->next->fd[0], type->next->fd[1]);
         if (ft_strcmp(type->cmd, "<") == 0 && type->next)
         {
-            //printf("has [<]\n");
             if (access(type->next->cmd, R_OK | F_OK) == -1) // check if the file has read permission
             {
                 fprintf(stderr, "minishell: %s: no such file or directory\n", type->next->cmd); // print error message
@@ -48,20 +40,11 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 perror("Error opening fd for input redirect"); // print error message
                 return (-1); // return -1
             }
-            type->fd[0] = temp_fd;
-            //type->next->fd[0] = temp_fd; // set the fd_in to the file descriptor
-            //printf("type:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-            //printf("type->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
-            //printf("type: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
+            type->fd[0] = temp_fd; // set the fd_in to the file descriptor
+            //type->next->fd[0] = temp_fd; 
         }
         else if (ft_strcmp(type->cmd, ">") == 0 && type->next)
         {
-            printf("has [>]\n");
-            /*if (access(type->next->cmd, W_OK) == -1 && errno != ENOENT)
-            {
-                perror("No write permission for output redirect");
-                return (-1);
-            }*/
             if (type->fd[1] != STDOUT_FILENO)
                 close(type->fd[1]);
             temp_fd = open(type->next->cmd, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -70,16 +53,11 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 perror("Error opening fd for output redirect");
                 return (-1);
             }
-            //type_echo->fd[1] = temp_fd;
             type->fd[1] = temp_fd;
-            //type->next->fd[1] = temp_fd;
-            //printf("type:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-            //printf("type->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
-            //printf("type_echo: [%p]_[%s]_[%u]_[%i]_[%i]\n", type_echo->cmd, type_echo->cmd, type_echo->type, type_echo->fd[0], type_echo->fd[1]);
+            type->next->fd[1] = temp_fd;
         }
         else if (ft_strcmp(type->cmd, ">>") == 0 && type->next)
         {
-            //printf("has [>>]\n");
             if (access(type->next->cmd, W_OK) == -1 && errno != ENOENT)
             {
                 perror("No write permission for append redirect");
@@ -93,12 +71,8 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 perror("Error opening fd for append redirect");
                 return (-1);
             }
-            //type_echo->fd[1] = temp_fd;
             type->fd[1] = temp_fd;
             //type->next->fd[1] = temp_fd;
-            //printf("type:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-            //printf("type->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
-            //printf("type_echo: [%p]_[%s]_[%u]_[%i]_[%i]\n", type_echo->cmd, type_echo->cmd, type_echo->type, type_echo->fd[0], type_echo->fd[1]);
         }
         if (ft_strncmp(type_head->cmd, "echo", 4) == 0)
                 type_echo->fd[1] = temp_fd; //set the fd_out

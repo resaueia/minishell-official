@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/05 12:31:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:00:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int  is_redirects(int type)
     return (0);
 }
 
-static void args_of_cmds(t_types *cmd)
+void args_of_cmds(t_types *cmd)
 {
     //printf("\n----\nargs_of_cmds\n\n");
     t_types *head;
@@ -245,14 +245,14 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
 
     last_exit_status = 0;
     //printf("before lexer\n");
-    printf("prompt: [%s]\n", prompt);
+    //printf("prompt: [%s]\n", prompt);
     cmds = lexer(prompt); // split the input for delim and quotes
     //printf("cmds was created\n");
     input_list = delim_split(prompt); // split the input for pipe
     include_fds(input_list);
     
-    printf("\n----\nafter delim_split:\n");
-    print_the_stack(input_list);
+    //printf("\n----\nafter delim_split:\n");
+    //print_the_stack(input_list);
     
     i = -1;
     //int k = 1;

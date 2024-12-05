@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/05 12:11:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:00:32 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ char				**args_split(char *input);
 void				insert_types(t_types **head, char *wrd);
 int					what_type(char *wrd);
 void				include_fds(t_init_input *input_list);
+void				args_of_cmds(t_types *cmd);
 
 /* TO CONVERT LIST TO CHAR** */
 char    			**types_to_char(t_types *list);

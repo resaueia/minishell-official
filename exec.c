@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/03 23:49:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:33:53 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,8 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
     int		status;
 
     args = types_to_char(type);
+    printf("cmd:  [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
+    printf("args: [%p]_[%s]\n", args, args[0]);
     (void)args;
     (void)cmd;
     
