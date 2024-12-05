@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/05 00:16:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:31:08 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int  is_redirects(int type)
 
 static void args_of_cmds(t_types *cmd)
 {
-    printf("\n----\nargs_of_cmds\n\n");
+    //printf("\n----\nargs_of_cmds\n\n");
     t_types *head;
     int     node_ref;
 
@@ -105,11 +105,11 @@ static void args_of_cmds(t_types *cmd)
     {
         if (node_ref == 1)
         {
-            printf("frt node\n");
-            printf("node_ref: [%i]\n", node_ref);
+            //printf("frt node\n");
+            //printf("node_ref: [%i]\n", node_ref);
             if (is_redirects(cmd->type))
             {
-                printf("is_redirects\n");
+                //printf("is_redirects\n");
                 if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
                     cmd->next->type = FLE;
                 else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
@@ -117,46 +117,46 @@ static void args_of_cmds(t_types *cmd)
             }
             else if (is_builtin(cmd->cmd) == 1)
             { 
-                printf("is_builtin\n");
+                //printf("is_builtin\n");
                 if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
                 {
-                    printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                    //printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                     cmd = cmd->next;
-                    printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                    //printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                     while (cmd && is_delim(cmd->type) == 0)
                     {
-                        printf("while is not a delim\n");
+                        //printf("while is not a delim\n");
                         cmd->type = ARGS;
-                        printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                        //printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                         cmd = cmd->next;
                     }
                     if (!cmd)
                         break;
                 }
-                printf("after echo\ncmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                //printf("after echo\ncmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
             }
             else
             {
-                printf("else\n");
+                //printf("else\n");
                 cmd->type = EXEC;
             }
-            printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+            //printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
             node_ref = 0;
         }
         if (cmd->type == PIPE)
         {
-            printf("\npipe node\n");
-            printf("node_ref: [%i]\n", node_ref);
-            printf("cmd->cmd: [%s]_[%i]\n\n", cmd->cmd, cmd->type);
+            //printf("\npipe node\n");
+            //printf("node_ref: [%i]\n", node_ref);
+            //printf("cmd->cmd: [%s]_[%i]\n\n", cmd->cmd, cmd->type);
             node_ref = 1;
         }
         if (node_ref == 0)
         {
-            printf("scd node\n");
-            printf("node_ref: [%i]\n", node_ref);
+            //printf("scd node\n");
+            //printf("node_ref: [%i]\n", node_ref);
             if (is_redirects(cmd->type))
             {
-                printf("is_redirects\n");
+                //printf("is_redirects\n");
                 if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
                     cmd->next->type = FLE;
                 else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
@@ -164,27 +164,27 @@ static void args_of_cmds(t_types *cmd)
             }
             else if (is_builtin(cmd->cmd) == 1)
             { 
-                printf("is_builtin\n");
+                //printf("is_builtin\n");
                 if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
                 {
-                    printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                    //printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                     cmd = cmd->next;
-                    printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                    //printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                     while (cmd && is_delim(cmd->type) == 0)
                     {
-                        printf("while is not a delim\n");
+                        //printf("while is not a delim\n");
                         cmd->type = ARGS;
-                        printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                        //printf("cmd->next->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
                         cmd = cmd->next;
                     }
                     if (!cmd)
                         break;
                 }
-                printf("after echo\ncmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+                //printf("after echo\ncmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
             }
             else if (ft_strcmp(cmd->cmd, "Makefile") == 0)
                 cmd->type = FLE;
-            printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
+            //printf("cmd->cmd: [%s]_[%i]\n", cmd->cmd, cmd->type);
         }
         cmd = cmd->next;
     }
@@ -273,15 +273,15 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     }
     cmds = free_from_split(cmds);
 
-    printf("\n----\nprint the types frt list:\n");
+    /*printf("\n----\nprint the types frt list:\n");
     t_types *temp = types;
-    //printf("%s\n", types->cmd);
-    //printf("temp: [%p]\n", temp);
+    printf("%s\n", types->cmd);
+    printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
-    }
+    }*/
 
     args_of_cmds(types);
     
@@ -292,21 +292,21 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     
     //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    printf("\n----\nprint the types list after args_cmds:\n");
+    /*printf("\n----\nprint the types list after args_cmds:\n");
     temp = types;
-    //printf("%s\n", types->cmd);
-    //printf("temp: [%p]\n", temp);
+    printf("%s\n", types->cmd);
+    printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
-    }
+    }*/
     //printf("\n----\npre send to exec\n");
     //printf("input_list: [%p]\n", input_list);
     //printf("types: [%p]\n", types);
     //printf("env_list: [%p]\n", env_list);
     //enviar para execução
-    //last_exit_status = to_exec(input_list, types, env_list);
+    last_exit_status = to_exec(input_list, types, env_list);
 	
     /*printf("\n----\nconvertion of list to char**:\n");
     int j;

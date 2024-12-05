@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/02 20:42:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:13:21 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1); // return -1
             }
             type->fd[0] = temp_fd;
-            type->next->fd[0] = temp_fd; // set the fd_in to the file descriptor
+            //type->next->fd[0] = temp_fd; // set the fd_in to the file descriptor
             //printf("type:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
             //printf("type->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
             //printf("type: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
@@ -72,7 +72,7 @@ int setup_redirection(t_init_input *args_list, t_types *type)
             }
             //type_echo->fd[1] = temp_fd;
             type->fd[1] = temp_fd;
-            type->next->fd[1] = temp_fd;
+            //type->next->fd[1] = temp_fd;
             //printf("type:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
             //printf("type->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
             //printf("type_echo: [%p]_[%s]_[%u]_[%i]_[%i]\n", type_echo->cmd, type_echo->cmd, type_echo->type, type_echo->fd[0], type_echo->fd[1]);

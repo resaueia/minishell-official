@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/04 19:15:51 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:11:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ typedef struct s_envp
 }					t_envp;
 
 // for tokenization to exec
+/*cat Makefile | grep NAME > out.txt
+fd[0] = 0 fd[pipe[1]] = X | fd[0] = fd[pipe[0]] fd[1]= 1
+xxxxxxxxxxxxxxxxxxxxxxxxx | fd[0] = fd[pipe[0]] fd[1]= open("out.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644)*/
+
+
 typedef struct s_types
 {
 	char			*cmd; //command or argument
