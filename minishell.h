@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/05 15:00:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 18:28:03 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void				ft_echo(t_types *args, t_envp **env_list, int fd_out);
 void				ft_cd(char *path, t_envp **env_list);
 void				ft_export(char *var, t_envp **env_list);
 void				ft_unset(char *var, t_envp **env_list);
+void				exit_shell(char *prompt, char *prompt_dup, t_init_input *input_list, t_envp *env_list);
 
 /* TO FREE */
 char				*free_char_ptr(char *ptr);

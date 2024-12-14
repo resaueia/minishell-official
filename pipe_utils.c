@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/05 15:27:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 18:05:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
     (void)cmd;
 
     args = types_to_char(type);
-    printf("cmd:  [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-    printf("args: [%p]_[%s]\n", args, args[0]);
-    //(void)args;
     if (execve(type->cmd, args, env) == -1)
     {
         perror("Execution has failed");

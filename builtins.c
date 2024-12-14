@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/04 19:34:04 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:19:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 		args++; //incrementing the pointer to check the next character
 		while (*args == 'n')
 			args++; //incrementing the pointer to check the next character
-		if (*args == ' ')
+		if (*args == ' ' || *args == '\0')
 		{
 			newline = 0; //flag to not print a newline	
 			args++; //incrementing the pointer to check the next character
@@ -169,4 +169,61 @@ void	ft_unset(char *var, t_envp **env_list)
 		prev = current;
 		current = current->next;
 	}
+}
+
+static void	handle_ctrl_d_sig(t_init_input *input_list, t_envp *env_list)
+{
+	printf("exit\n");
+	rl_clear_history(); //clear the history
+	free_env(env_list); //free the env list
+	free_list(input_list); //free the input list
+	exit(0); //exit the shell with success
+}
+
+static int	parse_exit_status(char *prompt, int i)
+{
+	int ret;
+
+	ret = 0; //initialize the return value
+	while (prompt[i] == ' ') //skip the spaces
+		i++;
+	while (prompt[i]) //while the prompt has characters
+	{
+		if (is_whitspace(prompt[i]))
+		{
+			printf("exit\nminishell: exit: too many arguments\n");
+			return (-1); //if the prompt has more than one argument, it will return -1
+		}
+		if (!ft_isdigit(prompt[i]))
+		{
+			printf("exit\nminishell: exit: %s: numeric argument required\n", prompt);
+			exit(255);
+		}
+		ret = ret * 10 + prompt[i] - '0'; //convert the string to an integer
+		i++;
+	}
+	return (ret); //return the integer
+}
+
+void	exit_shell(char *prompt, char *prompt_dup, t_init_input *input_list, t_envp *env_list)
+{
+	int ret;
+	int i;
+	
+	i = 0;
+	if (!prompt)
+	{
+		handle_ctrl_d_sig(input_list, env_list);
+		return ;
+	}
+	while (prompt[i] == ' ') //skip the spaces
+		i++;
+	ret = parse_exit_status(prompt, 4);
+	if (ret == -1)
+	{
+		exit_mini(input_list, prompt, prompt_dup, env_list); // exit the shell end clear the memory
+		exit(1); //exit the shell with error "too many arguments" or "invalid argument"
+	}
+	exit_mini(input_list, prompt, prompt_dup, env_list); // exit the shell end clear the memory
+	exit(ret);
 }

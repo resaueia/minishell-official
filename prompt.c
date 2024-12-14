@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 15:49:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:31:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,20 @@ int	add_to_history(char *line)
 	return (0);
 }
 
+static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
+{
+	if (!input_check(prompt_dup)) // check if the input is valid
+	{
+		//printf("\n----\nsending to process_input:\n");
+		//processe_inut(struct, char**, struct);
+		process_input(input_list, input_list->types, prompt_dup, env_list);
+	}
+	else
+	{
+		printf("minishell: syntax error\n"); // if the input is invalid, print an error message
+	}
+}
+
 void	prompt(char **envp)
 {
 	char			*prompt;
@@ -81,51 +95,16 @@ void	prompt(char **envp)
 		prompt = readline("minishell> "); // the prompt
 		if (add_to_history(prompt)) // add the prompt to the history and go on
 			prompt_dup = ft_strdup(prompt);
-		//printf("prompt: [%s]\n", prompt);
-		if (ft_strncmp(prompt, "exit", 4) == 0) //if the user types exit, the shell will exit.
-		{
-			int ret;
-			int i;
-			
-			ret = 0;
-			i = 4;
-			while (prompt[i] == ' ')
-				i++;
-			while (prompt[i])
-			{
-				if (is_whitspace(prompt[i]))
-				{
-					printf("exit\nminishell: exit: too many arguments\n");
-					exit(1);
-				}
-				if (!ft_isdigit(prompt[i]))
-				{
-					printf("exit\nminishell: exit: %s: numeric argument required\n", prompt + 4);
-					exit(255);
-				}
-				else if (ft_isdigit(prompt[i]))
-				{
-					ret = ret * 10 + prompt[i] - '0';
-					i++;
-				}
-			}
-			exit_mini(input_list, prompt, prompt_dup, env_list); // exit the shell end clear the memory
-			exit(ret);
-		}
+		if (!prompt || ft_strncmp(prompt, "exit", 4) == 0) //if the user types exit, the shell will exit.
+			exit_shell(prompt, prompt_dup, input_list, env_list);
 		else
 		{
-			if (!input_check(prompt_dup)) // check if the input is valid
-			{
-				//printf("\n----\nsending to process_input:\n");
-				//processe_inut(struct, char**, struct);
-				process_input(input_list, input_list->types, prompt_dup, env_list);
-			}
-			else
-			{
-				printf("minishell: syntax error\n"); // if the input is invalid, print an error message
-				continue;
-			}
+			exec_shell(prompt_dup, input_list, env_list); // execute the shell
+			continue;
 		}
-		free(prompt); // free the prompt
+		if (prompt)
+			free(prompt); // free the prompt
+		if (prompt_dup)
+			free(prompt_dup); // free the prompt_dup
 	}
 }
