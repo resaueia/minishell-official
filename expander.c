@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/27 18:32:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 22:33:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
 {
+    printf("\n----\non expander_or_not\n");
+    printf("cmd: [%s]\n", cmd);
     char    *temp;
     char    *expanded;
     char    *key;
@@ -76,7 +78,6 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
 		}
     }
     cmd = ft_strdup(temp);
-    //temp = free_char_ptr(temp);
     return (cmd);
 }
 
@@ -91,3 +92,135 @@ void    lets_expander(t_types *types, t_envp *env_list, int last_exit_status)
         types = types->next;
     }
 }
+
+
+/*static int is_single_quoted(char *cmd)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '\'')
+            count++;
+        i++;
+    }
+    return (count % 2);
+}
+
+static int  is_double_quoted(char *cmd)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '\"')
+            count++;
+        i++;
+    }
+    return (count % 2);
+}
+
+static int  contains_dollar(char *cmd)
+{
+    int i;
+
+    i = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '$')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+static char *prs_pre(char *result, char *cmd, char *start)
+{
+    size_t  prefix_len;
+    char    *prefix;
+
+    prefix_len = start - cmd; // calcula o tamanho do prefixo
+    prefix = ft_substr(cmd, 0, prefix_len); // extrai o prefixo
+    result = ft_strjoin_free(result, prefix);
+    free(prefix);
+    return result;
+}
+
+static char *prs_var(char *rslt, char **stt, t_envp *env, int last_exit_status)
+{
+    char *end;
+    char *key;
+    char *value;
+
+    if (*((*stt) + 1) == '?') // Caso especial para `$?`
+    {
+        value = ft_itoa(last_exit_status);
+        rslt = ft_strjoin_free(rslt, value);
+        free(value);
+        *stt += 2; // Move o ponteiro após `$?`
+        return rslt;
+    }
+    end = *stt + 1;
+    while (ft_isalnum(*end) || *end == '_') // Determina o final da variável
+        end++;
+    key = ft_substr((*stt) + 1, 0, end - (*stt) - 1); // Extrai a chave da variável
+    value = get_value(key, env); // Busca o valor da variável
+    rslt = ft_strjoin_free(rslt, value ? value : ""); // Adiciona o valor
+    free(key);
+    *stt = end; // Move o ponteiro após a variável
+    return rslt;
+}
+
+char *expand_variables(char *cmd, t_envp *env_list, int last_exit_status)
+{
+    char *result;
+    char *start;
+
+    result = ft_strdup("");
+    start = cmd;
+    while ((start = ft_strchr(start, '$')) != NULL)
+    {
+        result = prs_pre(result, cmd, start); // Processa o prefixo antes do $
+        result = prs_var(result, &start, env_list, last_exit_status); // Processa o $
+    }
+    result = ft_strjoin_free(result, start); // Adiciona o restante da string
+    return result;
+}
+
+static char *expand_double_quoted(char *cmd, t_envp *env_list, int last_exit_status)
+{
+    char    *no_quotes;
+    char    *expanded;
+
+    no_quotes = ft_strdup(cmd);
+    remove_quotes(&no_quotes);
+    expanded = expand_variables(no_quotes, env_list, last_exit_status);
+    free(no_quotes);
+    return (expanded);
+}
+
+static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
+{
+    char *expanded;
+
+    if (is_single_quoted(cmd))
+    {
+        expanded = ft_strdup(cmd);
+        remove_quotes(&expanded); // Aspas simples: remover e não expandir
+        return (expanded);
+    }
+    if (is_double_quoted(cmd))
+    {
+        expanded = expand_double_quoted(cmd, env_list, last_exit_status); // Aspas duplas: expandir
+        return (expanded);
+    }    
+    if (contains_dollar(cmd))
+        expanded = expand_variables(cmd, env_list, last_exit_status); // Expansão de variáveis
+    return expanded ? expanded : ft_strdup(cmd); // Retorna expandido ou original
+}*/

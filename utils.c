@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/04 20:02:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 21:38:09 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ void	print_the_stack(t_init_input *list)
 int	is_whitspace(char c)
 {
 	return (c == '\t' || c == '\v' || c == '\r' || c == ' ');
+}
+
+int	is_whitespace_string(const char *str)
+{
+	while (*str)
+	{
+		if (!is_whitspace(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
 int	is_special(char c)
@@ -150,3 +161,11 @@ char	*extract_key(char *str)
         len++;
     return ft_substr(str, 0, len); // Retorna a chave extraída
 }
+
+char *ft_strjoin_free(char *s1, char *s2)
+{
+    char *new_str = ft_strjoin(s1, s2);
+    free(s1);
+    return new_str;
+}
+

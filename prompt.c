@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 19:31:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:49:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,26 @@ int	add_to_history(char *line)
 	return (0);
 }
 
+static int	handle_empty_or_exit(char *prompt, t_init_input *input_list, t_envp *env_list)
+{
+	if (!prompt) // if the prompt is empty
+	{
+		exit_shell(NULL, NULL, input_list, env_list); // exit the shell
+		return (1);
+	}
+	if (!*prompt || is_whitespace_string(prompt)) // if the prompt is empty or has only spaces
+	{
+		free(prompt); // free the prompt
+		return (1);
+	}
+	if (ft_strncmp(prompt, "exit", 4) == 0) // if the prompt is exit
+	{
+		exit_shell(prompt, NULL, input_list, env_list); // exit the shell
+		return (1);
+	}
+	return (0); // return 0 if the prompt is not empty or exit
+}
+
 static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
 {
 	if (!input_check(prompt_dup)) // check if the input is valid
@@ -81,10 +101,19 @@ static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_l
 	}
 }
 
+static void	process_command(char *prompt, t_init_input *input_list, t_envp *env_list)
+{
+	char	*prompt_dup;
+
+	if (add_to_history(prompt)) // add the prompt to the history
+		prompt_dup = ft_strdup(prompt); // duplicate the prompt
+	exec_shell(prompt_dup, input_list, env_list); // execute the shell
+	free(prompt); // free the prompt
+	free(prompt_dup); // free the prompt_dup
+}
 void	prompt(char **envp)
 {
 	char			*prompt;
-	char			*prompt_dup;
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
@@ -93,18 +122,8 @@ void	prompt(char **envp)
 	while (1) // loop the shell.
 	{
 		prompt = readline("minishell> "); // the prompt
-		if (add_to_history(prompt)) // add the prompt to the history and go on
-			prompt_dup = ft_strdup(prompt);
-		if (!prompt || ft_strncmp(prompt, "exit", 4) == 0) //if the user types exit, the shell will exit.
-			exit_shell(prompt, prompt_dup, input_list, env_list);
-		else
-		{
-			exec_shell(prompt_dup, input_list, env_list); // execute the shell
+		if (handle_empty_or_exit(prompt, input_list, env_list)) // handle the empty prompt or exit
 			continue;
-		}
-		if (prompt)
-			free(prompt); // free the prompt
-		if (prompt_dup)
-			free(prompt_dup); // free the prompt_dup
+		process_command(prompt, input_list, env_list); // process the command
 	}
 }
