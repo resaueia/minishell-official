@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 22:33:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:24:21 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
+/*static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
 {
     printf("\n----\non expander_or_not\n");
     printf("cmd: [%s]\n", cmd);
@@ -79,18 +79,143 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
     }
     cmd = ft_strdup(temp);
     return (cmd);
+}*/
+
+static int  has_dol(char *cmd)
+{
+    int i;
+
+    i = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '$')
+            return (1);
+        i++;
+    }
+    return (0);
 }
 
-void    lets_expander(t_types *types, t_envp *env_list, int last_exit_status)
+static void rmv_qts(char **str)
 {
+	char	*src;
+	char	*dst;
+
+	src = *str;
+	dst = *str;
+
+    while (*src)
+    {
+        if (*src != '\"')
+            *dst++ = *src;
+        src++;
+    }
+    *dst = '\0';
+}
+
+/*static int  char_valid(char c)
+{
+    if (c == '\'' || c == '\"')
+        return (1);
+    return (0);
+}*/
+
+static void status_expander(char *str, int i, int exit_status)
+{
+    printf("\non status_expander\n");
+    char    *status_str;
+
+    status_str = ft_itoa(exit_status);
+    printf("status_str: [%s]\n", status_str);
+    str[i] = '\0';
+    str = ft_strjoin(str, status_str);
+    printf("str: [%s]\n", str);
+    free(status_str);
+}
+
+static void to_expander(char *str, int i, t_envp *env, int exit_status)
+{
+    printf("\non to_expander\n");
+    printf("str: [%s]\n--\n", str);
+    (void)env;
+    (void)exit_status;
+    //char    *key;
+    //char    *value;
+    //char    *expanded;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '$')
+        {
+            /*if (char_valid(str[i - 1])) //verificar char valido antes do $
+            {
+                i++;
+                continue ;
+            }*/
+            if (str[i + 1] == '?')
+            {
+                //EXPANDIR EXIT_STATUS
+                printf("EXPANDIR EXIT_STATUS\n");
+                status_expander(str, i, exit_status);
+                printf("status_expander == str: [%s]\n", str);
+                return ;
+            }
+            else if (str[i + 1] != '\0')
+            {
+                //EXPANDIR VARIAVEL DE AMBIENTE
+                printf("EXPANDIR VARIAVEL DE AMBIENTE\n");  
+                return ;
+            }
+        }
+        i++;
+    }
+}
+
+static char *expander_or_not(char *cmd, t_envp *env_list, int exit_status)
+{
+    printf("\n----\non expander_or_not\n");
+    printf("cmd: [%s]\n", cmd);
+    int     i;
+
+    i = -1;
+    if (cmd[0] == '\'') //se começar com aspas simples e estiver fechada, remover aspas apenas e não expandir
+    {
+        remove_quotes(&cmd);
+        return (cmd);
+    }
+    while(cmd[++i])
+    {
+        printf("cmd[%i]: [%c]\n", i, cmd[i]);
+        if (cmd[i] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
+            rmv_qts(&cmd);
+        if (cmd[i] == '$')
+        {
+            printf("\n--\nhas dol\n--\n");
+            printf("cmd[%i]: [%c]\n", i, cmd[i]);
+            to_expander(cmd, i, env_list, exit_status);
+            printf("\nAFTER EXPANDER\ncmd: [%s]\n--\n", cmd);
+        }
+    }
+    return (cmd);
+}
+
+void    lets_expander(t_types *types, t_envp *env_list, int exit_status)
+{
+    printf("\n----\non lets_expander\n");
     t_envp  *env;
 
     env = env_list;
     while (types)
     {
-        types->cmd = expander_or_not(types->cmd, env, last_exit_status);
+        if (has_dol(types->cmd))
+        {
+            printf("has_dol\n");
+            types->cmd = expander_or_not(types->cmd, env, exit_status);
+        }
         types = types->next;
     }
+    //free_env(env);
+    env = NULL;
 }
 
 
