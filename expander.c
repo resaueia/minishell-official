@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 16:12:52 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:53:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int  has_dol(char *cmd)
     return (0);
 }
 
-static void rmv_qts(char **str)
+static void rmv_db_qts(char **str)
 {
 	char	*src;
 	char	*dst;
@@ -106,6 +106,39 @@ static void rmv_qts(char **str)
     while (*src)
     {
         if (*src != '\"')
+            *dst++ = *src;
+        src++;
+    }
+    *dst = '\0';
+}
+
+static void rmv_sg_qts(char **str)
+{
+	char	*src;
+	char	*dst;
+
+	src = *str;
+	dst = *str;
+
+    while (*src)
+    {
+        if (*src != '\'')
+            *dst++ = *src;
+        src++;
+    }
+    *dst = '\0';
+}
+
+static void remove_backslashes(char *str)
+{
+    char *src;
+    char *dst;
+
+    src = str;
+    dst = str;
+    while (*src)
+    {
+        if (*src != '\\')
             *dst++ = *src;
         src++;
     }
@@ -155,31 +188,103 @@ static char *status_expander(char *str, int i, int exit_status)
     return (expanded);
 }
 
-static char *env_var_expander(char *str, int i, t_envp *env_list)
+static int validate_before_dollar(char *str, int i)
+{
+    if (i > 0)
+    {
+        if (str[i - 1] == '&' || str[i - 1] == '!')
+            return 0; // Não expandir
+        if (str[i - 1] == '(' || str[i - 1] == ')')
+        {
+            fprintf(stderr, "bash: syntax error near unexpected token `)'\n");
+            return 0;
+        }
+        if (str[i - 1] == ';')
+        {
+            printf("%.*s\n%s: command not found\n", i, str, str + i + 1);
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static char *handle_invalid_prefix(char *str, int i)
 {
     char *prefix;
+
+    prefix = ft_substr(str, 0, i);
+    free(str);
+    return prefix;
+}
+
+static int handle_special_cases(char *str, int i)
+{
+    char    *pid_str;
+    
+    if (str[i + 1] == '$') // Substituir por PID
+    {
+        pid_str = ft_itoa(getpid());
+        printf("%s\n", pid_str);
+        free(pid_str);
+        return -1; // Caso especial tratado
+    }
+    return i + 1;
+}
+
+static char *extract_suffix(char *str, int *j)
+{
+    while (ft_isalnum(str[*j]) || str[*j] == '_')
+        (*j)++;
+    return ft_strdup(str + *j);
+}
+
+static char *get_expanded_value(char *str, int start, t_envp *env_list, int end)
+{
     char *key;
     char *value;
-    char *suffix;
-    char *new_str;
-    int j;
 
-    j = i + 1;
-    while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
-        j++;
-    prefix = ft_substr(str, 0, i);
-    key = ft_substr(str, i + 1, j - i - 1);
+    key = ft_substr(str, start, end - start);
+    remove_backslashes(key);
     value = get_value(key, env_list);
-    suffix = ft_strdup(str + j);
-    new_str = ft_strjoin_three(prefix, value ? value : "", suffix);
-
-    free(prefix);
     free(key);
+    return value ? value : "";
+}
+
+static char *rebuild_expanded_str(char *prefix, char *expanded, char *suffix, char *old_str)
+{
+    char *new_str;
+    char *temp;
+
+    temp = ft_strjoin(prefix, expanded);
+    new_str = ft_strjoin(temp, suffix);
+
+    free(temp);
+    free(prefix);
     free(suffix);
-    free(str);
+    free(old_str);
     return new_str;
 }
 
+
+static char *env_var_expander(char *str, int i, t_envp *env_list)
+{
+    char *prefix;
+    char *suffix;
+    char *expanded;
+    int  j;
+
+    if (!validate_before_dollar(str, i))
+        return handle_invalid_prefix(str, i);
+    j = handle_special_cases(str, i); // Valida após o dólar
+    if (j == -1)
+        return str; // Caso especial tratado (como pid ou erro)
+
+    prefix = ft_substr(str, 0, i); // Parte antes do $
+    suffix = extract_suffix(str, &j); // Sufixo após a variável
+    expanded = get_expanded_value(str, i + 1, env_list, j); // Expande a variável
+    
+    return rebuild_expanded_str(prefix, expanded, suffix, str);
+}
 
 static char *to_expander(char *str, int i, t_envp *env, int exit_status)
 {
@@ -224,9 +329,12 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int exit_status)
     i = 0;
     while(cmd[i])
     {
-        if (cmd[i] == '\'')//se tiver com aspas simples e estiver fechada, remover aspas apenas e não expandir
-        { 
-            remove_quotes(&cmd);
+        if (cmd[i] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
+            break;
+        else if (cmd[i] == '\'')//se tiver com aspas simples e estiver fechada, remover aspas apenas e não expandir
+        {
+            printf("has single quotes\n");
+            rmv_sg_qts(&cmd);
             return (cmd);
         }
         i++;
@@ -235,7 +343,7 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int exit_status)
     while(cmd[i])
     {
         if (cmd[i] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
-            rmv_qts(&cmd);
+            rmv_db_qts(&cmd);
         if (cmd[i] == '$')
             cmd = to_expander(cmd, i, env_list, exit_status);
         i++;
