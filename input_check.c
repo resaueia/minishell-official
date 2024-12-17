@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/11/05 21:01:37 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:26:20 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ int	quotes_check(char *str)
 		}
 		i++;
 	}
-	// If by the end of the check either of them are still on, they're not balanced
 	if (single_quote == 1 || double_quote == 1)
 		return (0);  
 	return (1);
@@ -136,11 +135,6 @@ int	quotes_check(char *str)
 
 int	input_check(char *input)
 {
-	/*if (is_empty_string(input))
-	{
-		ft_putstr_fd("Error: Empty input.\n");
-		return (1);
-	}*/
 	if (is_double_delim(input))
 	{
 		ft_putstr_fd("Error: Double delimiters were found.\n", 2);

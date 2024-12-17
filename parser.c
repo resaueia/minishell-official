@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/03 19:17:39 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/17 19:22:34 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,6 @@ void include_fds(t_init_input *input_list)
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
-    //printf("\n----\nprocess_input\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
-    //printf("env_list: [%p]\n", env_list);
     char    **args;
     char    **cmds;
     int     i;
@@ -127,74 +122,19 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     (void) input_list;
 
     last_exit_status = 0;
-    //printf("before lexer\n");
-    //printf("prompt: [%s]\n", prompt);
     cmds = lexer(prompt); // split the input for delim and quotes
-    //printf("cmds was created\n");
     input_list = delim_split(prompt); // split the input for pipe
     include_fds(input_list);
-    
-    //printf("\n----\nafter delim_split:\n");
-    //print_the_stack(input_list);
-
-    //include_fds(input_list);
-    //printf("\n----\nafter include_fds:\n");
-    //print_the_stack(input_list);
-
-    
-    //printf("\n----\nfds\n");
-    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
-
     i = -1;
-    //int k = 1;
-    //printf("\n----\nafter lexer:\n");
     while(cmds[++i])
     {
-        //printf("\n---\n[%iº command]\n", k++);
-        //printf("cmds[%i]: [%s]\n", i, cmds[i]);
         j = -1;
         args = args_split(cmds[i]); // split the input for space
-        //printf("\n----\nafter args_split:\n");
         while (args[++j])
-        {
-            //printf("args[%i]: [%s]\n", j, args[j]);
             insert_types(&types, args[j]);
-        }
         args = free_from_split(args);
     }
     cmds = free_from_split(cmds);
-    //define_tokens(input_list, types);
-    
-    //printf("\n----\nprint the ptr of list:\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
-    
-    //send to expander, rever $? e $ENV~xpto
     lets_expander(types, env_list, last_exit_status);
-    /*printf("\n----\nprint the types list:\n");
-    t_types *temp = types;
-    printf("%s\n", types->cmd);
-    printf("temp: [%p]\n", temp);
-    while (temp)
-    {
-        printf("cms: [%p]_[%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }*/
-    //printf("\n----\npre send to exec\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("types: [%p]\n", types);
-    //printf("env_list: [%p]\n", env_list);
-    //enviar para execução
     last_exit_status = to_exec(input_list, types, env_list);
-	
-    /*printf("\n----\nconvertion of list to char**:\n");
-    int j;
-    for (j = 0; args[j]; j++)
-        printf("args[%i]: [%s]\n", j, args[j]);
-    */
-    //args_list = parser(prompt); //a ideia aqui é interpretar cada strg a partir do split de pipe
-    //será preciso splitar por estaço e tokenizar os comandos.
-
 }

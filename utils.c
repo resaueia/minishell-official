@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/28 21:06:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:24:05 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,15 @@
 
 void	print_the_stack(t_init_input *list)
 {
-	t_init_input *current = list;
-
+	t_init_input *current;
+	
+	current = list;
 	while (current)
 	{
-		// Traverse and print the linked list
 		printf("string: [%s] || token: [%i] || ", current->string, current->token);
 		printf("fd_in: [%d] || fd_out: [%i]\n", current->fd_in, current->fd_out);
 		current = current->next;
-	}
-	//current = list;
-	//printf("fd_in: [%d]\n", current->fd_in);
-	//printf("fd_out: [%d]\n", current->fd_out);	
+	}	
 }
 
 int	is_whitspace(char c)
@@ -54,10 +51,11 @@ int	is_lower(char *args)
 
 	len = ft_strlen(args);
 	i = 0;
-	while (args[i++])
+	while (args[i])
 	{
-		if (args[i] >= 'a' || args[i] <= 'z')
+		if (args[i] >= 'a' && args[i] <= 'z')
 			len--;
+		i++;
 	}
 	if (len == 0)
 		return (0);
@@ -101,24 +99,22 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 	char	*value;
 	char	*tmp;
 
-	value = get_value(key, *env_list); //armazena o valor de HOME
+	value = get_value(key, *env_list);
 	new_path = (char *)malloc(sizeof(char) * (ft_strlen(value) + ft_strlen(path) + 2)); //maloca o tamanho de value + path + 2
 	if (!new_path)
 		return (NULL);
-	tmp = new_path; //recebe o endereço de new_path
+	tmp = new_path;
 	while (*value)
-		*tmp++ = *value++; //tmp recebe o valor de value (HOME)
-	*tmp++ = '/'; //home termina sem '/', atribuir para continuar com o new_path
+		*tmp++ = *value++;
+	*tmp++ = '/';
 	while (*path)
-		*tmp++ = *path++; //tmp recebe o valor de path descrito no prompt e passado pelo argumento
-	*tmp = '\0'; //finaliza a string
-	return (new_path); //retorna o novo path
+		*tmp++ = *path++;
+	*tmp = '\0';
+	return (new_path);
 }
 
 char	*ft_strndup(char *str, int	len)
 {
-	printf("\n----\nft_strndup\n");
-	printf("str: [%s]\n", str);
 	char	*new;
 	int		i;
 
@@ -132,14 +128,11 @@ char	*ft_strndup(char *str, int	len)
 		i++;
 	}
 	new[i] = '\0';
-	printf("new: [%s]\n", new);
 	return (new);
 }
 
 int	is_expander(t_types *types)
 {
-	//printf("\n----\nis_expander\n");
-	printf("types->cmd: [%s]\n", types->cmd);
 	if (types->cmd[0] == '$' && types->cmd[1] == '?')
 		return (1);
 	else
@@ -152,5 +145,5 @@ char	*extract_key(char *str)
 
     while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
         len++;
-    return ft_substr(str, 0, len); // Retorna a chave extraída
+    return ft_substr(str, 0, len);
 }

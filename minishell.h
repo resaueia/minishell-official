@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/02 18:12:33 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/17 16:09:54 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ t_init_input		*split_commands(char **commands, t_init_input **head, t_init_input
 t_init_input		*add_node(char *input, t_token token);
 t_init_input		*ft_split(char *s);
 t_init_input		*delim_split(char *s);
+void 				handle_substring(char *s, size_t *i, int *start_index, t_init_input **head, t_init_input **tail);
 t_token				get_token(char *c);
 void    			add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_token token);
 

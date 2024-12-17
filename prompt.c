@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/03 16:52:22 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/17 18:19:53 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static void	handle_exit_command(char *prompt, t_init_input *input_list,
 
 static void process_shell_input(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
 {
-    if (!input_check(prompt_dup)) // Validate input
+    if (!input_check(prompt_dup))
     {
         process_input(input_list, input_list->types, prompt_dup, env_list);
     }
@@ -105,8 +105,69 @@ static void process_shell_input(char *prompt_dup, t_init_input *input_list, t_en
         printf("minishell: syntax error\n");
     }
 }
+static void handle_prompt_input(char *prompt, char **prompt_dup, t_init_input *input_list, t_envp *env_list)
+{
+    if (add_to_history(prompt))
+    {
+        if (*prompt_dup)
+            free(*prompt_dup);
+        *prompt_dup = ft_strdup(prompt);
+    }
 
-void	prompt(char **envp)
+    if (ft_strncmp(prompt, "exit", 4) == 0)
+    {
+        handle_exit_command(prompt, input_list, *prompt_dup, env_list);
+    }
+    else
+    {
+        process_shell_input(*prompt_dup, input_list, env_list);
+    }
+}
+
+/* Function: handle_prompt_input
+ * Handles user input:
+ * - Adds the command to history.
+ * - Duplicates the input for processing.
+ * - Calls appropriate functions for "exit" or other shell commands.
+ */
+
+void prompt(char **envp)
+{
+    char            *prompt;
+    char            *prompt_dup;
+    t_init_input    *input_list;
+    t_envp          *env_list;
+
+    env_list = get_envp(envp);
+    input_list = init_list();
+    prompt_dup = NULL;
+    while (1)
+    {
+        prompt = readline("minishell> ");
+        if (!prompt) // Handle EOF (CTRL+D)
+        {
+            printf("exit\n");
+            rl_clear_history();
+            free_env(env_list);
+            free_list(input_list);
+            break;
+        }
+        handle_prompt_input(prompt, &prompt_dup, input_list, env_list);
+        free(prompt);
+    }
+    if (prompt_dup)
+        free(prompt_dup);
+}
+
+/* Function: prompt
+ * Manages the main loop of the shell:
+ * - Reads user input using readline.
+ * - Handles EOF (CTRL+D) to exit the shell cleanly.
+ * - Delegates input processing to the handle_prompt_input function.
+ */
+
+
+/*void	prompt(char **envp)
 {
     char			*prompt;
     char			*prompt_dup;
@@ -138,7 +199,7 @@ void	prompt(char **envp)
         }
         free(prompt);
     }
-}
+}*/
 
 /*void	prompt(char **envp)
 {

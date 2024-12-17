@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 14:28:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:24:08 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	ft_bzero(void *str, size_t n)
 
 int	ft_isalpha(int c)
 {
-	//printf("on ft_isalpha\n");
-	//printf("char is: [%c]\n", c);
 	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
 		return (1);
 	else
@@ -63,7 +61,6 @@ int	ft_strlen(char *str)
 
 int	ft_strcmp(char *str, char *value)
 {
-	//printf("entrou na strcmp\n");
 	int	i;
 
 	i = 0;
@@ -71,12 +68,10 @@ int	ft_strcmp(char *str, char *value)
 		i++;
 	if (value[i] == '\0' && str[i] == '\0')
 	{
-		//printf("ok\n");
 		return (0);
 	}
 	else
 	{
-		//printf("not ok\n");
 		return (1);
 	}
 }
@@ -123,18 +118,13 @@ size_t	ft_strlcat(char *dest, const char *src, size_t sz)
 
 int	ft_strncmp(char *s1, char *s2, size_t n)
 {
-	//printf("\nn: %zu\n", n);
-	//printf("s1: %s\n", s1);
-	//printf("s2: %s\n", s2);
 	--n;
 	while (s1[n] == s2[n] && s1[n] && s2[n])
 	{
-		//printf("s1[%li]: %c | s2[%li]: %c\n", n, s1[n], n, s2[n]);
 		if (n == 0)
 			return (0);
 		n--;
 	}
-	//printf("NOK\n--");
 	return (1);
 }
 

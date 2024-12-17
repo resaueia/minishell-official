@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   to_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/24 15:46:33 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:30:11 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ char    *free_char_ptr(char *ptr)
     ptr = NULL;
     return (ptr);
 }
+/* Function: free_char_ptr
+ * Safely frees a dynamically allocated character pointer and sets it to NULL.
+ */
 
 char	**free_from_split(char **str)
 {
@@ -34,6 +37,10 @@ char	**free_from_split(char **str)
 	str = NULL;
 	return (NULL);
 }
+/* Function: free_from_split
+ * Frees an array of strings (result of a split function), including each
+ * individual string, and sets the array pointer to NULL.
+ */
 
 void	free_list(t_init_input *list)
 {
@@ -48,6 +55,10 @@ void	free_list(t_init_input *list)
 		free(temp);
 	}
 }
+/* Function: free_list
+ * Iterates through a linked list of t_init_input, freeing the string
+ * and each node one by one.
+ */
 
 void	free_types(t_types *types)
 {
@@ -62,6 +73,10 @@ void	free_types(t_types *types)
 		free(temp);
 	}
 }
+/* Function: free_types
+ * Iterates through a linked list of t_types, freeing the cmd field 
+ * and each node individually.
+ */
 
 void	free_env(t_envp *env_list)
 {
@@ -78,6 +93,10 @@ void	free_env(t_envp *env_list)
 		free(temp);
 	}
 }
+/* Function: free_env
+ * Iterates through a linked list of t_envp, freeing both key and value 
+ * fields, and then frees each node.
+ */
 
 void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_list)
 {
@@ -90,4 +109,7 @@ void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup, t_envp *env_l
 	if (env_list)
 		free_env(env_list);
 }
-
+/* Function: exit_mini
+ * Frees all dynamically allocated resources used during the program's 
+ * execution, including input lists, prompts, and environment variables.
+ */

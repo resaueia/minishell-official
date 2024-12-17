@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:44:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/11/04 19:53:40 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:41:25 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,3 +78,7 @@ char	**the_split(char const *s, char c)
 	splt[j] = 0;
 	return (splt);
 }
+/* Function: the_split
+ * Splits a string into an array of substrings using a specified delimiter.
+ * The memory allocation and substring extraction are handled by helper functions.
+ */

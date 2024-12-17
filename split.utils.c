@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/28 18:28:58 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:16:51 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char    **types_to_char(t_types *list)
 {
-    t_types    *temp;
-    char            **cmds;
-    int             i;
-    int             count;
+    t_types     *temp;
+    char        **cmds;
+    int         i;
+    int         count;
 
     temp = list;
     i = 0;
@@ -43,10 +43,10 @@ char    **types_to_char(t_types *list)
 
 char    **env_to_char(t_envp *env_list)
 {
-    t_envp    *temp;
-    char      **list;
-    int             i;
-    int             count;
+    t_envp      *temp;
+    char        **list;
+    int         i;
+    int         count;
 
     temp = env_list;
     i = 0;
@@ -57,8 +57,6 @@ char    **env_to_char(t_envp *env_list)
         temp = temp->next;
     }
     list = (char **)malloc(sizeof(char *) * count + 1);
-    if (!list)
-        return (NULL);
     temp = env_list;
     while (temp)
     {
@@ -115,11 +113,8 @@ t_init_input    *split_commands(char **commands, t_init_input **head, t_init_inp
         while (current_node)
         {
             add_to_list(head, tail, current_node->string, current_node->token);
-            //printf("string %s | ", current_node->string);
-            //printf("token %u\n", current_node->token);
             current_node = current_node->next;
         }
-        //free the list (create a function for it);
         i++;
     }
     return(*head);

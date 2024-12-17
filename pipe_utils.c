@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/02 11:25:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:10:02 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,11 @@
 
 void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 {
-    //printf("\n----\non exec_cmd_pipe\n\n");
-    //printf("cmd: [%s]\n", type->cmd);
-    //printf("cmd next: [%s]\n", type->next->cmd);
     char    **args;
     (void)cmd;
 
     args = types_to_char(type);
     (void)args;
-    
-    //printf("exec_cmd >>> file descriptor in: [%d]\n", cmd->fd_in);
-    //printf("exec_cmd >>> file descriptor out: [%d]\n", cmd->fd_out);
-    //INCLUIR VERIFICAÇÃO DO ARGUMENTO APÓS O EXECUTÁVEL.
-    //SE FOR UM REDIR, ENVIAR O PRÓXIMO NÓ COMO ARGUMENTO.
     if (execve(type->cmd, args, env) == -1)
     {
         perror("Execution has failed");
@@ -34,44 +26,102 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
     }
 }
 
-int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
+static int handle_heredoc(t_init_input *input_list, t_types *type)
 {
-    //printf("\n----\non to_exec_pipe\n\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("env_list: [%p]\n", env_list);
-    //printf("type: [%p]\n", type);
-    //printf("input_list->types: [%p]\n", input_list->types);
+    include_fds(input_list);
+    if (is_heredoc(input_list, type) == -1)
+    {
+        perror("Error setting up heredoc");
+        exit(EXIT_FAILURE);
+    }
+    free_list(input_list);
+    free_types(type);
+    return (0);
+}
+
+/* Function: handle_heredoc
+ * Configures heredoc by including file descriptors and calling is_heredoc.
+ * Exits with an error message on failure.
+ */
+
+static int handle_redirection(t_init_input *input_list, t_types *type)
+{
+    if (setup_redirection(input_list, type) == -1)
+    {
+        perror("Error while setting up redirection");
+        exit(EXIT_FAILURE);
+    }
+    return (0);
+}
+
+/* Function: handle_redirection
+ * Calls setup_redirection to configure input/output redirection.
+ * Exits with an error message on failure.
+ */
+
+static void execute_command(t_init_input *input_list, t_types *type, t_envp *env_list, char **env)
+{
+    if (is_btin(type)) // Built-in commands
+    {
+        execute_builtin(type->cmd, env_list, input_list, type);
+    }
+    else // External commands
+    {
+        find_command_path(type, env_list);
+        exec_cmd_pipe(input_list, type, env);
+    }
+}
+
+/* Function: execute_command
+ * Executes either built-in commands using execute_builtin or external
+ * commands using exec_cmd_pipe.
+ */
+
+int to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
+{
+    char    **env;
+    //t_types *tmp;
+
+    env = env_to_char(env_list);
+    //tmp = type;
+
+    if (is_hdoc(type)) // Heredoc
+        return (handle_heredoc(input_list, type));
+
+    if (is_rdrct(type)) // Redirection
+        handle_redirection(input_list, type);
+
+    execute_command(input_list, type, env_list, env);
+
+    free_list(input_list);
+    free_types(type);
+    return (0);
+}
+
+/* Function: to_exec_pipe
+ * Orchestrates the execution of commands in a pipeline:
+ * - Handles heredoc setup.
+ * - Handles input/output redirections.
+ * - Executes built-in or external commands.
+ * Frees the input list and type structures before returning.
+ */
+
+
+
+/*int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
+{
     (void) input_list;
     char  **env;
     t_types     *tmp;
     
-    //printf("\n----\nafter declarations\n");
-    //input_list->fd_in = 0;
-    //input_list->fd_out = 1;
-    //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-    //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
     env = env_to_char(env_list);
     tmp = type;
     (void) env;
     (void) type;
     (void) tmp;
 
-    /*printf("\n----\nafter insert values on vars\n");
-    printf("env: [%p]\n", env);
-    printf("tmp: [%p]\n", tmp);
-    if (!tmp)
-        printf("type is NULL\n");
-    else
-        printf("type is not NULL\n");
-    while (tmp)
-    {
-        printf("cms: [%s] - types: [%u]\n", tmp->cmd, tmp->type);
-        tmp = tmp->next;
-    }*/
     if (is_hdoc(type)) //heredoc
     {
-        //executa heredoc
-        //printf("has heredoc\n");
         include_fds(input_list);
         if (is_heredoc(input_list, type) == -1)
         {   
@@ -80,21 +130,12 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
             //free_list(input_list);
             exit(EXIT_FAILURE);
         }
-        //printf("\n----\n");
-        //printf("heredoc has been executed\n");
-        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
-        //printf("cmd: [%s]\n", type->cmd);
-        //printf("cmd next: [%s]\n", type->next->cmd);
         free_list(input_list);
         free_types(type);
         return (0);
-
     }
-    if (is_rdrct(type)) //redirects
+    if (is_rdrct(type))
     {
-        //executa redirect
-        //printf("has redirect\n");
         if (setup_redirection(input_list, type) == -1)
         {
             perror("Error whule setting up redirection\n");
@@ -104,29 +145,13 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
         }
     }
     if (is_btin(type)) //builtin
-    {
-        //printf("has builtin\n");
-        //printf("cmd: [%s]\n", type->cmd);
-        //printf("cmd next: [%s]\n", type->next->cmd);
-        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
-        execute_builtin(type->cmd, env_list, input_list, type); //executa o comando
-    }
+        execute_builtin(type->cmd, env_list, input_list, type);
     else //if (is_exec(type)) //execve
     {
-        //printf("\nhas execve\n");
-        //procura o path do comando na env_list
-        //printf("cmd: [%s]\n", type->cmd);
-        //printf("cmd next: [%s]\n", type->next->cmd);
-        //printf("input_list->fd_in: [%d]\n", input_list->fd_in);
-        //printf("input_list->fd_out: [%d]\n", input_list->fd_out);
         find_command_path(type, env_list); 
-        //printf("cmd_path: [%s]\n", type->cmd);
-        //executa execve
         exec_cmd_pipe(input_list, type, env);
-        //verificar se tem algum temporário heredoc_*.tmp e deleta
     }
     free_list(input_list);
     free_types(type);
     return (0);
-}
+}*/

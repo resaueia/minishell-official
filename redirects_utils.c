@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 22:12:24 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 22:19:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:59:06 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 void remove_node(t_types **head)
 {
-    //printf("\n----\non the remove_node\n");
     t_types *node;
     t_types *temp_node;
 
     node = *head;
     while (node)
     {
-        temp_node = node->next; //save the next node
+        temp_node = node->next;
         if (node->type == 4 || node->type == 7 || node->type == 77) //check if the node is redirects
         {
             if (node->prev)
@@ -31,7 +30,7 @@ void remove_node(t_types **head)
             if (node == *head)
                 *head = node->next;
             free(node->cmd);
-            free(node); //to node
+            free(node);
             node = NULL;
         } 
         node = temp_node;
