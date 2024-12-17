@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/16 16:24:21 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:12:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,33 +114,78 @@ static void rmv_qts(char **str)
 
 /*static int  char_valid(char c)
 {
-    if (c == '\'' || c == '\"')
+    if (char valido)
         return (1);
     return (0);
 }*/
 
-static void status_expander(char *str, int i, int exit_status)
+char *ft_strjoin_three(char *s1, char *s2, char *s3)
 {
-    printf("\non status_expander\n");
-    char    *status_str;
+    char *joined;
+    size_t len;
 
-    status_str = ft_itoa(exit_status);
-    printf("status_str: [%s]\n", status_str);
-    str[i] = '\0';
-    str = ft_strjoin(str, status_str);
-    printf("str: [%s]\n", str);
-    free(status_str);
+    len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1;
+    joined = (char *)malloc(sizeof(char) * len);
+    if (!joined)
+        return (NULL);
+    ft_strlcpy(joined, s1, len);
+    ft_strlcat(joined, s2, len);
+    ft_strlcat(joined, s3, len);
+    return joined;
 }
 
-static void to_expander(char *str, int i, t_envp *env, int exit_status)
+
+static char *status_expander(char *str, int i, int exit_status)
 {
-    printf("\non to_expander\n");
-    printf("str: [%s]\n--\n", str);
-    (void)env;
-    (void)exit_status;
-    //char    *key;
-    //char    *value;
-    //char    *expanded;
+    printf("\non status_expander\n");
+    char    *prefix;
+    char    *suffix;
+    char    *status_str;
+    char    *expanded;
+
+    prefix = ft_substr(str, 0, i); // Extrai o prefixo até o $
+    status_str = ft_itoa(exit_status); // Converte o status para string
+    suffix = ft_strdup(str + i + 2); // Extrai o sufixo após o $?
+    expanded = ft_strjoin_three(prefix, status_str, suffix); // Concatena o prefixo, status e sufixo
+
+    free(prefix);
+    free(status_str);
+    free(suffix);
+    free(str);
+    return (expanded);
+}
+
+static char *env_var_expander(char *str, int i, t_envp *env_list)
+{
+    char *prefix;
+    char *key;
+    char *value;
+    char *suffix;
+    char *new_str;
+    int j;
+
+    j = i + 1;
+    while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
+        j++;
+    prefix = ft_substr(str, 0, i);
+    key = ft_substr(str, i + 1, j - i - 1);
+    value = get_value(key, env_list);
+    suffix = ft_strdup(str + j);
+    new_str = ft_strjoin_three(prefix, value ? value : "", suffix);
+
+    free(prefix);
+    free(key);
+    free(suffix);
+    free(str);
+    return new_str;
+}
+
+
+static char *to_expander(char *str, int i, t_envp *env, int exit_status)
+{
+    //printf("\non to_expander\n");
+    //printf("str: [%s]\n--\n", str);
+    char    *expanded;
 
     i = 0;
     while (str[i])
@@ -155,197 +200,60 @@ static void to_expander(char *str, int i, t_envp *env, int exit_status)
             if (str[i + 1] == '?')
             {
                 //EXPANDIR EXIT_STATUS
-                printf("EXPANDIR EXIT_STATUS\n");
-                status_expander(str, i, exit_status);
-                printf("status_expander == str: [%s]\n", str);
-                return ;
+                expanded = status_expander(str, i, exit_status);;
+                return (expanded);
             }
-            else if (str[i + 1] != '\0')
+            else if (str[i + 1] != '\0' && str[i + 1] != '?')
             {
                 //EXPANDIR VARIAVEL DE AMBIENTE
-                printf("EXPANDIR VARIAVEL DE AMBIENTE\n");  
-                return ;
+                expanded = env_var_expander(str, i, env);
+                return (expanded);
             }
         }
         i++;
     }
+    return (str);
 }
 
 static char *expander_or_not(char *cmd, t_envp *env_list, int exit_status)
 {
-    printf("\n----\non expander_or_not\n");
-    printf("cmd: [%s]\n", cmd);
+    //printf("\n----\non expander_or_not\n");
+    //printf("cmd: [%s]\n", cmd);
     int     i;
 
-    i = -1;
-    if (cmd[0] == '\'') //se começar com aspas simples e estiver fechada, remover aspas apenas e não expandir
+    i = 0;
+    while(cmd[i])
     {
-        remove_quotes(&cmd);
-        return (cmd);
+        if (cmd[i] == '\'')//se tiver com aspas simples e estiver fechada, remover aspas apenas e não expandir
+        { 
+            remove_quotes(&cmd);
+            return (cmd);
+        }
+        i++;
     }
-    while(cmd[++i])
+    i = 0;
+    while(cmd[i])
     {
-        printf("cmd[%i]: [%c]\n", i, cmd[i]);
         if (cmd[i] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
             rmv_qts(&cmd);
         if (cmd[i] == '$')
-        {
-            printf("\n--\nhas dol\n--\n");
-            printf("cmd[%i]: [%c]\n", i, cmd[i]);
-            to_expander(cmd, i, env_list, exit_status);
-            printf("\nAFTER EXPANDER\ncmd: [%s]\n--\n", cmd);
-        }
+            cmd = to_expander(cmd, i, env_list, exit_status);
+        i++;
     }
     return (cmd);
 }
 
 void    lets_expander(t_types *types, t_envp *env_list, int exit_status)
 {
-    printf("\n----\non lets_expander\n");
+    //printf("\n----\non lets_expander\n");
     t_envp  *env;
 
     env = env_list;
     while (types)
     {
         if (has_dol(types->cmd))
-        {
-            printf("has_dol\n");
             types->cmd = expander_or_not(types->cmd, env, exit_status);
-        }
         types = types->next;
     }
-    //free_env(env);
     env = NULL;
 }
-
-
-/*static int is_single_quoted(char *cmd)
-{
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (cmd[i])
-    {
-        if (cmd[i] == '\'')
-            count++;
-        i++;
-    }
-    return (count % 2);
-}
-
-static int  is_double_quoted(char *cmd)
-{
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (cmd[i])
-    {
-        if (cmd[i] == '\"')
-            count++;
-        i++;
-    }
-    return (count % 2);
-}
-
-static int  contains_dollar(char *cmd)
-{
-    int i;
-
-    i = 0;
-    while (cmd[i])
-    {
-        if (cmd[i] == '$')
-            return (1);
-        i++;
-    }
-    return (0);
-}
-
-static char *prs_pre(char *result, char *cmd, char *start)
-{
-    size_t  prefix_len;
-    char    *prefix;
-
-    prefix_len = start - cmd; // calcula o tamanho do prefixo
-    prefix = ft_substr(cmd, 0, prefix_len); // extrai o prefixo
-    result = ft_strjoin_free(result, prefix);
-    free(prefix);
-    return result;
-}
-
-static char *prs_var(char *rslt, char **stt, t_envp *env, int last_exit_status)
-{
-    char *end;
-    char *key;
-    char *value;
-
-    if (*((*stt) + 1) == '?') // Caso especial para `$?`
-    {
-        value = ft_itoa(last_exit_status);
-        rslt = ft_strjoin_free(rslt, value);
-        free(value);
-        *stt += 2; // Move o ponteiro após `$?`
-        return rslt;
-    }
-    end = *stt + 1;
-    while (ft_isalnum(*end) || *end == '_') // Determina o final da variável
-        end++;
-    key = ft_substr((*stt) + 1, 0, end - (*stt) - 1); // Extrai a chave da variável
-    value = get_value(key, env); // Busca o valor da variável
-    rslt = ft_strjoin_free(rslt, value ? value : ""); // Adiciona o valor
-    free(key);
-    *stt = end; // Move o ponteiro após a variável
-    return rslt;
-}
-
-char *expand_variables(char *cmd, t_envp *env_list, int last_exit_status)
-{
-    char *result;
-    char *start;
-
-    result = ft_strdup("");
-    start = cmd;
-    while ((start = ft_strchr(start, '$')) != NULL)
-    {
-        result = prs_pre(result, cmd, start); // Processa o prefixo antes do $
-        result = prs_var(result, &start, env_list, last_exit_status); // Processa o $
-    }
-    result = ft_strjoin_free(result, start); // Adiciona o restante da string
-    return result;
-}
-
-static char *expand_double_quoted(char *cmd, t_envp *env_list, int last_exit_status)
-{
-    char    *no_quotes;
-    char    *expanded;
-
-    no_quotes = ft_strdup(cmd);
-    remove_quotes(&no_quotes);
-    expanded = expand_variables(no_quotes, env_list, last_exit_status);
-    free(no_quotes);
-    return (expanded);
-}
-
-static char *expander_or_not(char *cmd, t_envp *env_list, int last_exit_status)
-{
-    char *expanded;
-
-    if (is_single_quoted(cmd))
-    {
-        expanded = ft_strdup(cmd);
-        remove_quotes(&expanded); // Aspas simples: remover e não expandir
-        return (expanded);
-    }
-    if (is_double_quoted(cmd))
-    {
-        expanded = expand_double_quoted(cmd, env_list, last_exit_status); // Aspas duplas: expandir
-        return (expanded);
-    }    
-    if (contains_dollar(cmd))
-        expanded = expand_variables(cmd, env_list, last_exit_status); // Expansão de variáveis
-    return expanded ? expanded : ft_strdup(cmd); // Retorna expandido ou original
-}*/
