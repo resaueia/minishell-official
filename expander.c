@@ -6,41 +6,11 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 21:22:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/17 21:46:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*          if ((ft_isalpha(temp[0]) == 0) && ft_strncmp(temp, "_", 1)) //if echo come with $ and args in lower case, it will print just a newline
-			{
-                
-                else if (temp[0] == '-' || temp[0] == '_')
-                    temp = ft_strjoin("himBHs", temp + 1);
-                else if (ft_isdigit(temp[0]) || is_special(temp[0]))
-                    temp++;
-			}
-			else if (ft_isalpha(temp[0]) || (ft_strncmp(temp, "_", 1) == 0)) //if echo come with $ and args in upper case, it will check if is a key of env list
-			{
-                // Caso seja uma variável de ambiente com ou sem caracteres adicionais
-                key = extract_key(temp); // Extrai a chave da variável (ex: "USER" de "USER_123")
-                suffix = temp + ft_strlen(key); // O restante após a chave (ex: "_123" de "USER_123")
-				if (is_key(temp, env_list) == 1) //if is a key, it will get the value of the key
-                {
-                    expanded = get_value(key, env_list); // Obtém o valor da variável
-                    cmd = ft_strjoin(expanded, suffix); // Concatena o valor expandido com o sufixo
-                    free(expanded); // Libera a memória do valor expandido
-                }
-				else //if is not a key, it will print just a newline
-                    temp = ft_strdup("\n");
-                free(key);
-                //free(temp - 1); // Liberar a memória original de temp
-                return (cmd);
-			}
-		}
-    }
-    cmd = ft_strdup(temp);
-    return (cmd);
-}*/
 
 static int  has_dol(char *cmd)
 {
