@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/18 13:42:54 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:04:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,37 +135,50 @@ static int	validate_export(char *arg)
 		return (1); //if the arg is valid, it will return 1
 }
 
+int	update_env_var(t_envp *env_list, char *key, char *value)
+{
+	t_envp	*current;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0) // Se encontrar a chave
+		{
+			free(current->value); // Atualiza o valor
+			current->value = ft_strdup(value);
+			return (1); // Indica que a atualização foi realizada
+		}
+		current = current->next;
+	}
+	return (0); // Indica que a chave não foi encontrada
+}
+
 void	ft_export(t_types *cmds, t_envp **env_list)
 {
 	char	*var;
 	char	*delim;
-	t_envp	*current;
 
-	var = args_to_str(cmds); //transforming the args to a string
-	if (!validate_export(var)) //validating the export
+	var = args_to_str(cmds); // Converte os argumentos em uma string
+	if (!validate_export(var)) // Valida o identificador
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", var);
-		return ;
+		free(var);
+		return;
 	}
 	delim = ft_strchr(var, '=');
 	if (delim)
 	{
-		*delim = '\0';
-		current = *env_list;
-		while (current)
+		*delim = '\0'; // Separa a chave do valor
+		if (update_env_var(*env_list, var, delim + 1)) // Tenta atualizar a variável existente
 		{
-			if (ft_strcmp(current->key, var) == 0) // Here, we traverse the list to check for the existence of 'key'. If it's already there, we update its value and return.
-				{
-					free(current->value);
-					current->value = ft_strdup(delim + 1);
-					return ;
-				}
-			current = current->next;
+			free(var);
+			return;
 		}
-		create_new_node(env_list, var, delim + 1);
-		// If 'key' is not present, we create it, by adding a new node to our var list.
+		create_new_node(env_list, var, delim + 1); // Cria uma nova variável
 	}
+	free(var);
 }
+
 void	ft_unset(t_types *cmds, t_envp **env_list)
 {
 	char	*var;
