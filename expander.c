@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 21:46:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:42:09 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ static int handle_special_cases(char *str, int i)
 
 static char *extract_suffix(char *str, int *j)
 {
-    if (str[*j] == '-' || str[*j] == '_')
+    if (str[*j] == '-' || (str[*j] == '_' && str[*j + 1] == '\0'))
         return ft_strdup("himBHs");
     else if (str[*j] == '0')
         return ft_strdup("bash");

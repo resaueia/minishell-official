@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/14 21:38:41 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:09:23 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ char				*change_path(char *path, char *src, t_envp **head);
 
 /* EXEC */
 int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
-void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
+void				execute_builtin(t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
 void				find_command_path(t_types *type, t_envp *env_list);
 void				clear_heredoc_files(void);
@@ -215,9 +215,9 @@ void				exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env);
 int					is_builtin(char *wrd);
 void				ft_pwd(int fd_out);
 void				ft_echo(t_types *args, t_envp **env_list, int fd_out);
-void				ft_cd(char *path, t_envp **env_list);
-void				ft_export(char *var, t_envp **env_list);
-void				ft_unset(char *var, t_envp **env_list);
+void				ft_cd(t_types *path, t_envp **env_list);
+void				ft_export(t_types *var, t_envp **env_list);
+void				ft_unset(t_types *var, t_envp **env_list);
 void				exit_shell(char *prompt, char *prompt_dup, t_init_input *input_list, t_envp *env_list);
 
 /* TO FREE */

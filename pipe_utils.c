@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 18:05:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:33:06 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
         remove_node(&type);
     }
     if (is_btin(type)) //builtin
-        execute_builtin(type->cmd, env_list, input_list, type); //executa o comando
+        execute_builtin(env_list, input_list, type); //executa o comando
     else //if (is_exec(type)) //execve
     {
         find_command_path(type, env_list); //procura o path do comando na env_list

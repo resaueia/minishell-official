@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 18:48:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:46:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ static int  is_redirects(int type)
 
 void args_of_cmds(t_types *cmd)
 {
-    //printf("\n----\nargs_of_cmds\n\n");
     t_types *head;
     int     node_ref;
 
@@ -110,6 +109,8 @@ void args_of_cmds(t_types *cmd)
             }
             else if (is_builtin(cmd->cmd) == 1)
             {
+                if (ft_strcmp(cmd->cmd, "echo") == 0 && !cmd->next)
+                    break;
                 if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
                 {
                     cmd = cmd->next;
@@ -196,11 +197,6 @@ void include_fds(t_init_input *input_list)
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
-    //printf("\n----\nprocess_input\n");
-    //printf("input_list: [%p]\n", input_list);
-    //printf("input_list->types: [%p]\n", input_list->types);
-    //printf("types: [%p]\n", types);
-    //printf("env_list: [%p]\n", env_list);
     char    **args;
     char    **cmds;
     int     i;
@@ -210,7 +206,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     last_exit_status = 0;
     cmds = lexer(prompt); // split the input for delim and quotes
     input_list = delim_split(prompt); // split the input for pipe
-    include_fds(input_list);    
+    include_fds(input_list);
     i = -1;
     while(cmds[++i])
     {

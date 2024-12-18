@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 19:49:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:31:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,7 @@ static int	handle_empty_or_exit(char *prompt, t_init_input *input_list, t_envp *
 static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
 {
 	if (!input_check(prompt_dup)) // check if the input is valid
-	{
-		//printf("\n----\nsending to process_input:\n");
-		//processe_inut(struct, char**, struct);
 		process_input(input_list, input_list->types, prompt_dup, env_list);
-	}
 	else
 	{
 		printf("minishell: syntax error\n"); // if the input is invalid, print an error message

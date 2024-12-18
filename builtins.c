@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/14 19:19:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:42:54 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ static char	*args_to_str(t_types *args)
 	t_types	*temp;
 
 	temp = args;
-	if (temp->type == 3)
+	if (temp->next == NULL)
+	{
+		str = ft_strdup("");
+		return (str);
+	}
+	if (temp->type == 3 && temp->next)
 		temp = temp->next;
 	str = ft_strdup(temp->cmd);
 	temp = temp->next;
@@ -42,6 +47,7 @@ static char	*args_to_str(t_types *args)
 	}
 	return (str);
 }
+
 void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
 {
 	//alterar para t_types *args e alterar a lógica de verificação dos args. 
@@ -52,7 +58,7 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	char	*tmp;
 
 	newline = 1; //flag to print a newline
-	if (cmds->cmd == NULL) //if echo come without args, it will print just a newline
+	if (cmds->cmd == NULL || cmds->next == NULL) //if echo come without args, it will print just a newline
 	{
 		ft_putstr_fd("\n", fd_out);
 		return ;
@@ -85,8 +91,12 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 		ft_putstr_fd(args, fd_out); //printing the args without a newline
 }
 
-void	ft_cd(char *path, t_envp **env_list)
+void	ft_cd(t_types *cmds, t_envp **env_list)
 {
+	char	*path;
+	(void)env_list;
+
+	path = args_to_str(cmds); //transforming the args to a string
 	if (ft_strlen(path) == 1 && *path == '/') //path for root
 	{
 		chdir("/");
@@ -117,13 +127,26 @@ void	ft_cd(char *path, t_envp **env_list)
 	}
 }
 
-void	ft_export(char *var, t_envp **env_list)
+static int	validate_export(char *arg)
 {
-	while (*var == ' ' )
-		var++;
+	if (!ft_isalpha(arg[0]) && arg[0] != '_') //if the first character is not a letter or an underscore, it will return 0
+		return (0);
+	else 
+		return (1); //if the arg is valid, it will return 1
+}
+
+void	ft_export(t_types *cmds, t_envp **env_list)
+{
+	char	*var;
 	char	*delim;
 	t_envp	*current;
 
+	var = args_to_str(cmds); //transforming the args to a string
+	if (!validate_export(var)) //validating the export
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", var);
+		return ;
+	}
 	delim = ft_strchr(var, '=');
 	if (delim)
 	{
@@ -143,13 +166,13 @@ void	ft_export(char *var, t_envp **env_list)
 		// If 'key' is not present, we create it, by adding a new node to our var list.
 	}
 }
-void	ft_unset(char *var, t_envp **env_list)
+void	ft_unset(t_types *cmds, t_envp **env_list)
 {
-	while (*var == ' ' )
-		var++;
+	char	*var;
 	t_envp *current;
 	t_envp *prev;
 
+	var = args_to_str(cmds); //transforming the args to a string
 	current = *env_list;
 	prev = NULL;
 	while (current)

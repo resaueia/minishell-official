@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 21:19:15 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:45:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ static int  check_node(t_types *type)
     return (0);
 }
 
-void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *types)
+void	execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
 {
-    (void)cmd;
 	t_envp	*tmp;
     int     saved_stdout;
 
@@ -46,6 +45,7 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 		}
         close(types->fd[1]);
     }
+    printf("what builtin\n");
 	if (ft_strcmp(types->cmd, "print") == 0)
 		print_stack(list);
 	else if (ft_strcmp(types->cmd, "env") == 0 || ft_strcmp(types->cmd, "envp") == 0)
@@ -55,11 +55,11 @@ void	execute_builtin(char *cmd, t_envp *env_list, t_init_input *list, t_types *t
 	else if (ft_strncmp(types->cmd, "echo", 4) == 0)
 		ft_echo(types, &tmp, STDOUT_FILENO);
 	else if (ft_strncmp(types->cmd, "cd", 2) == 0)
-		ft_cd(types->next->cmd, &tmp);
+		ft_cd(types, &tmp);
 	else if (ft_strncmp(types->cmd, "export", 6) == 0)
-		ft_export(types->next->cmd, &tmp);
+		ft_export(types, &tmp);
 	else if (ft_strncmp(types->cmd, "unset", 5) == 0)
-		ft_unset(types->next->cmd, &tmp);
+		ft_unset(types, &tmp);
     dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdout);
 }
@@ -153,12 +153,6 @@ void find_command_path(t_types *type, t_envp *env_list)
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
-    //printf("\n----\non exec_cmd\n\n");
-    //printf("cmd:       [%s]\n", type->cmd);
-    //printf("cmd:       [%p]_[%s]_[%u]_[%i]_[%i]\n", type->cmd, type->cmd, type->type, type->fd[0], type->fd[1]);
-    //rintf("cmd->next: [%s]\n", type->next->cmd);
-    //printf("cmd->next: [%p]_[%s]_[%u]_[%i]_[%i]\n", type->next->cmd, type->next->cmd, type->next->type, type->next->fd[0], type->next->fd[1]);
-    //printf("\n----\n");
     char    **args;
     pid_t	pid;
     int		status;
@@ -208,7 +202,6 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    //printf("\n----\non to_exec\n\n");
     (void) input_list;
     char  **env;
     t_types     *tmp;
@@ -263,7 +256,7 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
             remove_node(&type);
     }
     if (is_btin(type)) //builtin
-        execute_builtin(type->cmd, env_list, input_list, type); //executa o comando
+        execute_builtin(env_list, input_list, type); //executa o comando
     if (is_exec(type)) //execve
     {
         if (!type)
