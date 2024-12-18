@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/05 15:17:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:14:49 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int setup_redirection(t_init_input *args_list, t_types *type)
 {
-    (void)type;
     (void)args_list;
     t_types         *type_head;
     t_types         *type_echo;
@@ -41,7 +40,6 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1); // return -1
             }
             type->fd[0] = temp_fd; // set the fd_in to the file descriptor
-            //type->next->fd[0] = temp_fd; 
         }
         else if (ft_strcmp(type->cmd, ">") == 0 && type->next)
         {
@@ -54,7 +52,6 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1);
             }
             type->fd[1] = temp_fd;
-            type->next->fd[1] = temp_fd;
         }
         else if (ft_strcmp(type->cmd, ">>") == 0 && type->next)
         {
@@ -72,7 +69,6 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1);
             }
             type->fd[1] = temp_fd;
-            //type->next->fd[1] = temp_fd;
         }
         if (ft_strncmp(type_head->cmd, "echo", 4) == 0)
                 type_echo->fd[1] = temp_fd; //set the fd_out

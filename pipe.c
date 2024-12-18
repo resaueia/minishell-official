@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/05 15:24:51 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:40:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static void    process_pipe(t_init_input *input_list, t_types *types, t_envp *en
     }
     cmds = free_from_split(cmds);
     args_of_cmds(types);
-    //to_cmds();
     last_exit_status = to_exec_pipe(input_list, types, env_list); //enviar para execução
 }
 
@@ -88,7 +87,6 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             {
                 dup2(current->fd_out, STDOUT_FILENO);
                 close(current->fd_out);
-                //close(current->fd_in);
             }
             else if (current != input_list && current->next) //condição de verificação dos nós intermediários
             {
@@ -99,7 +97,6 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             }
             else if (!current->next)
             {
-                //close(current->fd_out);
                 dup2(current->fd_in, STDIN_FILENO);
                 close(current->fd_in);
             }

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/01 22:29:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:36:59 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	to_quotes(char c, int quotes)
 
 static char	*to_replace(char *input, int position)
 {
-	//printf("\n----\non to_replace\n\n");
 	char	*ret;
 	int		i;
 	int		j;
@@ -60,8 +59,6 @@ static char	*to_replace(char *input, int position)
 
 char	**lexer(char *input)
 {
-	//printf("\n----\non lexer\n\n");
-	//printf("input: [%s]\n", input);
 	int		i;
 	int		quotes;
 	char	*temp;
@@ -70,14 +67,11 @@ char	**lexer(char *input)
 	i = -1;
 	quotes = 0;
 	temp = ft_strdup(input);
-	//printf("temp: [%s]\n", temp);
 	while (temp && temp[++i])
 	{
-		//printf("temp[%i]: [%c]\n", i, temp[i]);
 		if ((temp[i] == '|' || temp[i] == '>' || temp[i] == '<' ) && !quotes)
 		{
 			temp = to_replace(temp, i);
-			//printf("temp[%i]: [%c]\n", i, temp[i]);
 			i = i + 2;
 		}	
 		else if (temp[i] == '\"' || temp[i] == '\'')

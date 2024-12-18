@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/18 14:04:52 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:20:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static char	*args_to_str(t_types *args)
 
 void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
 {
-	//alterar para t_types *args e alterar a lógica de verificação dos args. 
-	//será necessário um loop para percorrer os args e verificar todos os argumentos existentes.
 	(void)env_list;
 	char	*args;
 	int		newline;
@@ -72,23 +70,16 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 			args++; //incrementing the pointer to check the next character
 		if (*args == ' ' || *args == '\0')
 		{
-			newline = 0; //flag to not print a newline	
+			newline = 0; //flag to not print a newline
 			args++; //incrementing the pointer to check the next character
 		}
 		else
-		{
 			args = tmp; //if the next character is not a space, it will return to the original pointer
-			newline = 1; //flag to print a newline
-		}
 	}
-	//remove_quotes(&args); //to remove quotes from the args
+	remove_quotes(&args); //to remove quotes from the args
+	ft_putstr_fd(args, fd_out); //printing the args without a newline
 	if (newline == 1) //if newline is 1, it will print a newline
-	{
-		ft_putstr_fd(args, fd_out); //printing the args with a newline
 		ft_putchar_fd('\n', fd_out);
-	}
-	else if (newline == 0) //if newline is 0, it will not print a newline
-		ft_putstr_fd(args, fd_out); //printing the args without a newline
 }
 
 void	ft_cd(t_types *cmds, t_envp **env_list)
@@ -191,17 +182,16 @@ void	ft_unset(t_types *cmds, t_envp **env_list)
 	while (current)
 	{
 		if (ft_strcmp(current->key, var) == 0)
-			// We traverse the list and look for the desired key. If found, we remove it from the list and free all memory associated with it.
-			{
-				if (prev)
-					prev->next = current->next;
-				else
-					*env_list = current->next;
-				free(current->key);
-				free(current->value);
-				free(current);
-				return ;
-			}
+		{
+			if (prev)
+				prev->next = current->next;
+			else
+				*env_list = current->next;
+			free(current->key);
+			free(current->value);
+			free(current);
+			return ;
+		}
 		prev = current;
 		current = current->next;
 	}

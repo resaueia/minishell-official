@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 10:33:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:45:09 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,36 +27,37 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 
 int    to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-    (void) input_list;
     char  **env;
-    t_types     *tmp;
     
     env = env_to_char(env_list);
-    tmp = type;
-    (void) env;
-    (void) type;
-    (void) tmp;
-
     if (is_hdoc(type)) //heredoc
     {
         include_fds(input_list);
         if (is_heredoc(input_list, type) == -1)
         {   
             perror ("Error setting up heredoc");
-            exit(EXIT_FAILURE);
+            return (1);
         }
-        free_list(input_list);
-        free_types(type);
-        return (0);
+        if (check_node(type)) //verifica se é o primeiro nó da lista
+        {
+            free_list(input_list);
+            free_types(type);
+            clear_heredoc_files(); //verificar se tem algum temporário heredoc_*.tmp e deleta
+            return (0);
+        }
     }
     if (is_rdrct(type)) //redirects
     {
-        if (setup_redirection(input_list, type) == -1)
+        if (setup_redirection(input_list, type) == -1) //executa redirect
+            return (1);
+        if (check_node(type)) //verifica se é o primeiro nó da lista
         {
-            perror("Error whule setting up redirection\n");
-            exit(EXIT_FAILURE);
+            free_list(input_list);
+            free_types(type);
+            return (0);
         }
-        remove_node(&type);
+        else
+            remove_node(&type);
     }
     if (is_btin(type)) //builtin
         execute_builtin(env_list, input_list, type); //executa o comando

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:57:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/14 17:52:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:34:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 
 void    clear_heredoc_files(void)
 {
-    //printf("\n----\non clear_heredoc_files\n\n");
     DIR *dir;
     struct dirent *entry;
     char filepath[64]; // Tamanho suficiente para caminhos completos em /tmp
 
-    // Abre o diretório /tmp
     dir = opendir("/tmp");
-    if (!dir) {
+    if (!dir) 
+    {
         perror("Failed to open /tmp directory");
         return;
     }
-
-    // Percorre todos os arquivos no diretório
-    while ((entry = readdir(dir)) != NULL) 
+    while ((entry = readdir(dir)) != NULL) // Percorre todos os arquivos no diretório
     {
         if (ft_strncmp(entry->d_name, "heredoc_", 8) == 0) 
         {
@@ -41,15 +38,12 @@ void    clear_heredoc_files(void)
             {
                 fprintf(stderr, "Path truncation error: %s\n", entry->d_name);
                 continue;
-            }
-
-            // Remove o arquivo
+            }// Remove o arquivo
             if (unlink(filepath) == -1) 
                 perror("Failed to delete heredoc file");
             else 
                 printf("Deleted temporary file: %s\n", filepath);
         }
     }
-
     closedir(dir); // Fecha o diretório
 }

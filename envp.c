@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/03 23:18:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:27:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ char	*get_value(char *name, t_envp *list)
 			new_value = ft_strdup(current->value);			
 		current = current->next;
 	}
-	//printf("new value is: [%s]\n", new_value);
 	return (new_value);
 }
 char	*change_path(char *path, char *src, t_envp **head)
@@ -135,12 +134,10 @@ char	*change_path(char *path, char *src, t_envp **head)
 	t_envp *current;
 	char	*tmp_pwd;
 	char	*value_src;
-//	char	*value_old;
 
 	current = *head;
 	tmp_pwd = get_value("PWD", current);
 	value_src = get_value(src, current);
-//	value_old = get_value("OLDPWD", current);
 
 	if (ft_strcmp("HOME", src) == 0 || ft_strcmp("OLDPWD", src) == 0)
 	{

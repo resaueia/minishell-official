@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 13:42:09 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:48:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ char *ft_strjoin_three(char *s1, char *s2, char *s3)
 
 static char *status_expander(char *str, int i, int exit_status)
 {
-    printf("\non status_expander\n");
     char    *prefix;
     char    *suffix;
     char    *status_str;
@@ -217,7 +216,6 @@ static char *rebd_str(char *prefix, char *expanded, char *suffix, char *old)
     free(old);
     return new_str;
 }
-
 
 static char *env_var_expander(char *str, int i, t_envp *env_list)
 {

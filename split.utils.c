@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/04 19:05:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:42:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ char    **list_to_char(t_init_input *list)
     return (cmds);
 }
 
-//talvez alterar para retornar uma t_init_input
 t_init_input    *split_commands(char **commands, t_init_input **head, t_init_input **tail)
 {
     int             i;
@@ -115,8 +114,6 @@ t_init_input    *split_commands(char **commands, t_init_input **head, t_init_inp
         while (current_node)
         {
             add_to_list(head, tail, current_node->string, current_node->token);
-            //printf("string %s | ", current_node->string);
-            //printf("token %u\n", current_node->token);
             current_node = current_node->next;
         }
         //free the list (create a function for it);

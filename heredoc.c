@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/03 22:35:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:35:11 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void include_eof(t_types *cmd)
 
 static char **split_heredoc(t_types *type, int here_count)
 {
-    printf("here_count: [%d]\n", here_count);
     t_types *head;
     char    **delim;
     int     i;
@@ -58,12 +57,6 @@ static char **split_heredoc(t_types *type, int here_count)
         type = type->next;
     }
     delim[i] = NULL;
-    /*i = 0;
-    while (delim[i])
-    {
-        printf("delim[%i]: [%s]\n", i, delim[i]);
-        i++;
-    }*/
     return (delim);
 }
 
@@ -154,18 +147,13 @@ int     is_heredoc(t_init_input *input_list, t_types *type)
 
 int tackle_heredoc(t_types *type, char *start_delim, char *last_delim) 
 {
-    //printf("\n----\ntackle_heredoc\n");
-    //printf("start_delim: [%s]\n", start_delim);
-    //printf("last_delim: [%s]\n", last_delim);
-    //printf("type: [%p]\n", type);
     char    *line;
     char    temp_file[64]; // Buffer para o nome do arquivo
     int     temp_fd;
     int     pid; // para gerar o identificador único do arquivo
     int     start_write;
 
-    // Gerar um nome único para o arquivo temporário
-    pid = getpid();
+    pid = getpid(); // Gerar um nome único para o arquivo temporário
     int i = 0;
     temp_file[i++] = '/';
     temp_file[i++] = 't';
@@ -189,15 +177,13 @@ int tackle_heredoc(t_types *type, char *start_delim, char *last_delim)
     temp_file[i++] = 'x';
     temp_file[i++] = 't';
     temp_file[i++] = '\0';
-
-    // Criar o arquivo temporário
-    temp_fd = open(temp_file, O_CREAT | O_RDWR | O_TRUNC, 0600);
+    
+    temp_fd = open(temp_file, O_CREAT | O_RDWR | O_TRUNC, 0600); // Criar o arquivo temporário
     if (temp_fd == -1) {
         perror("Error creating temporary file");
         return -1;
     }
-    //Escrever o conteúdo do heredoc no arquivo temporário
-    if (start_delim == NULL)
+    if (start_delim == NULL) //Escrever o conteúdo do heredoc no arquivo temporário
     {
         start_write = 1; //flag para indicar que o arquivo temporário deve começar a ser escrito
         while (1) 
@@ -210,7 +196,6 @@ int tackle_heredoc(t_types *type, char *start_delim, char *last_delim)
             }
             if (ft_strcmp(line, last_delim) == 0 && start_write == 1)
             {
-                //printf("delim found\n");
                 free(line);
                 break;
             }
@@ -235,7 +220,6 @@ int tackle_heredoc(t_types *type, char *start_delim, char *last_delim)
             }
             if (ft_strcmp(line, last_delim) == 0 && start_write == 1)
             {
-                //printf("delim found\n");
                 free(line);
                 break;
             }
@@ -249,13 +233,6 @@ int tackle_heredoc(t_types *type, char *start_delim, char *last_delim)
             free(line);
         }
     }
-
-    //printf("\n");
-    //printf("pre type->cmd: [%s]\n", type->next->cmd);
     change_value(type, temp_file); // Substitui o `cmd` no nó do heredoc pelo caminho do arquivo temporário
-    //printf("\n--\npos type->cmd: [%s]\n", type->next->cmd);
-
-    // Retorna o descritor de arquivo
-    //printf("Temporary file descriptor: %d\n", temp_fd);
     return temp_fd;
 }

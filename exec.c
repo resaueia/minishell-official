@@ -6,12 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 13:45:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:32:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-static int  check_node(t_types *type)
+
+int  check_node(t_types *type)
 {
     t_types *temp;
 
@@ -43,9 +44,7 @@ void	execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
 			close(saved_stdout);
 			return ;
 		}
-        close(types->fd[1]);
     }
-    printf("what builtin\n");
 	if (ft_strcmp(types->cmd, "print") == 0)
 		print_stack(list);
 	else if (ft_strcmp(types->cmd, "env") == 0 || ft_strcmp(types->cmd, "envp") == 0)
@@ -60,8 +59,9 @@ void	execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
 		ft_export(types, &tmp);
 	else if (ft_strncmp(types->cmd, "unset", 5) == 0)
 		ft_unset(types, &tmp);
+    
     dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
+    close(saved_stdout);
 }
 
 static char *ft_strtok_r(char *str, char *delim, char **save_ptr)
@@ -105,8 +105,6 @@ static void construct_path(char *full_path, char *dir, char *cmd)
 
 void find_command_path(t_types *type, t_envp *env_list) 
 {
-    //transformar para salvar o statuscode em caso de erro no diretório.
-    (void)env_list;
     char    *path;
     char    *path_dup;
     char    *dir;
@@ -146,21 +144,18 @@ void find_command_path(t_types *type, t_envp *env_list)
         free(full_path); // Libera full_path se não for válido
         dir = ft_strtok_r(NULL, ":", &save_ptr); //split the PATH
     }
-    // Caso o comando não seja encontrado, imprime uma mensagem de erro
     printf("minishell: %s: %s\n", strerror(errno), type->cmd);
     free(path_dup); // Libera a cópia do PATH
 }
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
+    (void) cmd;
     char    **args;
     pid_t	pid;
     int		status;
 
     args = types_to_char(type);
-    (void)args;
-    (void)cmd;
-    
     pid = fork();
     if (pid == -1)
     {
@@ -214,8 +209,6 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 
     if (is_hdoc(type)) //heredoc
     {
-        //executa heredoc
-        //printf("has heredoc\n");
         if (is_heredoc(input_list, type) == -1)
         {   
             perror ("Error setting up heredoc");
@@ -231,8 +224,6 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
     }
     if (is_pp(type)) //pipe
     {
-        //executa em cenário de pipe
-        //printf("has pipe\n");
         if (setup_pipeline(input_list, env_list) == -1) 
         {
             perror("Error while setting up pipeline");
@@ -263,7 +254,6 @@ int    to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
             return (0);
         find_command_path(type, env_list); //procura o path do comando na env_list
         exec_cmd(input_list, type, env); //executa execve
-        //clear_heredoc_files(); //verificar se tem algum temporário heredoc_*.tmp e deleta
     }
     //função para verificar fds abertos e fechar, nó por nó. 
     free_list(input_list);

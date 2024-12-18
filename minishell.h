@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/18 13:09:23 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:26:24 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int					is_double_delim(char *str);
 int					has_end_delim(char *str);
 int					quotes_check(char *str);
 int					input_check(char *input);
+int 				check_node(t_types *type);
 
 /* FROM LIBFT */
 int					ft_isalpha(int c);
@@ -160,7 +161,6 @@ void				find_command_path(t_types *type, t_envp *env_list);
 void				clear_heredoc_files(void);
 
 /* OTHERS */
-//int					is_delimiter(char c);
 void				process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list);
 t_init_input		*split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
@@ -198,12 +198,10 @@ int					is_exec(t_types *type);
 
 /* HEREDOC */
 int					is_heredoc(t_init_input *input_list, t_types *type);
-//int					tackle_heredoc(char *delim);
 int					tackle_heredoc(t_types *type, char *start_delim, char *last_delim);
 
 /* REDIRECTS */
 int					setup_redirection(t_init_input *args_list, t_types *type);
-//void				remove_node(t_types *node);
 void				remove_node(t_types **node);
 
 /* PIPES */

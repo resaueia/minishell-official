@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/02 19:41:49 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:36:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_empty_string(char *str)
     i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ' || is_whitspace(str[i])) // If it finds any non space characters, it's not empty
+		if (str[i] != ' ' || is_whitspace(str[i])) 
 			return (0);    
 		i++;
 	}
@@ -54,52 +54,6 @@ int	has_end_delim(char *str)
 		return (1);
 	return (0);
 }
-
-/*
-
-I'm already ignoring white spaces in one of my split functions and because they're properly dealt with,
-they're not stored into nodes, hence why I believe this function is redundant (for now!).
-
-int	has_delim_spaces(char *str)
-{
-	int i;
-    
-    i = 0;
-	while (str[i])
-	{
-		if (ft_strchr("|<>", str[i]))
-		{
-			if (i > 0 && str[i - 1] == ' ') // is there a space pre-delim?
-				return (1);
-			if (str[i + 1] == ' ') // is there a space post-delim?
-				return (1);
-		}
-		i++;
-	}
-	return (0);
-}*/
-
-/*int	quotes_check(char *str)
-{
-	int i;
-    int single_quote;
-	int double_quote;
-
-    i = 0;
-    single_quote = 0;
-    double_quote = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'') // Here you have to escape the character (didn't know that haha)
-			single_quote++;
-		else if (str[i] == '\"') // Not sure if I have to escape double quotes too, have to test and check
-			double_quote++;
-		i++;
-	}
-	if (single_quote % 2 == 0 && double_quote % 2 == 0)
-        return (1);
-	return (0);
-}*/
 
 int	quotes_check(char *str)
 {
@@ -136,11 +90,6 @@ int	quotes_check(char *str)
 
 int	input_check(char *input)
 {
-	/*if (is_empty_string(input))
-	{
-		ft_putstr_fd("Error: Empty input.\n");
-		return (1);
-	}*/
 	if (is_double_delim(input))
 	{
 		ft_putstr_fd("Error: Double delimiters were found.\n", 2);
