@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:28:38 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 12:04:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:36:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int  is_redirects(int type)
     return (0);
 }
 
-static void handle_redirect(t_types *cmd)
+/*static void handle_redirect(t_types *cmd)
 {
     if (!cmd->next || !cmd->next->cmd)
         return; // Evita acessar ponteiros inválidos
@@ -120,10 +120,10 @@ void args_of_cmds(t_types *cmd)
         cmd = cmd->next; // Move para o próximo nó
     }
     cmd = head; // Restaura o ponteiro inicial (se necessário)
-}
+}*/
 
 
-/*void args_of_cmds(t_types *cmd)
+void args_of_cmds(t_types *cmd)
 {
     t_types *head;
     int     node_ref;
@@ -192,4 +192,4 @@ void args_of_cmds(t_types *cmd)
         cmd = cmd->next;
     }
     cmd = head;
-}*/
+}

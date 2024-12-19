@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 21:58:26 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:35:23 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ static void	process_command(char *prompt, t_init_input *input_list, t_envp *env_
 {
 	char	*prompt_dup;
 
+	prompt_dup = NULL;
 	if (add_to_history(prompt)) // add the prompt to the history
 		prompt_dup = ft_strdup(prompt); // duplicate the prompt
 	exec_shell(prompt_dup, input_list, env_list); // execute the shell
