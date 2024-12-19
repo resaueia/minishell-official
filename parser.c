@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 23:01:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:34:46 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,91 +74,6 @@ void	insert_types(t_types **head, char *wrd)
 	temp->next = new;
 }
 
-static int is_delim(int type)
-{
-    if (type == PIPE || type == IN || type == OUT || type == APPEND || type == HDOC)
-        return (1);
-    return (0);
-}
-
-static int  is_redirects(int type)
-{
-    if (type == IN || type == OUT || type == APPEND || type == HDOC)
-        return (1);
-    return (0);
-}
-
-void args_of_cmds(t_types *cmd)
-{
-    t_types *head;
-    int     node_ref;
-
-    head = cmd;
-    node_ref = 1;
-    while (cmd)
-    {
-        if (node_ref == 1)
-        {
-            if (is_redirects(cmd->type))
-            {
-                if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
-                    cmd->next->type = FLE;
-                else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
-                    cmd->next->type = ENDOF;
-            }
-            else if (is_builtin(cmd->cmd) == 1)
-            {
-                if (ft_strcmp(cmd->cmd, "echo") == 0 && !cmd->next)
-                    break;
-                if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
-                {
-                    cmd = cmd->next;
-                    while (cmd && is_delim(cmd->type) == 0)
-                    {
-                        cmd->type = ARGS;
-                        cmd = cmd->next;
-                    }
-                    if (!cmd)
-                        break;
-                }
-            }
-            else
-                cmd->type = EXEC;
-            node_ref = 0;
-        }
-        if (cmd->type == PIPE)
-            node_ref = 1;
-        if (node_ref == 0)
-        {
-            if (is_redirects(cmd->type))
-            {
-                if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
-                    cmd->next->type = FLE;
-                else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
-                    cmd->next->type = ENDOF;
-            }
-            else if (is_builtin(cmd->cmd) == 1)
-            {
-                if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
-                {
-                    cmd = cmd->next;
-                    while (cmd && is_delim(cmd->type) == 0)
-                    {
-                        cmd->type = ARGS;
-                        cmd = cmd->next;
-                    }
-                    if (!cmd)
-                        break;
-                }
-            }
-            else if (ft_strcmp(cmd->cmd, "Makefile") == 0)
-                cmd->type = FLE;
-        }
-        cmd = cmd->next;
-    }
-    cmd = head;
-}
-
 char	**args_split(char *input)
 {
 	int		i;
@@ -194,6 +109,48 @@ void include_fds(t_init_input *input_list)
     }
 }
 
+static void remove_quotes_from_str(char **str)
+{
+    char *src;
+    char *dst;
+
+    if (!str || !*str)
+        return;
+    src = *str;
+    dst = *str;
+   if (*src == '\"')
+	{
+		while (*src++)
+		{
+			if (*src != '\"')
+				*dst++ = *src;
+		}
+		*dst = '\0';
+	}
+	else if (*src == '\'')
+	{
+		while (*src++)
+		{
+			if(*src != '\'')
+				*dst++ = *src;
+		}
+		*dst = '\0';
+	}
+}
+
+static void remove_quotes_from_types(t_types *types)
+{
+    t_types *current;
+
+    current = types;
+    while (current)
+    {
+        if (current->cmd)
+            remove_quotes_from_str(&current->cmd); // Remove aspas do cmd
+        current = current->next;
+    }
+}
+
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
@@ -215,7 +172,25 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
         args = free_from_split(args);
     }
     cmds = free_from_split(cmds);
+    printf("\n----\nprint the types before args_of_cmds:\n");
+    t_types *temp = types;
+    printf("temp: [%p]\n", temp);
+    while (temp)
+    {
+        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }
     args_of_cmds(types);
+
+    printf("\n----\nprint the types afeter args_of_cmds:\n");
+    temp = types;
+    printf("temp: [%p]\n", temp);
+    while (temp)
+    {
+        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }
     lets_expander(types, env_list, input_list->exit_status);
+    remove_quotes_from_types(types);
     input_list->exit_status = to_exec(input_list, types, env_list);
 }

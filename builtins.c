@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/18 23:05:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:22:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 		else
 			args = tmp; //if the next character is not a space, it will return to the original pointer
 	}
-	remove_quotes(&args); //to remove quotes from the args
 	ft_putstr_fd(args, fd_out); //printing the args without a newline
 	if (newline == 1) //if newline is 1, it will print a newline
 		ft_putchar_fd('\n', fd_out);

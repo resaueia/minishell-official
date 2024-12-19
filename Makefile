@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/02 14:35:03 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/19 11:31:08 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,13 @@ SRCS = main.c \
 	   input_check.c \
 	   split.utils.c \
 	   exec.c \
+	   exec_utils.c \
 	   lexer.c \
 	   libft.c \
 	   to_free.c \
 	   the_split.c \
 	   parser.c \
+	   parser_utils.c \
 	   expander.c \
 	   what_type.c \
 	   heredoc.c \

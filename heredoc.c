@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/19 00:52:15 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:01:01 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ write said lines in a pipe - pipe needs to get redirectioned as an entry for the
 finally, those lines will get written on the terminal once said cmd is executed.
 */
 
-static void include_eof(t_types *cmd)
+/*static void include_eof(t_types *cmd)
 {
     t_types *head;
 
@@ -35,7 +35,7 @@ static void include_eof(t_types *cmd)
         cmd = cmd->next;
     }
     cmd = head;
-}
+}*/
 
 static char **split_heredoc(t_types *type, int here_count)
 {
@@ -105,7 +105,7 @@ static int process_single_heredoc(t_types *type, t_types *head)
 {
     int heredoc_fd;
 
-    include_eof(type);
+    //include_eof(type);
     while (type)
     {
         if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
@@ -134,7 +134,7 @@ static int process_multiple_heredocs(t_types *type, t_types *head, int here_coun
     char **delim;
     int heredoc_fd;
 
-    include_eof(type);
+    //include_eof(type);
     delim = split_heredoc(type, here_count);
     while (type)
     {
