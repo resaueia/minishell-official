@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:44:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 15:41:25 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 22:30:40 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ char	**the_split(char const *s, char c)
 }
 /* Function: the_split
  * Splits a string into an array of substrings using a specified delimiter.
- * The memory allocation and substring extraction are handled by helper functions.
+
+	* The memory allocation and substring extraction are handled by helper functions.
  */

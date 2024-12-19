@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 19:25:13 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 22:36:10 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*to_replace(char *input, int position)
 	int		i;
 	int		j;
 
-	ret = (char *)malloc((ft_strlen(input) + 1) * sizeof (char));
+	ret = (char *)malloc((ft_strlen(input) + 1) * sizeof(char));
 	if (!ret)
 		return (NULL);
 	i = -1;
@@ -59,21 +59,21 @@ static char	*to_replace(char *input, int position)
 
 char	**lexer(char *input)
 {
-	int		i;
-	int		quotes;
-	char	*temp;
-	char	**ret;
+	int i;
+	int quotes;
+	char *temp;
+	char **ret;
 
 	i = -1;
 	quotes = 0;
 	temp = ft_strdup(input);
 	while (temp && temp[++i])
 	{
-		if ((temp[i] == '|' || temp[i] == '>' || temp[i] == '<' ) && !quotes)
+		if ((temp[i] == '|' || temp[i] == '>' || temp[i] == '<') && !quotes)
 		{
 			temp = to_replace(temp, i);
 			i = i + 2;
-		}	
+		}
 		else if (temp[i] == '\"' || temp[i] == '\'')
 			quotes = to_quotes(temp[i], quotes);
 	}

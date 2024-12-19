@@ -6,32 +6,35 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/03 17:12:02 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 22:35:23 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_status = 0;
+int		g_exit_status = 0;
 
 void	print_stack(t_init_input *stack)
 {
-    t_init_input *head = stack;
-    t_init_input *current = head;
+	t_init_input	*head;
+	t_init_input	*current;
+	t_init_input	*tmp;
+
+	head = stack;
+	current = head;
 	while (current != NULL)
-    {
-        printf("Valor: %s\n", current->string);
-        current = current->next;
-    }
-    current = head;
-    t_init_input *tmp;
-    while (current != NULL)
-    {
-        tmp = current;
-        current = current->next;
-        free(tmp->string);
-        free(tmp);
-    }
+	{
+		printf("Valor: %s\n", current->string);
+		current = current->next;
+	}
+	current = head;
+	while (current != NULL)
+	{
+		tmp = current;
+		current = current->next;
+		free(tmp->string);
+		free(tmp);
+	}
 }
 
 int	check_command_line(int c)
@@ -49,7 +52,7 @@ int	main(int c, char **v, char **envp)
 	if (!check_command_line(c))
 		return (0);
 	(void)v;
-	
+
 	prompt(envp);
 	return (0);
 }
