@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/19 11:31:08 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/19 15:49:59 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,5 +64,3 @@ fclean: clean
 	$(RM) $(OBJS) $(NAME)
 
 re: fclean all
-
-.PHONY: all clean fclean re

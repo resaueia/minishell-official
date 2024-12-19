@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 10:16:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:55:50 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int handle_redirection(t_init_input *input_list, t_types *type)
 static void handle_fd_redirection(t_types *types, int *saved_stdout)
 {
 	*saved_stdout = dup(STDOUT_FILENO);
-	if (types->fd[1] != STDOUT_FILENO)
+	if (types->fd[1] != -1)
 	{
 		if (dup2(types->fd[1], STDOUT_FILENO) == -1)
 		{
@@ -131,7 +131,7 @@ void execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
 	
 	handle_fd_redirection(types, &saved_stdout);
 	execute_individual_builtin(env_list, list, types);
-	if (saved_stdout != STDOUT_FILENO)
+	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdout);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 11:34:46 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:36:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ void include_fds(t_init_input *input_list)
     temp = input_list;
     while (temp)
     {
-        temp->fd_in = 0;
-        temp->fd_out = 1;
+        temp->fd_in = STDIN_FILENO;
+        temp->fd_out = STDOUT_FILENO;
         temp = temp->next;
     }
 }
@@ -172,24 +172,24 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
         args = free_from_split(args);
     }
     cmds = free_from_split(cmds);
-    printf("\n----\nprint the types before args_of_cmds:\n");
+    /*printf("\n----\nprint the types before args_of_cmds:\n");
     t_types *temp = types;
     printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
-    }
+    }*/
     args_of_cmds(types);
 
-    printf("\n----\nprint the types afeter args_of_cmds:\n");
-    temp = types;
+    /*printf("\n----\nprint the types afeter args_of_cmds:\n");
+    t_types *temp = types;
     printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
-    }
+    }*/
     lets_expander(types, env_list, input_list->exit_status);
     remove_quotes_from_types(types);
     input_list->exit_status = to_exec(input_list, types, env_list);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/19 00:50:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:55:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1);
             }
             type->fd[0] = temp_fd;
+            type->prev->fd[0] = temp_fd;
+            type->next->fd[0] = temp_fd;
         }
         else if (ft_strcmp(type->cmd, ">") == 0 && type->next)
         {
@@ -58,6 +60,7 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1);
             }
             type->fd[1] = temp_fd;
+            type->next->fd[1] = temp_fd;
         }
         else if (ft_strcmp(type->cmd, ">>") == 0 && type->next)
         {
@@ -75,11 +78,38 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1);
             }
             type->fd[1] = temp_fd;
+            type->next->fd[1] = temp_fd;
         }
         if (ft_strncmp(type_head->cmd, "echo", 4) == 0)
                 type_echo->fd[1] = temp_fd;
         type = type->next;
     }
     type = type_head;
+    printf("\n----\nprint the types before changes\n");
+    t_types *temp = type;
+    printf("temp: [%p]\n", temp);
+    while (temp)
+    {
+        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }
+    type = type_head->next;
+    while (type)
+    {
+        if (type->fd[0] != STDIN_FILENO)
+            type_head->fd[0] = type->fd[0];
+        if (type->fd[1] != STDOUT_FILENO)
+            type_head->fd[1] = type->fd[1];
+        type = type->next;
+    }
+    type = type_head;
+    printf("\n----\nprint the types afeter:\n");
+    temp = type;
+    printf("temp: [%p]\n", temp);
+    while (temp)
+    {
+        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }
     return (0);
 }
