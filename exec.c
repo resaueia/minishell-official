@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 10:16:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,10 @@ int to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 	env = env_to_char(env_list);
 	if (is_hdoc(type) && handle_heredoc(input_list, type) == -1)
 		return (-1);
-	if (is_pp(type))
-		return (handle_pipeline(input_list, env_list, type));
 	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
 		return (-1);
+	if (is_pp(type))
+		return (handle_pipeline(input_list, env_list, type));
 	if (is_btin(type))
 		execute_builtin(env_list, input_list, type);
 	if (is_exec(type)) //execve
