@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delim_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/11/13 17:35:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:50:36 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,52 +58,79 @@ void    add_to_list(t_init_input **head, t_init_input **tail, char *substr, t_to
     }
 }
 
-t_init_input    *delim_split(char *s)
+static void extract_token(t_init_input **head, t_init_input **tail, char *s, int start, int end)
 {
-    t_init_input    *head;
-    t_init_input    *tail;
-    char            *substr;
-    size_t          i;
-    int             start_index;
-    t_token         token;
-    
+    char *token;
+
+    token = custom_dup(s, start, end); // Extrai o token entre start e end
+    add_to_list(head, tail, token, get_token(token)); // Adiciona o token à lista
+    free(token);
+}
+
+/* Function: extract_token
+ * Extracts a token from the string `s` between indices `start` and `end`,
+ * determines its type, and adds it to the linked list.
+ */
+
+static void process_pipe_token(t_init_input **head, t_init_input **tail, char *s, size_t i)
+{
+    extract_token(head, tail, s, i, i + 1); // Adiciona o delimitador como token
+}
+
+/* Function: process_pipe_token
+ * Handles the processing of pipe or operator tokens by extracting
+ * and adding them to the linked list.
+ */
+
+
+static void process_current_character(t_init_input **head, t_init_input **tail,
+                                      char *s, int *start, size_t i)
+{
+    if (is_pipe(s[i]) || s[i + 1] == '\0')
+    {
+        if (*start >= 0) // Extrai um token WORD
+        {
+            extract_token(head, tail, s, *start, i + (s[i + 1] == '\0'));
+            *start = -1;
+        }
+        if (is_pipe(s[i])) // Processa delimitadores
+            process_pipe_token(head, tail, s, i);
+    }
+}
+
+/* Function: process_current_character
+ * Processes the current character in the input string `s`. If it is a
+ * pipe or the end of the string, it handles token extraction and delimiter
+ * processing. Resets the start index after processing a WORD token.
+ */
+
+t_init_input *delim_split(char *s)
+{
+    t_init_input *head;
+    t_init_input *tail;
+    size_t i;
+    int start;
+
     head = NULL;
     tail = NULL;
     i = 0;
-    start_index = -1;
+    start = -1;
+
     if (!s)
         return (NULL);
+
     while (s[i])
     {
-        if (!is_pipe(s[i]) && start_index < 0)
-            start_index = i;
-        else if (is_pipe(s[i]) || s[i + 1] == '\0')
-        {
-            if(start_index >= 0) //This tells us there's a substring to be added
-            {
-                substr = custom_dup(s, start_index, i + (s[i + 1] == '\0')); //This makes sure the last character gets picked up on
-                add_to_list(&head, &tail, substr, WORD);
-                free(substr);
-                start_index = -1;
-            }
-            if (is_pipe(s[i]))
-            {
-                if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1]) // Checks for double opperand
-                {
-                    substr = custom_dup(s, i, i + 2);
-                    token = get_token(substr);
-                    i++;
-                }
-                else
-                {
-                    substr = custom_dup(s, i, i + 1);
-                    token = get_token(substr);
-                }
-                add_to_list(&head, &tail, substr, token);
-                free(substr);
-            }
-        }
+        if (!is_pipe(s[i]) && start < 0)
+            start = i; // Marca o início de um token
+        else
+            process_current_character(&head, &tail, s, &start, i);
         i++;
     }
     return (head);
 }
+
+/* Function: delim_split
+ * Splits the input string `s` into tokens based on delimiters like `|`, `>`,
+ * and `<`. Adds each token to a linked list and returns the head of the list.
+ */

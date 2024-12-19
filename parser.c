@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 19:22:34 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 19:40:20 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_builtin(char *wrd)
         return (1);
     else if (ft_strcmp(wrd, "unset") == 0)
         return (1);
-    else if (ft_strcmp(wrd, "env") == 0)
+    else if (ft_strcmp(wrd, "env") == 0 || ft_strcmp(wrd, "envp") == 0)
         return (1);
     else if (ft_strcmp(wrd, "exit") == 0)
         return (1);
