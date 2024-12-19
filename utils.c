@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 15:24:05 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 22:45:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,17 @@ void	print_the_stack(t_init_input *list)
 int	is_whitspace(char c)
 {
 	return (c == '\t' || c == '\v' || c == '\r' || c == ' ');
+}
+
+int	is_whitespace_string(const char *str)
+{
+	while (*str)
+	{
+		if (!is_whitspace(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
 int	is_special(char c)
@@ -146,4 +157,11 @@ char	*extract_key(char *str)
     while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
         len++;
     return ft_substr(str, 0, len);
+}
+
+char *ft_strjoin_free(char *s1, char *s2)
+{
+    char *new_str = ft_strjoin(s1, s2);
+    free(s1);
+    return new_str;
 }

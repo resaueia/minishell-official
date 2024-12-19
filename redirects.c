@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/17 17:57:29 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/19 00:50:57 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int setup_redirection(t_init_input *args_list, t_types *type)
                 return (-1);
             }
             type->fd[0] = temp_fd;
-            type->next->fd[0] = temp_fd;
         }
         else if (ft_strcmp(type->cmd, ">") == 0 && type->next)
         {
@@ -53,7 +52,6 @@ int setup_redirection(t_init_input *args_list, t_types *type)
             if (type->fd[1] != STDOUT_FILENO)
                 close(type->fd[1]);
             temp_fd = open(type->next->cmd, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            printf("temp_fd: [%i]\n", temp_fd);
             if (temp_fd == -1)
             {
                 perror("Error opening fd for output redirect");

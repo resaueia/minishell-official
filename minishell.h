@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/18 21:04:55 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/19 00:37:19 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ typedef enum e_token
 	APPEND = 77,
 	HDOC = 44,
 	WORD = 01,
+	ARGS = 20,
 	ERROR = 00,
-	FLE = 02,
+	FLE = 21,
 	BUILTIN = 03,
 	EXEC = 05,
 	ENDOF = 99,
@@ -81,6 +82,7 @@ typedef struct s_init_input
 	char					**args;
 	int						fd_in;
 	int						fd_out;
+	int						exit_status;
 	t_token					token;
 	t_types					*types;
 	struct s_init_input		*prev;
@@ -101,6 +103,7 @@ int					is_double_delim(char *str);
 int					has_end_delim(char *str);
 int					quotes_check(char *str);
 int					input_check(char *input);
+int					check_node(t_types *type);
 
 /* FROM LIBFT */
 int					ft_isalpha(int c);
@@ -128,12 +131,14 @@ int					is_space(char *args);
 int					is_lower(char *args);
 int					to_quotes(char c, int quotes);
 int					is_expander(t_types *types);
+int					is_whitespace_string(const char *str);
 void 				remove_quotes(char **str);
 char				*joinpath(char *path, char *key, t_envp **env_list);
 char				*custom_dup(char *str, int start, int finish);
 char				*ft_strjoin(char *s1, char *s2);
 char				*ft_strndup(char *str, int	len);
 char 				*extract_key(char *str);
+char				*ft_strjoin_free(char *s1, char *s2);
 
 /* ENVP */
 t_envp				*create_node(char *key, char *value);
@@ -148,13 +153,13 @@ char				*change_path(char *path, char *src, t_envp **head);
 
 /* EXEC */
 int 	   			to_exec(t_init_input *input_list, t_types *type, t_envp *env_list);
-void				execute_builtin(char *cmd, t_envp *envp, t_init_input *list, t_types *types);
+void				execute_builtin(t_envp *envp, t_init_input *list, t_types *types);
 void				exec_cmd(t_init_input *cmd, t_types *type, char **env);
+void				execute_command(t_types *type, t_envp *env_list, t_init_input *input_list, char **env);
 void				find_command_path(t_types *type, t_envp *env_list);
 void				clear_heredoc_files(void);
 
 /* OTHERS */
-//int					is_delimiter(char c);
 void				process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list);
 t_init_input		*split_commands(char **commands, t_init_input **head, t_init_input **tail);
 
@@ -171,6 +176,7 @@ char				**args_split(char *input);
 void				insert_types(t_types **head, char *wrd);
 int					what_type(char *wrd);
 void				include_fds(t_init_input *input_list);
+void				args_of_cmds(t_types *cmd);
 
 /* TO CONVERT LIST TO CHAR** */
 char    			**types_to_char(t_types *list);
@@ -192,15 +198,16 @@ int					is_exec(t_types *type);
 
 /* HEREDOC */
 int					is_heredoc(t_init_input *input_list, t_types *type);
-//int					tackle_heredoc(char *delim);
+int					handle_heredoc(t_init_input *input_list, t_types *type);
 int					tackle_heredoc(t_types *type, char *start_delim, char *last_delim);
 
 /* REDIRECTS */
+int					handle_redirection(t_init_input *input_list, t_types *type);
 int					setup_redirection(t_init_input *args_list, t_types *type);
-//void				remove_node(t_types *node);
 void				remove_node(t_types **node);
 
 /* PIPES */
+int					handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type);
 int					setup_pipeline(t_init_input *input_list, t_envp *env_list);
 int					to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list);
 void				exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env);
@@ -208,10 +215,11 @@ void				exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env);
 /* Built-in functions */
 int					is_builtin(char *wrd);
 void				ft_pwd(int fd_out);
-void				ft_echo(char *args, t_envp **env_list, int fd_out);
-void				ft_cd(char *path, t_envp **env_list);
-void				ft_export(char *var, t_envp **env_list);
-void				ft_unset(char *var, t_envp **env_list);
+void				ft_echo(t_types *args, t_envp **env_list, int fd_out);
+void				ft_cd(t_types *path, t_envp **env_list);
+void				ft_export(t_types *var, t_envp **env_list);
+void				ft_unset(t_types *var, t_envp **env_list);
+void				exit_shell(char *prompt, char *prompt_dup, t_init_input *input_list, t_envp *env_list);
 
 /* TO FREE */
 char				*free_char_ptr(char *ptr);

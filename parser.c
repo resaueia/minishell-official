@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 19:40:20 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 23:01:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,91 @@ void	insert_types(t_types **head, char *wrd)
 	temp->next = new;
 }
 
+static int is_delim(int type)
+{
+    if (type == PIPE || type == IN || type == OUT || type == APPEND || type == HDOC)
+        return (1);
+    return (0);
+}
+
+static int  is_redirects(int type)
+{
+    if (type == IN || type == OUT || type == APPEND || type == HDOC)
+        return (1);
+    return (0);
+}
+
+void args_of_cmds(t_types *cmd)
+{
+    t_types *head;
+    int     node_ref;
+
+    head = cmd;
+    node_ref = 1;
+    while (cmd)
+    {
+        if (node_ref == 1)
+        {
+            if (is_redirects(cmd->type))
+            {
+                if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
+                    cmd->next->type = FLE;
+                else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
+                    cmd->next->type = ENDOF;
+            }
+            else if (is_builtin(cmd->cmd) == 1)
+            {
+                if (ft_strcmp(cmd->cmd, "echo") == 0 && !cmd->next)
+                    break;
+                if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
+                {
+                    cmd = cmd->next;
+                    while (cmd && is_delim(cmd->type) == 0)
+                    {
+                        cmd->type = ARGS;
+                        cmd = cmd->next;
+                    }
+                    if (!cmd)
+                        break;
+                }
+            }
+            else
+                cmd->type = EXEC;
+            node_ref = 0;
+        }
+        if (cmd->type == PIPE)
+            node_ref = 1;
+        if (node_ref == 0)
+        {
+            if (is_redirects(cmd->type))
+            {
+                if ((ft_strcmp(cmd->cmd, ">") == 0 || ft_strcmp(cmd->cmd, "<") == 0) && cmd->next->cmd)
+                    cmd->next->type = FLE;
+                else if (ft_strcmp(cmd->cmd, "<<") == 0 && cmd->next->cmd)
+                    cmd->next->type = ENDOF;
+            }
+            else if (is_builtin(cmd->cmd) == 1)
+            {
+                if (ft_strcmp(cmd->cmd, "echo") == 0 && cmd->next->cmd)
+                {
+                    cmd = cmd->next;
+                    while (cmd && is_delim(cmd->type) == 0)
+                    {
+                        cmd->type = ARGS;
+                        cmd = cmd->next;
+                    }
+                    if (!cmd)
+                        break;
+                }
+            }
+            else if (ft_strcmp(cmd->cmd, "Makefile") == 0)
+                cmd->type = FLE;
+        }
+        cmd = cmd->next;
+    }
+    cmd = head;
+}
+
 char	**args_split(char *input)
 {
 	int		i;
@@ -116,17 +201,12 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     char    **cmds;
     int     i;
     int     j;
-    int     last_exit_status;
-
-    (void) env_list;
-    (void) input_list;
-
-    last_exit_status = 0;
+    
     cmds = lexer(prompt); // split the input for delim and quotes
     input_list = delim_split(prompt); // split the input for pipe
     include_fds(input_list);
     i = -1;
-    while(cmds[++i])
+    while(cmds[++i]) //include types
     {
         j = -1;
         args = args_split(cmds[i]); // split the input for space
@@ -135,6 +215,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
         args = free_from_split(args);
     }
     cmds = free_from_split(cmds);
-    lets_expander(types, env_list, last_exit_status);
-    last_exit_status = to_exec(input_list, types, env_list);
+    args_of_cmds(types);
+    lets_expander(types, env_list, input_list->exit_status);
+    input_list->exit_status = to_exec(input_list, types, env_list);
 }

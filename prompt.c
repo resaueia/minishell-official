@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 18:19:53 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/18 21:58:26 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static t_init_input	*init_list(void)
 	list->args = NULL;
 	list->fd_in = 0;
 	list->fd_out = 1;
+	list->exit_status = 0;
 	list->token = (t_token){0};
 	list->types = NULL;
 	list->prev = NULL;
@@ -67,7 +68,65 @@ int	add_to_history(char *line)
 	return (0);
 }
 
-static void	handle_exit_command(char *prompt, t_init_input *input_list, 
+static int	handle_empty_or_exit(char *prompt, t_init_input *input_list, t_envp *env_list)
+{
+	if (!prompt) // if the prompt is empty
+	{
+		exit_shell(NULL, NULL, input_list, env_list); // exit the shell
+		return (1);
+	}
+	if (!*prompt || is_whitespace_string(prompt)) // if the prompt is empty or has only spaces
+	{
+		free(prompt); // free the prompt
+		return (1);
+	}
+	if (ft_strncmp(prompt, "exit", 4) == 0) // if the prompt is exit
+	{
+		exit_shell(prompt, NULL, input_list, env_list); // exit the shell
+		return (1);
+	}
+	return (0); // return 0 if the prompt is not empty or exit
+}
+
+static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
+{
+	if (!input_check(prompt_dup)) // check if the input is valid
+		process_input(input_list, input_list->types, prompt_dup, env_list);
+	else
+	{
+		printf("minishell: syntax error\n"); // if the input is invalid, print an error message
+	}
+}
+
+static void	process_command(char *prompt, t_init_input *input_list, t_envp *env_list)
+{
+	char	*prompt_dup;
+
+	if (add_to_history(prompt)) // add the prompt to the history
+		prompt_dup = ft_strdup(prompt); // duplicate the prompt
+	exec_shell(prompt_dup, input_list, env_list); // execute the shell
+	free(prompt); // free the prompt
+	free(prompt_dup); // free the prompt_dup
+}
+
+void	prompt(char **envp)
+{
+	char			*prompt;
+	t_init_input	*input_list;
+	t_envp			*env_list;
+
+	env_list = get_envp(envp); 	// get the envp list
+	input_list = init_list(); // initialize the input list
+	while (1) // loop the shell.
+	{
+		prompt = readline("minishell> "); // the prompt
+		if (handle_empty_or_exit(prompt, input_list, env_list)) // handle the empty prompt or exit
+			continue;
+		process_command(prompt, input_list, env_list); // process the command
+	}
+}
+
+/*static void	handle_exit_command(char *prompt, t_init_input *input_list, 
                                 char *prompt_dup, t_envp *env_list)
 {
     int ret = 0;
@@ -122,7 +181,7 @@ static void handle_prompt_input(char *prompt, char **prompt_dup, t_init_input *i
     {
         process_shell_input(*prompt_dup, input_list, env_list);
     }
-}
+}*/
 
 /* Function: handle_prompt_input
  * Handles user input:
@@ -131,7 +190,7 @@ static void handle_prompt_input(char *prompt, char **prompt_dup, t_init_input *i
  * - Calls appropriate functions for "exit" or other shell commands.
  */
 
-void prompt(char **envp)
+/*void prompt(char **envp)
 {
     char            *prompt;
     char            *prompt_dup;
@@ -157,117 +216,4 @@ void prompt(char **envp)
     }
     if (prompt_dup)
         free(prompt_dup);
-}
-
-/* Function: prompt
- * Manages the main loop of the shell:
- * - Reads user input using readline.
- * - Handles EOF (CTRL+D) to exit the shell cleanly.
- * - Delegates input processing to the handle_prompt_input function.
- */
-
-
-/*void	prompt(char **envp)
-{
-    char			*prompt;
-    char			*prompt_dup;
-    t_init_input	*input_list;
-    t_envp			*env_list;
-
-    env_list = get_envp(envp);
-    input_list = init_list();
-    while (1)
-    {
-        prompt = readline("minishell> ");
-        if (!prompt)
-        {
-            printf("exit\n");
-            rl_clear_history();
-            free_env(env_list);
-            free_list(input_list);
-            break;
-        }
-        if (add_to_history(prompt))
-            prompt_dup = ft_strdup(prompt);
-        if (ft_strncmp(prompt, "exit", 4) == 0)
-        {
-            handle_exit_command(prompt, input_list, prompt_dup, env_list);
-        }
-        else
-        {
-            process_shell_input(prompt_dup, input_list, env_list);
-        }
-        free(prompt);
-    }
-}*/
-
-/*void	prompt(char **envp)
-{
-	char			*prompt;
-	char			*prompt_dup;
-	t_init_input	*input_list;
-	t_envp			*env_list;
-
-	env_list = get_envp(envp); 	// get the envp list
-	input_list = init_list(); // initialize the input list
-	while (1) // loop the shell.
-	{
-		prompt = readline("minishell> "); // the prompt
-		if (!prompt)
-		{
-			printf("exit\n");
-			rl_clear_history(); // Clear readline history
-        	free_env(env_list); // Free the environment list
-        	free_list(input_list); // Free the input list
-			break ;
-		}
-		if (add_to_history(prompt)) // add the prompt to the history and go on
-			prompt_dup = ft_strdup(prompt);
-		//printf("prompt: [%s]\n", prompt);
-		if (ft_strncmp(prompt, "exit", 4) == 0) //if the user types exit, the shell will exit.
-		{
-			int ret;
-			int i;
-			
-			ret = 0;
-			i = 4;
-			while (prompt[i] == ' ')
-				i++;
-			while (prompt[i])
-			{
-				if (is_whitspace(prompt[i]))
-				{
-					printf("exit\nminishell: exit: too many arguments\n");
-					exit(1);
-				}
-				if (!ft_isdigit(prompt[i]))
-				{
-					printf("exit\nminishell: exit: %s: numeric argument required\n", prompt + 4);
-					exit(255);
-				}
-				else if (ft_isdigit(prompt[i]))
-				{
-					ret = ret * 10 + prompt[i] - '0';
-					i++;
-				}
-			}
-			exit_mini(input_list, prompt, prompt_dup, env_list); // exit the shell end clear the memory
-			exit(ret);
-		}
-		else
-		{
-			if (!input_check(prompt_dup)) // check if the input is valid
-			{
-				//printf("\n----\nsending to process_input:\n");
-				//processe_inut(struct, char**, struct);
-				process_input(input_list, input_list->types, prompt_dup, env_list);
-			}
-			else
-			{
-				printf("minishell: syntax error\n"); // if the input is invalid, print an error message
-				continue;
-			}
-		}
-		free(prompt); // free the prompt
-	}
 }*/

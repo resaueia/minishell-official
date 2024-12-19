@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/17 16:11:22 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/19 01:08:28 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ static t_init_input *handle_new_node(t_init_input *tail, t_init_input *new_node)
 	return (new_node);
 }
 
+/* Function: handle_substring
+ * Extracts a substring from the input string, creates a new node, and adds 
+ * it to the linked list. The start index is reset after processing.
+ */
+
 void handle_substring(char *s, size_t *i, int *start_index, t_init_input **head, t_init_input **tail)
 {
     char            *substr;
@@ -80,9 +85,12 @@ void handle_substring(char *s, size_t *i, int *start_index, t_init_input **head,
         *head = *tail;
     *start_index = -1;
 }
-/* Function: handle_substring
- * Extracts a substring from the input string, creates a new node, and adds 
- * it to the linked list. The start index is reset after processing.
+
+/* Function: ft_split
+ * Splits the input string into nodes based on delimiters (spaces or control
+ * characters). Each substring is stored as a node in a linked list.
+ * The function uses helper functions to handle substring extraction and node
+ * creation, ensuring clarity and modularity.
  */
 
 t_init_input *ft_split(char *s)
@@ -108,9 +116,3 @@ t_init_input *ft_split(char *s)
     }
     return (head);
 }
-/* Function: ft_split
- * Splits the input string into nodes based on delimiters (spaces or control
- * characters). Each substring is stored as a node in a linked list.
- * The function uses helper functions to handle substring extraction and node
- * creation, ensuring clarity and modularity.
- */
