@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 16:29:29 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:05:59 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void find_command_path(t_types *type, t_envp *env_list)
         free(full_path);
         dir = ft_strtok_r(NULL, ":", &save_ptr);
     }
-    //printf("minishell: %s: %s\n", strerror(errno), type->cmd);
     free(path_dup);
 }
 

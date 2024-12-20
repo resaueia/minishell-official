@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 16:28:25 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 17:51:14 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 void	print_the_stack(t_init_input *list)
 {
-	t_init_input *current;
-	
+	t_init_input	*current;
+
 	current = list;
 	while (current)
 	{
-		printf("string: [%s] || token: [%i] || ", current->string, current->token);
-		printf("fd_in: [%d] || fd_out: [%i]\n", current->fd_in, current->fd_out);
+		printf("string: [%s] || token: [%i] || ", current->string,
+			current->token);
+		printf("fd_in: [%d] || fd_out: [%i]\n", current->fd_in,
+			current->fd_out);
 		current = current->next;
-	}	
+	}
 }
 
 int	is_whitspace(char c)
@@ -76,14 +78,13 @@ int	is_lower(char *args)
 		return (-1);
 }
 
-void remove_quotes(char **str)
+void	remove_quotes(char **str)
 {
 	char	*src;
 	char	*dst;
 
 	src = *str;
 	dst = *str;
-
 	if (*src == '\"')
 	{
 		while (*src++)
@@ -97,7 +98,7 @@ void remove_quotes(char **str)
 	{
 		while (*src++)
 		{
-			if(*src != '\'')
+			if (*src != '\'')
 				*dst++ = *src;
 		}
 		*dst = '\0';
@@ -111,7 +112,8 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 	char	*tmp;
 
 	value = get_value(key, *env_list);
-	new_path = (char *)malloc(sizeof(char) * (ft_strlen(value) + ft_strlen(path) + 2)); //maloca o tamanho de value + path + 2
+	new_path = (char *)malloc(sizeof(char) * (ft_strlen(value) + ft_strlen(path)
+				+ 2)); // maloca o tamanho de value + path + 2
 	if (!new_path)
 		return (NULL);
 	tmp = new_path;
@@ -124,7 +126,7 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 	return (new_path);
 }
 
-char	*ft_strndup(char *str, int	len)
+char	*ft_strndup(char *str, int len)
 {
 	char	*new;
 	int		i;
@@ -150,26 +152,29 @@ int	is_expander(t_types *types)
 		return (0);
 }
 
-char	*extract_key(char *str) 
+char	*extract_key(char *str)
 {
-    int len = 0;
+	int	len;
 
-    while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
-        len++;
-    return ft_substr(str, 0, len);
+	len = 0;
+	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
+		len++;
+	return (ft_substr(str, 0, len));
 }
 
-char *ft_strjoin_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-    char *new_str = ft_strjoin(s1, s2);
-    free(s1);
-    return new_str;
+	char	*new_str;
+
+	new_str = ft_strjoin(s1, s2);
+	free(s1);
+	return (new_str);
 }
 int	last_status(int new_status)
 {
-static int	status;
+	static int status;
 
-if (new_status > -1)
-status = new_status;
-return (status);
+	if (new_status > -1)
+		status = new_status;
+	return (status);
 }

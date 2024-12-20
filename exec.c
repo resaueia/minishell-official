@@ -6,36 +6,37 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 16:29:17 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:04:28 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int  check_node(t_types *type)
+int	check_node(t_types *type)
 {
-    t_types *temp;
+	t_types	*temp;
 
-    temp = type;
-    while (temp)
-    {
-        if (temp->type == 4 || temp->type == 7 || temp->type == 77 || temp->type == 44)
-        {
-            if (temp->prev == NULL)
-                return (1);
-        }
-        temp = temp->next;
-    }
-    return (0);
+	temp = type;
+	while (temp)
+	{
+		if (temp->type == 4 || temp->type == 7 || temp->type == 77
+			|| temp->type == 44)
+		{
+			if (temp->prev == NULL)
+				return (1);
+		}
+		temp = temp->next;
+	}
+	return (0);
 }
 
 /********** HEREDOCS **********/
 // Função auxiliar para tratar heredoc
-int handle_heredoc(t_init_input *input_list, t_types *type)
+int	handle_heredoc(t_init_input *input_list, t_types *type)
 {
 	if (is_heredoc(input_list, type) == -1)
-	{   
-		perror ("Error setting up heredoc");
+	{
+		perror("Error setting up heredoc");
 		return (1);
 	}
 	if (check_node(type))
@@ -49,7 +50,7 @@ int handle_heredoc(t_init_input *input_list, t_types *type)
 
 /********** PIPES **********/
 // Função auxiliar para tratar pipes
-int handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
+int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 {
 	if (setup_pipeline(input_list, env_list) == -1)
 	{
@@ -65,7 +66,7 @@ int handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 
 /********** REDIRECTS **********/
 // Função auxiliar para tratar redirecionamentos
-int handle_redirection(t_init_input *input_list, t_types *type)
+int	handle_redirection(t_init_input *input_list, t_types *type)
 {
 	if (setup_redirection(input_list, type) == -1)
 	{
@@ -85,7 +86,7 @@ int handle_redirection(t_init_input *input_list, t_types *type)
 
 /********** BUILT-INS **********/
 // Função para gerenciar redirecionamento de descritores de arquivo
-static void handle_fd_redirection(t_types *types, int *saved_stdout)
+static void	handle_fd_redirection(t_types *types, int *saved_stdout)
 {
 	*saved_stdout = dup(STDOUT_FILENO);
 	if (types->fd[1] != STDOUT_FILENO)
@@ -94,21 +95,23 @@ static void handle_fd_redirection(t_types *types, int *saved_stdout)
 		{
 			perror("dup2 error encountered in builtin");
 			close(*saved_stdout);
-			return;
+			return ;
 		}
 		close(types->fd[1]);
 	}
 }
 
 // Função para executar comandos internos (dividida)
-static void execute_individual_builtin(t_envp *env_list, t_init_input *list, t_types *types)
+static void	execute_individual_builtin(t_envp *env_list, t_init_input *list,
+		t_types *types)
 {
-	t_envp *tmp;
+	t_envp	*tmp;
 
 	tmp = env_list;
 	if (ft_strcmp(types->cmd, "print") == 0)
 		print_stack(list);
-	else if (ft_strcmp(types->cmd, "env") == 0 || ft_strcmp(types->cmd, "envp") == 0)
+	else if (ft_strcmp(types->cmd, "env") == 0 || ft_strcmp(types->cmd,
+			"envp") == 0)
 		print_envp_list(tmp);
 	else if (ft_strcmp(types->cmd, "pwd") == 0)
 		ft_pwd(STDOUT_FILENO);
@@ -128,10 +131,10 @@ static void execute_individual_builtin(t_envp *env_list, t_init_input *list, t_t
 }
 
 // Função principal para executar comandos internos
-void execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
+void	execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
 {
-	int saved_stdout;
-	
+	int	saved_stdout;
+
 	handle_fd_redirection(types, &saved_stdout);
 	execute_individual_builtin(env_list, list, types);
 	if (saved_stdout != STDOUT_FILENO)
@@ -142,18 +145,19 @@ void execute_builtin(t_envp *env_list, t_init_input *list, t_types *types)
 }
 
 // Função auxiliar para execução de comandos
-void execute_command(t_types *type, t_envp *env_list, t_init_input *input_list, char **env)
+void	execute_command(t_types *type, t_envp *env_list,
+		t_init_input *input_list, char **env)
 {
 	if (!type)
-        return ;
+		return ;
 	find_command_path(type, env_list);
 	exec_cmd(input_list, type, env);
 	clear_heredoc_files();
 }
 
-int to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
+int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-	char **env;
+	char	**env;
 
 	env = env_to_char(env_list);
 	if (is_hdoc(type) && handle_heredoc(input_list, type) == -1)
@@ -166,9 +170,9 @@ int to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		execute_builtin(env_list, input_list, type);
 	if (is_exec(type))
 		execute_command(type, env_list, input_list, env);
-    //função para verificar fds abertos e fechar, nó por nó. 
-    free_list(input_list);
-    free_types(type);
+	// função para verificar fds abertos e fechar, nó por nó.
+	free_list(input_list);
+	free_types(type);
 	env = NULL;
-    return (0);
+	return (0);
 }

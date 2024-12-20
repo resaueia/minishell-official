@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/19 12:01:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:17:05 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 if heredoc, get a function to process it. how?
 start capturing all input lines from the user until you come across
 the initial delimiter.
-write said lines in a pipe - pipe needs to get redirectioned as an entry for the cmd;
-finally, those lines will get written on the terminal once said cmd is executed.
+write said lines in a pipe - pipe needs to get redirectioned as an entry for 
+the cmd; finally, those lines will get written on the terminal once said cmd 
+is executed.
 */
 
 /*static void include_eof(t_types *cmd)
@@ -129,7 +130,8 @@ static int process_single_heredoc(t_types *type, t_types *head)
  * the file descriptor with the temporary file.
  */
 
-static int process_multiple_heredocs(t_types *type, t_types *head, int here_count)
+static int process_multiple_heredocs(t_types *type, t_types *head, 
+int here_count)
 {
     char **delim;
     int heredoc_fd;
@@ -140,7 +142,8 @@ static int process_multiple_heredocs(t_types *type, t_types *head, int here_coun
     {
         if (ft_strcmp(type->cmd, "<<") == 0 && type->next->cmd)
         {
-            heredoc_fd = tackle_heredoc(head, delim[here_count - 2], delim[here_count - 1]);
+            heredoc_fd = tackle_heredoc(head, delim[here_count - 2], 
+            delim[here_count - 1]);
             if (heredoc_fd == -1)
             {
                 perror("Error setting up heredoc");
@@ -255,7 +258,8 @@ static void single_delimiters(int temp_fd, char *last_delim, int start_write)
     }
 }
 
-static void multiple_delimiters(int temp_fd, char *start_delim, char *last_delim, int start_write)
+static void multiple_delimiters(int temp_fd, char *start_delim, 
+char *last_delim, int start_write)
 {
     char *line;
 
@@ -312,7 +316,7 @@ int tackle_heredoc(t_types *type, char *start_delim, char *last_delim)
     if (temp_fd == -1)
         return (-1);
     process_lines(temp_fd, start_delim, last_delim);
-    change_value(type, temp_file); // Atualiza o cmd do tipo com o arquivo temporário.
+    change_value(type, temp_file);
     return (temp_fd);
 }
 

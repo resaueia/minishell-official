@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 15:11:33 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:59:32 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,40 @@
 
 int	is_builtin(char *wrd)
 {
-    if (ft_strcmp(wrd, "echo") == 0)
-        return (1);
-    else if (ft_strcmp(wrd, "cd") == 0)
-        return (1);
-    else if (ft_strcmp(wrd, "pwd") == 0)
-        return (1);
-    else if (ft_strcmp(wrd, "export") == 0)
-        return (1);
-    else if (ft_strcmp(wrd, "unset") == 0)
-        return (1);
-    else if (ft_strcmp(wrd, "env") == 0 || ft_strcmp(wrd, "envp") == 0)
-        return (1);
-    else if (ft_strcmp(wrd, "exit") == 0)
-        return (1);
-    else
-        return (0);
+	if (ft_strcmp(wrd, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(wrd, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(wrd, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(wrd, "export") == 0)
+		return (1);
+	else if (ft_strcmp(wrd, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(wrd, "env") == 0 || ft_strcmp(wrd, "envp") == 0)
+		return (1);
+	else if (ft_strcmp(wrd, "exit") == 0)
+		return (1);
+	else
+		return (0);
 }
 
 int	what_type(char *wrd)
 {
-    if (ft_strcmp(wrd, "|") == 0)
-        return (PIPE);
-    else if (ft_strcmp(wrd, ">") == 0)
-        return (OUT);
-    else if (ft_strcmp(wrd, ">>") == 0)
-        return (APPEND);
-    else if (ft_strcmp(wrd, "<") == 0)
-        return (IN);
-    else if (ft_strcmp(wrd, "<<") == 0)
-        return (HDOC);
-    else if (is_builtin(wrd))
-        return (BUILTIN);
-    else
-        return (WORD);
+	if (ft_strcmp(wrd, "|") == 0)
+		return (PIPE);
+	else if (ft_strcmp(wrd, ">") == 0)
+		return (OUT);
+	else if (ft_strcmp(wrd, ">>") == 0)
+		return (APPEND);
+	else if (ft_strcmp(wrd, "<") == 0)
+		return (IN);
+	else if (ft_strcmp(wrd, "<<") == 0)
+		return (HDOC);
+	else if (is_builtin(wrd))
+		return (BUILTIN);
+	else
+		return (WORD);
 }
 
 void	insert_types(t_types **head, char *wrd)
@@ -57,9 +57,9 @@ void	insert_types(t_types **head, char *wrd)
 
 	new = (t_types *)malloc(sizeof(t_types));
 	new->cmd = ft_strdup(wrd);
-    new->type = what_type(wrd);
-    new->fd[0] = STDIN_FILENO;
-    new->fd[1] = STDOUT_FILENO;
+	new->type = what_type(wrd);
+	new->fd[0] = STDIN_FILENO;
+	new->fd[1] = STDOUT_FILENO;
 	new->prev = NULL;
 	new->next = NULL;
 	if (!*head || !(*head)->cmd)
@@ -96,29 +96,29 @@ char	**args_split(char *input)
 	return (ret);
 }
 
-void include_fds(t_init_input *input_list)
+void	include_fds(t_init_input *input_list)
 {
-    t_init_input *temp;
+	t_init_input	*temp;
 
-    temp = input_list;
-    while (temp)
-    {
-        temp->fd_in = 0;
-        temp->fd_out = 1;
-        temp = temp->next;
-    }
+	temp = input_list;
+	while (temp)
+	{
+		temp->fd_in = 0;
+		temp->fd_out = 1;
+		temp = temp->next;
+	}
 }
 
-static void remove_quotes_from_str(char **str)
+static void	remove_quotes_from_str(char **str)
 {
-    char *src;
-    char *dst;
+	char	*src;
+	char	*dst;
 
-    if (!str || !*str)
-        return;
-    src = *str;
-    dst = *str;
-   if (*src == '\"')
+	if (!str || !*str)
+		return ;
+	src = *str;
+	dst = *str;
+	if (*src == '\"')
 	{
 		while (*src++)
 		{
@@ -131,65 +131,49 @@ static void remove_quotes_from_str(char **str)
 	{
 		while (*src++)
 		{
-			if(*src != '\'')
+			if (*src != '\'')
 				*dst++ = *src;
 		}
 		*dst = '\0';
 	}
 }
 
-void remove_quotes_from_types(t_types *types)
+void	remove_quotes_from_types(t_types *types)
 {
-    t_types *current;
+	t_types	*current;
 
-    current = types;
-    while (current)
-    {
-        if (current->cmd)
-            remove_quotes_from_str(&current->cmd);
-        current = current->next;
-    }
+	current = types;
+	while (current)
+	{
+		if (current->cmd)
+			remove_quotes_from_str(&current->cmd);
+		current = current->next;
+	}
 }
 
-void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
+void	process_input(t_init_input *input_list, t_types *types, char *prompt,
+		t_envp *env_list)
 {
-    char    **args;
-    char    **cmds;
-    int     i;
-    int     j;
-    
-    cmds = lexer(prompt);
-    input_list = delim_split(prompt);
-    include_fds(input_list);
-    i = -1;
-    while(cmds[++i])
-    {
-        j = -1;
-        args = args_split(cmds[i]);
-        while (args[++j])
-            insert_types(&types, args[j]);
-        args = free_from_split(args);
-    }
-    cmds = free_from_split(cmds);
-    //printf("\n----\nprint the types before args_of_cmds:\n");
-    //t_types *temp = types;
-    /*printf("temp: [%p]\n", temp);
-    while (temp)
-    {
-        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }*/
-    args_of_cmds(types);
+	char	**args;
+	char	**cmds;
+	int		i;
+	int		j;
 
-    /*printf("\n----\nprint the types afeter args_of_cmds:\n");
-    temp = types;
-    printf("temp: [%p]\n", temp);
-    while (temp)
-    {
-        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }*/
-    lets_expander(types, env_list, input_list->exit_status);
-    remove_quotes_from_types(types);
-    input_list->exit_status = to_exec(input_list, types, env_list);
+	cmds = lexer(prompt);
+	input_list = delim_split(prompt);
+	include_fds(input_list);
+	i = -1;
+	while (cmds[++i])
+	{
+		j = -1;
+		args = args_split(cmds[i]);
+		while (args[++j])
+			insert_types(&types, args[j]);
+		args = free_from_split(args);
+	}
+	cmds = free_from_split(cmds);
+	args_of_cmds(types);
+	lets_expander(types, env_list, input_list->exit_status);
+	remove_quotes_from_types(types);
+	input_list->exit_status = to_exec(input_list, types, env_list);
 }

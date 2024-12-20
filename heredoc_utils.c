@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:57:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 15:14:01 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:03:16 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,22 @@
  * Handles errors related to path truncation and file deletion.
  */
 
-static void remove_heredoc_file(const char *filename)
+static void	remove_heredoc_file(const char *filename)
 {
-    char filepath[64];
+	char	filepath[64];
 
-    if (ft_strlcpy(filepath, "/tmp/", sizeof(filepath)) >= sizeof(filepath))
-    {
-        printf("Path truncation error: %s: %s\n", "/tmp/", strerror(errno));
-        return ;
-    }
-    if (ft_strlcat(filepath, filename, sizeof(filepath)) >= sizeof(filepath))
-    {
-        printf("Path truncation error: %s: %s\n", filename, strerror(errno));
-        return ;
-    }
-    if (unlink(filepath) == -1)
-        perror("Failed to delete heredoc file");
+	if (ft_strlcpy(filepath, "/tmp/", sizeof(filepath)) >= sizeof(filepath))
+	{
+		printf("Path truncation error: %s: %s\n", "/tmp/", strerror(errno));
+		return ;
+	}
+	if (ft_strlcat(filepath, filename, sizeof(filepath)) >= sizeof(filepath))
+	{
+		printf("Path truncation error: %s: %s\n", filename, strerror(errno));
+		return ;
+	}
+	if (unlink(filepath) == -1)
+		perror("Failed to delete heredoc file");
 }
 
 /* Function: clear_heredoc_files
@@ -40,22 +40,21 @@ static void remove_heredoc_file(const char *filename)
  * that start with the "hdoc_" prefix using the remove_heredoc_file function.
  */
 
-void clear_heredoc_files(void)
+void	clear_heredoc_files(void)
 {
-    DIR *dir;
-    struct dirent *entry;
+	DIR				*dir;
+	struct dirent	*entry;
 
-    dir = opendir("/tmp");
-    if (!dir)
-    {
-        perror("Failed to open /tmp directory");
-        return;
-    }
-    while ((entry = readdir(dir)) != NULL)
-    {
-        if (ft_strncmp(entry->d_name, "hdoc_", 5) == 0)
-            remove_heredoc_file(entry->d_name);
-    }
-    closedir(dir);
+	dir = opendir("/tmp");
+	if (!dir)
+	{
+		perror("Failed to open /tmp directory");
+		return ;
+	}
+	while ((entry = readdir(dir)) != NULL)
+	{
+		if (ft_strncmp(entry->d_name, "hdoc_", 5) == 0)
+			remove_heredoc_file(entry->d_name);
+	}
+	closedir(dir);
 }
-
