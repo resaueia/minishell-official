@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 17:58:04 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:30:32 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	process_pipe(t_init_input *input_list, t_types *types,
 	char	*prompt;
 	char	**cmds;
 
-	// int last_exit_status; // isso não precisa
+	int last_exit_status; // isso não precisa
 	prompt = ft_strdup(input_list->string);
 	cmds = lexer(prompt);
 	split_and_insert(&types, cmds);
@@ -64,9 +64,9 @@ static int	process_pipe(t_init_input *input_list, t_types *types,
 	remove_quotes_from_types(types);
 	// last_exit_status = to_exec(input_list, types, env_list);
 		// to_exec vem normal
-	to_exec(input_list, types, env_list);
+	last_exit_status = to_exec(input_list, types, env_list);
 	free(prompt);
-	return (last_status);
+	return (last_exit_status);
 		// retorna a função (transformar a last_exit_status numa função)
 }
 

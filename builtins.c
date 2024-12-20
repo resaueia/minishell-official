@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 18:12:19 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:46:52 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,68 @@ static char	*args_to_str(t_types *args)
 	return (str);
 }
 
-void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
+
+// Handles "-n" flag logic for ft_echo
+static int handle_newline_flag(char **args)
 {
+    char *tmp;
+
+    tmp = *args;
+    if (ft_strncmp(*args, "-n", 2) == 0)
+    {
+        (*args)++;
+        while (**args == 'n')
+            (*args)++;
+        if (**args == ' ' || **args == '\0')
+        {
+            (*args)++;
+            return (0); // No newline
+        }
+        *args = tmp; // Reset pointer if not a valid "-n"
+    }
+    return (1); // Default: Add newline
+}
+
+// Outputs the echo arguments to the specified fd
+static void echo_output(char *args, int newline, int fd_out)
+{
+    ft_putstr_fd(args, fd_out);
+    if (newline)
+        ft_putchar_fd('\n', fd_out);
+}
+
+// Main ft_echo function
+void ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
+{
+    char *args;
+    int newline;
+
+    (void)env_list;
+    if (!cmds->cmd || !cmds->next)
+    {
+        ft_putstr_fd("\n", fd_out);
+        return;
+    }
+    args = args_to_str(cmds);
+    newline = handle_newline_flag(&args);
+    echo_output(args, newline, fd_out);
+}
+
+/*
+ * ft_echo: Implements the shell's echo command with support for the "-n" flag.
+ * Converts arguments into a single string, checks for the "-n" flag, and outputs
+ * the resulting string to the specified file descriptor.
+ */
+
+
+
+/*void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
+{
+	(void)env_list;
 	char	*args;
 	int		newline;
 	char	*tmp;
 
-	(void)env_list;
 	newline = 1;
 	if (cmds->cmd == NULL || cmds->next == NULL)
 	{
@@ -80,14 +135,40 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	ft_putstr_fd(args, fd_out);
 	if (newline == 1)
 		ft_putchar_fd('\n', fd_out);
+}*/
+
+static void	handle_cd_special_paths(char *path, char *src, t_envp **env_list)
+{
+	path = change_path(path, src, env_list);
+	chdir(path);
 }
+
+/* Function: handle_cd_special_paths
+ * Handles directory changes for special cases like `HOME` or `OLDPWD`.
+ */
+
+static void	handle_cd_path_change(char *path, t_envp **env_list)
+{
+	char	cwd[1024];
+
+	if (chdir(path) == 0)
+	{
+		getcwd(cwd, sizeof(cwd));
+		change_path(cwd, "PWD", env_list);
+	}
+	else
+		printf("cd: %s: %s\n", strerror(errno), path);
+}
+
+/* Function: handle_cd_path_change
+ * Changes the current working directory to the specified path and updates
+ * the `PWD` in the environment variables. Prints an error if the change fails.
+ */
 
 void	ft_cd(t_types *cmds, t_envp **env_list)
 {
 	char	*path;
-			char cwd[1024];
 
-	(void)env_list;
 	path = args_to_str(cmds);
 	if (ft_strlen(path) == 1 && *path == '/')
 	{
@@ -98,25 +179,18 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
 			path = joinpath(path + 2, "HOME", env_list);
-		if (chdir(path) == 0)
-		{
-			getcwd(cwd, sizeof(cwd));
-			change_path(cwd, "PWD", env_list);
-		}
-		else
-			printf("cd: %s: %s\n", strerror(errno), path);
+		handle_cd_path_change(path, env_list);
 	}
 	else if (!*path || *path == '~')
-	{
-		path = change_path(path, "HOME", env_list);
-		chdir(path);
-	}
+		handle_cd_special_paths(path, "HOME", env_list);
 	else if (*path == '-')
-	{
-		path = change_path(path, "OLDPWD", env_list);
-		chdir(path);
-	}
+		handle_cd_special_paths(path, "OLDPWD", env_list);
 }
+
+/* Function: ft_cd
+ * Changes the current working directory based on the provided path.
+ * Supports paths for root (`/`), specific directories, `HOME`, or `OLDPWD`.
+ */
 
 static int	validate_export(char *arg)
 {
