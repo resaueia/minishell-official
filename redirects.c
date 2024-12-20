@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 12:29:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:31:32 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int setup_redirection(t_init_input *args_list, t_types *type)
         {
             if (access(type->next->cmd, R_OK) == -1)
             {
-                fprintf(stderr, "minishell: no such file or directory: %s\n", type->cmd);
+                ft_putstr_fd("minishell: no such file or directory:", 2);
+                last_status(1);
                 return (-1);
             }
             if (type->fd[0] != STDIN_FILENO)
@@ -38,6 +39,7 @@ int setup_redirection(t_init_input *args_list, t_types *type)
             if (temp_fd == -1)
             {
                 perror("Error opening fd for input redirect");
+                last_status(1);
                 return (-1);
             }
             type->fd[0] = temp_fd;
@@ -50,6 +52,7 @@ int setup_redirection(t_init_input *args_list, t_types *type)
             if (access(type->next->cmd, W_OK) == -1 && errno != ENOENT)
             {
                 perror("No write permission for output redirect");
+                last_status(1);
                 return (-1);
             }
             if (type->fd[1] != STDOUT_FILENO)

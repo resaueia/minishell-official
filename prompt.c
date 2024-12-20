@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 15:10:08 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:30:02 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	handle_signals(int sig, siginfo_t *info, void *context)
 	printf("\n");
 	if (sig == SIGINT && info->si_pid)
 	{
+		last_status(130);
 		rl_on_new_line ();
 		rl_replace_line ("", 0);
 		rl_redisplay ();
@@ -94,6 +95,7 @@ static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_l
 		process_input(input_list, input_list->types, prompt_dup, env_list);
 	else
 	{
+		last_status(2);
 		printf("minishell: syntax error\n");
 	}
 }

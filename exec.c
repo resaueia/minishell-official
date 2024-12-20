@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 15:16:23 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:29:17 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ static void execute_individual_builtin(t_envp *env_list, t_init_input *list, t_t
 	else if (ft_strncmp(types->cmd, "unset", 5) == 0)
 		ft_unset(types, &tmp);
 	else
+	{
 		printf("minishell: %s: command not found\n", types->cmd);
+		last_status(127);
+	}
 }
 
 // Função principal para executar comandos internos

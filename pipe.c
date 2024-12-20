@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 15:34:59 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:34:30 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int process_pipe(t_init_input *input_list, t_types *types, t_envp *env_li
 {
     char *prompt;
     char **cmds;
-    int last_exit_status; // isso não precisa
+    //int last_exit_status; // isso não precisa
 
     prompt = ft_strdup(input_list->string);
     cmds = lexer(prompt);
@@ -61,9 +61,10 @@ static int process_pipe(t_init_input *input_list, t_types *types, t_envp *env_li
     args_of_cmds(types);
     cmds = free_from_split(cmds);
     remove_quotes_from_types(types);
-    last_exit_status = to_exec(input_list, types, env_list); // to_exec vem normal
+    //last_exit_status = to_exec(input_list, types, env_list); // to_exec vem normal
+    to_exec(input_list, types, env_list);
     free(prompt);
-    return (last_exit_status); // retorna a função (transformar a last_exite_status numa função)
+    return (last_status); // retorna a função (transformar a last_exit_status numa função)
 }
 
 /* Function: handle_parent_process

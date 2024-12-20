@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 13:24:10 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:29:29 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ void find_command_path(t_types *type, t_envp *env_list)
 
     path = get_value("PATH", env_list);
     if (!path)
+    {
+        last_status(1);
         return (void)printf("minishell: No such file or directory: %s\n", type->cmd);
+    }
     path_dup = ft_strdup(path);
     if (!path_dup)
         exit_with_error("Error duplicating PATH");

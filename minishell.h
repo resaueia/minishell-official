@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 12:42:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:28:18 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void				clear_heredoc_files(void);
 void				process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list);
 t_init_input		*split_commands(char **commands, t_init_input **head, t_init_input **tail);
 void				remove_quotes_from_types(t_types *types);
+int					last_status(int new_status);
 
 /* PARSER AND TOKENIZATION */
 t_init_input		*add_node(char *input, t_token token);

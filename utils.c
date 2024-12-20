@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 12:46:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:28:25 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,4 +164,12 @@ char *ft_strjoin_free(char *s1, char *s2)
     char *new_str = ft_strjoin(s1, s2);
     free(s1);
     return new_str;
+}
+int	last_status(int new_status)
+{
+static int	status;
+
+if (new_status > -1)
+status = new_status;
+return (status);
 }
