@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 19:47:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:16:23 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int handle_heredoc(t_init_input *input_list, t_types *type)
 		perror ("Error setting up heredoc");
 		return (1);
 	}
-	if (check_node(type)) //verifica se é o primeiro nó da lista
+	if (check_node(type))
 	{
 		free_list(input_list);
 		free_types(type);
-		clear_heredoc_files(); //verificar se tem algum temporário heredoc_*.tmp e deleta
+		clear_heredoc_files();
 	}
 	return (0);
 }
@@ -72,7 +72,7 @@ int handle_redirection(t_init_input *input_list, t_types *type)
 		perror("Error setting up redirection");
 		return (-1);
 	}
-	if (check_node(type)) //verifica se é o primeiro nó da lista
+	if (check_node(type))
 	{
 		free_list(input_list);
 		free_types(type);
@@ -143,12 +143,11 @@ void execute_command(t_types *type, t_envp *env_list, t_init_input *input_list, 
 {
 	if (!type)
         return ;
-	find_command_path(type, env_list); //procura o path do comando na env_list
-	exec_cmd(input_list, type, env); //executa execve
-	clear_heredoc_files(); //verificar se tem algum temporário heredoc_*.tmp e deleta
+	find_command_path(type, env_list);
+	exec_cmd(input_list, type, env);
+	clear_heredoc_files();
 }
 
-// Função principal para execução de comandos
 int to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
 	char **env;
@@ -162,7 +161,7 @@ int to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		return (handle_pipeline(input_list, env_list, type));
 	if (is_btin(type))
 		execute_builtin(env_list, input_list, type);
-	if (is_exec(type)) //execve
+	if (is_exec(type))
 		execute_command(type, env_list, input_list, env);
     //função para verificar fds abertos e fechar, nó por nó. 
     free_list(input_list);

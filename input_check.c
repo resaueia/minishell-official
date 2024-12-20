@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:00:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/17 19:26:20 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 15:13:28 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_empty_string(char *str)
     i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ' || is_whitspace(str[i])) // If it finds any non space characters, it's not empty
+		if (str[i] != ' ' || is_whitspace(str[i]))
 			return (0);    
 		i++;
 	}
@@ -33,11 +33,11 @@ int	is_double_delim(char *str)
     i = 0;
 	while (str[i])
 	{
-		if (ft_strchr("|<>", str[i])) // is it a delim char?
+		if (ft_strchr("|<>", str[i]))
 		{
-			if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i + 1] == '>')) // here we check for heredoc and redirect
+			if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i + 1] == '>'))
 				i++;
-			if (ft_strchr("|<>", str[i + 1])) // is the next one also a delim?
+			if (ft_strchr("|<>", str[i + 1]))
 				return (1);
 		}
 		i++;
@@ -50,7 +50,7 @@ int	has_end_delim(char *str)
 	int len;
     
     len = ft_strlen(str);
-	if (ft_strchr("|<>", str[len - 1])) // is the last character a delim?
+	if (ft_strchr("|<>", str[len - 1]))
 		return (1);
 	return (0);
 }
@@ -112,19 +112,19 @@ int	quotes_check(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && double_quote == 0) // Initial condition, finds single quotes (as long as double ones are off)
+		if (str[i] == '\'' && double_quote == 0)
 		{
-			if (single_quote == 0)  // If off then turn it on
+			if (single_quote == 0)
 				single_quote = 1;   
 			else
-				single_quote = 0;   // else turns it off
+				single_quote = 0;
 		}
-		else if (str[i] == '\"' && single_quote == 0) // Same here, needs to check if it's inside single quotes
+		else if (str[i] == '\"' && single_quote == 0)
 		{
-			if (double_quote == 0)  // If off then turn it on
+			if (double_quote == 0)
 				double_quote = 1;   
 			else
-				double_quote = 0;   // else they're off
+				double_quote = 0;
 		}
 		i++;
 	}

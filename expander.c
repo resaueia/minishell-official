@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/18 23:04:58 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:14:59 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,10 @@ static char *status_expander(char *str, int i, int exit_status)
     char    *status_str;
     char    *expanded;
 
-    prefix = ft_substr(str, 0, i); // Extrai o prefixo até o $
-    status_str = ft_itoa(exit_status); // Converte o status para string
-    suffix = ft_strdup(str + i + 2); // Extrai o sufixo após o $?
-    expanded = ft_strjoin_three(prefix, status_str, suffix); // Concatena o prefixo, status e sufixo
+    prefix = ft_substr(str, 0, i);
+    status_str = ft_itoa(exit_status);
+    suffix = ft_strdup(str + i + 2);
+    expanded = ft_strjoin_three(prefix, status_str, suffix);
 
     free(prefix);
     free(status_str);
@@ -124,7 +124,7 @@ static char *status_expander(char *str, int i, int exit_status)
 static int validate_before_dollar(char *str, int i)
 {
     if (str[i - 1] == '&' || str[i - 1] == '!')
-        return 0; // Não expandir
+        return 0;
     if (str[i - 1] == '(' || str[i - 1] == ')')
     {
         printf("minishell: syntax error near unexpected token");
@@ -149,10 +149,10 @@ static char *handle_invalid_prefix(char *str, int i)
 static int handle_special_cases(char *str, int i)
 {   
     int pid;
-    if (str[i + 1] == '$') // Substituir por PID
+    if (str[i + 1] == '$')
     {
         pid = getpid();
-        return (pid); // Caso especial tratado
+        return (pid);
     }
     return (-1);
 }
@@ -227,18 +227,18 @@ static char *env_var_expander(char *str, int i, t_envp *env_list)
 
     if (!validate_before_dollar(str, i))
         return handle_invalid_prefix(str, i);
-    prefix = ft_substr(str, 0, i); // Parte antes do $
-    pid = handle_special_cases(str, i); // Valida após o dólar
+    prefix = ft_substr(str, 0, i);
+    pid = handle_special_cases(str, i);
     if (pid == -1)
     {
         j = i + 1;
-        suffix = extract_suffix(str, &j); // Sufixo após a variável
-        expanded = get_expanded_value(str, i + 1, env_list, j); // Expande a variável
+        suffix = extract_suffix(str, &j);
+        expanded = get_expanded_value(str, i + 1, env_list, j);
     }
     else
     {
-        suffix = ft_strdup(str + i + 2); // Sufixo após o PID
-        expanded = ft_itoa(pid); // Expande o PID
+        suffix = ft_strdup(str + i + 2);
+        expanded = ft_itoa(pid);
     }
     return rebd_str(prefix, expanded, suffix, str);
 }
@@ -278,12 +278,12 @@ static char *expander_or_not(char *cmd, t_envp *env_list, int exit_status)
     remove_backslashes(cmd);
     while(cmd[i])
     {
-        if (cmd[i] == '\"') //se começar com aspas duplas e estiver fechada, remover e continuar para expandir
+        if (cmd[i] == '\"')
         {
             rmv_db_qts(&cmd);
             break;
         }
-        else if (cmd[i] == '\'')//se tiver com aspas simples e estiver fechada, remover aspas apenas e não expandir
+        else if (cmd[i] == '\'')
         {
             rmv_sg_qts(&cmd);
             return (cmd);

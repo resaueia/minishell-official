@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:57:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 00:15:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:14:01 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static void remove_heredoc_file(const char *filename)
     }
     if (unlink(filepath) == -1)
         perror("Failed to delete heredoc file");
-    /*else
-        printf("Deleted temporary file: %s\n", filepath);*/
 }
 
 /* Function: clear_heredoc_files

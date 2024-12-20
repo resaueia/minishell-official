@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delim_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/18 19:50:36 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 15:17:06 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static void extract_token(t_init_input **head, t_init_input **tail, char *s, int
 {
     char *token;
 
-    token = custom_dup(s, start, end); // Extrai o token entre start e end
-    add_to_list(head, tail, token, get_token(token)); // Adiciona o token à lista
+    token = custom_dup(s, start, end);
+    add_to_list(head, tail, token, get_token(token));
     free(token);
 }
 
@@ -74,7 +74,7 @@ static void extract_token(t_init_input **head, t_init_input **tail, char *s, int
 
 static void process_pipe_token(t_init_input **head, t_init_input **tail, char *s, size_t i)
 {
-    extract_token(head, tail, s, i, i + 1); // Adiciona o delimitador como token
+    extract_token(head, tail, s, i, i + 1);
 }
 
 /* Function: process_pipe_token
@@ -88,12 +88,12 @@ static void process_current_character(t_init_input **head, t_init_input **tail,
 {
     if (is_pipe(s[i]) || s[i + 1] == '\0')
     {
-        if (*start >= 0) // Extrai um token WORD
+        if (*start >= 0)
         {
             extract_token(head, tail, s, *start, i + (s[i + 1] == '\0'));
             *start = -1;
         }
-        if (is_pipe(s[i])) // Processa delimitadores
+        if (is_pipe(s[i]))
             process_pipe_token(head, tail, s, i);
     }
 }
@@ -122,7 +122,7 @@ t_init_input *delim_split(char *s)
     while (s[i])
     {
         if (!is_pipe(s[i]) && start < 0)
-            start = i; // Marca o início de um token
+            start = i;
         else
             process_current_character(&head, &tail, s, &start, i);
         i++;

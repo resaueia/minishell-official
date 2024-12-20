@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 12:32:24 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:10:08 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,31 @@ int	add_to_history(char *line)
 
 static int	handle_empty_or_exit(char *prompt, t_init_input *input_list, t_envp *env_list)
 {
-	if (!prompt) // if the prompt is empty
+	if (!prompt)
 	{
-		exit_shell(NULL, NULL, input_list, env_list); // exit the shell
+		exit_shell(NULL, NULL, input_list, env_list);
 		return (1);
 	}
-	if (!*prompt || is_whitespace_string(prompt)) // if the prompt is empty or has only spaces
+	if (!*prompt || is_whitespace_string(prompt))
 	{
-		free(prompt); // free the prompt
+		free(prompt);
 		return (1);
 	}
-	if (ft_strncmp(prompt, "exit", 4) == 0) // if the prompt is exit
+	if (ft_strncmp(prompt, "exit", 4) == 0)
 	{
-		exit_shell(prompt, NULL, input_list, env_list); // exit the shell
+		exit_shell(prompt, NULL, input_list, env_list);
 		return (1);
 	}
-	return (0); // return 0 if the prompt is not empty or exit
+	return (0);
 }
 
 static void	exec_shell(char *prompt_dup, t_init_input *input_list, t_envp *env_list)
 {
-	if (!input_check(prompt_dup)) // check if the input is valid
+	if (!input_check(prompt_dup))
 		process_input(input_list, input_list->types, prompt_dup, env_list);
 	else
 	{
-		printf("minishell: syntax error\n"); // if the input is invalid, print an error message
+		printf("minishell: syntax error\n");
 	}
 }
 
@@ -103,11 +103,11 @@ static void	process_command(char *prompt, t_init_input *input_list, t_envp *env_
 	char	*prompt_dup;
 
 	prompt_dup = NULL;
-	if (add_to_history(prompt)) // add the prompt to the history
-		prompt_dup = ft_strdup(prompt); // duplicate the prompt
-	exec_shell(prompt_dup, input_list, env_list); // execute the shell
-	free(prompt); // free the prompt
-	free(prompt_dup); // free the prompt_dup
+	if (add_to_history(prompt))
+		prompt_dup = ft_strdup(prompt);
+	exec_shell(prompt_dup, input_list, env_list);
+	free(prompt);
+	free(prompt_dup);
 }
 
 void	prompt(char **envp)
@@ -116,14 +116,14 @@ void	prompt(char **envp)
 	t_init_input	*input_list;
 	t_envp			*env_list;
 
-	env_list = get_envp(envp); 	// get the envp list
-	input_list = init_list(); // initialize the input list
-	while (1) // loop the shell.
+	env_list = get_envp(envp);
+	input_list = init_list();
+	while (1)
 	{
-		prompt = readline("minishell> "); // the prompt
-		if (handle_empty_or_exit(prompt, input_list, env_list)) // handle the empty prompt or exit
+		prompt = readline("minishell> ");
+		if (handle_empty_or_exit(prompt, input_list, env_list))
 			continue;
-		process_command(prompt, input_list, env_list); // process the command
+		process_command(prompt, input_list, env_list);
 	}
 }
 

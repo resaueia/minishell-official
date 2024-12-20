@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 12:32:10 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:18:06 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_pwd(int fd_out)
 {
-	char cwd[1024]; // variable where we'll store the path of the current dir
+	char cwd[1024];
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		ft_putstr_fd(cwd, fd_out);
@@ -54,29 +54,29 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	int		newline;
 	char	*tmp;
 
-	newline = 1; //flag to print a newline
-	if (cmds->cmd == NULL || cmds->next == NULL) //if echo come without args, it will print just a newline
+	newline = 1;
+	if (cmds->cmd == NULL || cmds->next == NULL)
 	{
 		ft_putstr_fd("\n", fd_out);
 		return ;
 	}
-	args = args_to_str(cmds); //transforming the args to a string
-	if (ft_strncmp(args, "-n", 2) == 0) //if echo come with -n, it will not print a newline
+	args = args_to_str(cmds);
+	if (ft_strncmp(args, "-n", 2) == 0)
 	{
 		tmp = args;
-		args++; //incrementing the pointer to check the next character
+		args++;
 		while (*args == 'n')
-			args++; //incrementing the pointer to check the next character
+			args++;
 		if (*args == ' ' || *args == '\0')
 		{
-			newline = 0; //flag to not print a newline
-			args++; //incrementing the pointer to check the next character
+			newline = 0;
+			args++;
 		}
 		else
-			args = tmp; //if the next character is not a space, it will return to the original pointer
+			args = tmp;
 	}
-	ft_putstr_fd(args, fd_out); //printing the args without a newline
-	if (newline == 1) //if newline is 1, it will print a newline
+	ft_putstr_fd(args, fd_out);
+	if (newline == 1)
 		ft_putchar_fd('\n', fd_out);
 }
 
@@ -85,24 +85,24 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	char	*path;
 	(void)env_list;
 
-	path = args_to_str(cmds); //transforming the args to a string
-	if (ft_strlen(path) == 1 && *path == '/') //path for root
+	path = args_to_str(cmds);
+	if (ft_strlen(path) == 1 && *path == '/')
 	{
 		chdir("/");
-		change_path("/", "PWD", env_list); //change the value of the pwd in the env, and update the path of the oldpwd
+		change_path("/", "PWD", env_list);
 	}
-	else if (ft_strlen(path) >= 2) //path for a specific directory
+	else if (ft_strlen(path) >= 2)
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
-			path = joinpath(path + 2, "HOME", env_list); //for include the path of home in the path
+			path = joinpath(path + 2, "HOME", env_list);
 		if (chdir(path) == 0)
 		{
 			char	cwd[1024];
-			getcwd(cwd, sizeof(cwd)); //get the current path
-			change_path(cwd, "PWD", env_list); //change the value of the pwd in the env, and update the path of the oldpwd
+			getcwd(cwd, sizeof(cwd));
+			change_path(cwd, "PWD", env_list);
 		}
 		else 
-			printf("cd: %s: %s\n", strerror(errno), path); //print the error message
+			printf("cd: %s: %s\n", strerror(errno), path);
 	}
 	else if (!*path || *path == '~') //caminho para HOME
 	{

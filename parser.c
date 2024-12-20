@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 12:46:35 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:11:33 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void remove_quotes_from_types(t_types *types)
     while (current)
     {
         if (current->cmd)
-            remove_quotes_from_str(&current->cmd); // Remove aspas do cmd
+            remove_quotes_from_str(&current->cmd);
         current = current->next;
     }
 }
@@ -158,14 +158,14 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     int     i;
     int     j;
     
-    cmds = lexer(prompt); // split the input for delim and quotes
-    input_list = delim_split(prompt); // split the input for pipe
+    cmds = lexer(prompt);
+    input_list = delim_split(prompt);
     include_fds(input_list);
     i = -1;
-    while(cmds[++i]) //include types
+    while(cmds[++i])
     {
         j = -1;
-        args = args_split(cmds[i]); // split the input for space
+        args = args_split(cmds[i]);
         while (args[++j])
             insert_types(&types, args[j]);
         args = free_from_split(args);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 12:41:15 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:34:59 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int process_pipe(t_init_input *input_list, t_types *types, t_envp *env_li
 {
     char *prompt;
     char **cmds;
-    int last_exit_status;
+    int last_exit_status; // isso não precisa
 
     prompt = ft_strdup(input_list->string);
     cmds = lexer(prompt);
@@ -61,9 +61,9 @@ static int process_pipe(t_init_input *input_list, t_types *types, t_envp *env_li
     args_of_cmds(types);
     cmds = free_from_split(cmds);
     remove_quotes_from_types(types);
-    last_exit_status = to_exec(input_list, types, env_list);
+    last_exit_status = to_exec(input_list, types, env_list); // to_exec vem normal
     free(prompt);
-    return (last_exit_status);
+    return (last_exit_status); // retorna a função (transformar a last_exite_status numa função)
 }
 
 /* Function: handle_parent_process
@@ -92,12 +92,12 @@ static void handle_child_process(t_init_input *current, t_init_input *input_list
 {
     int last_exit_status;
 
-    if (current == input_list) // Primeiro comando
+    if (current == input_list)
     {
         dup2(current->fd_out, STDOUT_FILENO);
         close(current->fd_out);
     }
-    else if (current->next) // Comando intermediário
+    else if (current->next)
     {
         dup2(current->fd_in, STDIN_FILENO);
         dup2(current->fd_out, STDOUT_FILENO);

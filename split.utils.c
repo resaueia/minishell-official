@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/19 22:13:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:10:42 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ char    **list_to_char(t_init_input *list)
     return (cmds);
 }
 
-//talvez alterar para retornar uma t_init_input
 t_init_input    *split_commands(char **commands, t_init_input **head, t_init_input **tail)
 {
     int             i;

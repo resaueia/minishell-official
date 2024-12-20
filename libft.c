@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/17 19:24:08 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 15:12:22 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 char	*ft_itoa(int n) 
 {
-    char buffer[12]; // Buffer para um int de até 10 dígitos + sinal + null terminator
+    char buffer[12];
     sprintf(buffer, "%d", n);
-    return ft_strdup(buffer); // Retorna uma cópia do buffer
+    return ft_strdup(buffer);
 }

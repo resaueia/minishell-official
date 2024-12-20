@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 13:10:20 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:16:46 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ char *change_path(char *path, char *src, t_envp **head)
 
     if (ft_strcmp("HOME", src) == 0 || ft_strcmp("OLDPWD", src) == 0)
     {
-        (void)path; // Path não é usado nesses casos
+        (void)path;
         handle_special_cases(current, tmp_pwd, value_src);
     }
     else if (ft_strcmp("PWD", src) == 0)
