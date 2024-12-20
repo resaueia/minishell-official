@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:40:50 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 15:12:22 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:57:16 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char	*ft_strdup(char *str)
 	dup = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!dup)
 		return (NULL);
-	while(str[i])
+	while (str[i])
 	{
 		dup[i] = str[i];
 		i++;
@@ -242,9 +242,10 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (new);
 }
 
-char	*ft_itoa(int n) 
+char	*ft_itoa(int n)
 {
-    char buffer[12];
-    sprintf(buffer, "%d", n);
-    return ft_strdup(buffer);
+	char	buffer[12];
+
+	sprintf(buffer, "%d", n);
+	return (ft_strdup(buffer));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 18:30:32 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:00:49 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static t_init_input	*handle_parent_process(t_init_input *current)
 		close(current->fd_out);
 	current = current->next;
 	if (current && current->token == 11)
-		current = current->next; // Pula o nó do pipe
+		current = current->next;
 	return (current);
 }
 
@@ -108,7 +108,7 @@ static void	handle_child_process(t_init_input *current,
 		close(current->fd_in);
 		close(current->fd_out);
 	}
-	else // Último comando
+	else
 	{
 		dup2(current->fd_in, STDIN_FILENO);
 		close(current->fd_in);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:02:16 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 18:07:37 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:59:21 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	print_envp_list(t_envp *head)
 		current = current->next;
 	}
 }
+
 void	*create_new_node(t_envp **env_list, char *key, char *value)
 {
 	t_envp	*new_node;
@@ -62,6 +63,7 @@ void	*create_new_node(t_envp **env_list, char *key, char *value)
 	}
 	return (new_node);
 }
+
 int	is_key(char *key, t_envp *head)
 {
 	t_envp	*current;
@@ -75,6 +77,7 @@ int	is_key(char *key, t_envp *head)
 	}
 	return (0);
 }
+
 char	*get_value(char *name, t_envp *list)
 {
 	t_envp	*current;

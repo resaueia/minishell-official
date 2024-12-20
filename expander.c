@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 18:03:25 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:00:02 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,6 @@ static char	*to_expander(char *str, int i, t_envp *env, int exit_status)
 			if (str[i + 1] == '?')
 			{
 				expanded = status_expander(str, i, exit_status);
-				;
 				return (expanded);
 			}
 			else if (str[i + 1] != '\0' && str[i + 1] != '?')
