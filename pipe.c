@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/19 00:23:01 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:41:15 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static int process_pipe(t_init_input *input_list, t_types *types, t_envp *env_li
     split_and_insert(&types, cmds);
     args_of_cmds(types);
     cmds = free_from_split(cmds);
-    last_exit_status = to_exec_pipe(input_list, types, env_list);
+    remove_quotes_from_types(types);
+    last_exit_status = to_exec(input_list, types, env_list);
     free(prompt);
     return (last_exit_status);
 }

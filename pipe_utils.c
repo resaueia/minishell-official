@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 21:31:40 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:18:45 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
  * - Executes built-in or external commands.
  * Frees the input list and type structures before returning.
  */
-
+/*
 int to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
     char    **env;
@@ -58,4 +58,4 @@ int to_exec_pipe(t_init_input *input_list, t_types *type, t_envp *env_list)
     free_list(input_list);
     free_types(type);
     return (0);
-}
+}*/

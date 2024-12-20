@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 19:44:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:46:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static void remove_quotes_from_str(char **str)
 	}
 }
 
-static void remove_quotes_from_types(t_types *types)
+void remove_quotes_from_types(t_types *types)
 {
     t_types *current;
 
@@ -150,7 +150,6 @@ static void remove_quotes_from_types(t_types *types)
         current = current->next;
     }
 }
-
 
 void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_envp *env_list)
 {
@@ -173,7 +172,7 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     }
     cmds = free_from_split(cmds);
     //printf("\n----\nprint the types before args_of_cmds:\n");
-    t_types *temp = types;
+    //t_types *temp = types;
     /*printf("temp: [%p]\n", temp);
     while (temp)
     {
@@ -182,14 +181,14 @@ void    process_input(t_init_input *input_list, t_types *types, char *prompt, t_
     }*/
     args_of_cmds(types);
 
-    printf("\n----\nprint the types afeter args_of_cmds:\n");
+    /*printf("\n----\nprint the types afeter args_of_cmds:\n");
     temp = types;
     printf("temp: [%p]\n", temp);
     while (temp)
     {
         printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
         temp = temp->next;
-    }
+    }*/
     lets_expander(types, env_list, input_list->exit_status);
     remove_quotes_from_types(types);
     input_list->exit_status = to_exec(input_list, types, env_list);

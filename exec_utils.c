@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 21:54:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:24:10 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void find_command_path(t_types *type, t_envp *env_list)
 
     path = get_value("PATH", env_list);
     if (!path)
-        return (void)printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+        return (void)printf("minishell: No such file or directory: %s\n", type->cmd);
     path_dup = ft_strdup(path);
     if (!path_dup)
         exit_with_error("Error duplicating PATH");
@@ -96,20 +96,12 @@ void find_command_path(t_types *type, t_envp *env_list)
         free(full_path);
         dir = ft_strtok_r(NULL, ":", &save_ptr);
     }
-    printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+    //printf("minishell: %s: %s\n", strerror(errno), type->cmd);
     free(path_dup);
 }
 
 static void setup_io_redirection(t_types *type)
 {
-    printf("\n---\nsetup_io_redirection\n");
-    t_types *temp = type;
-    printf("temp: [%p]\n", temp);
-    while (temp)
-    {
-        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }
     if (type->fd[0] != STDIN_FILENO)
     {
         if (dup2(type->fd[0], STDIN_FILENO) == -1)
@@ -129,10 +121,7 @@ void exec_cmd(t_init_input *cmd, t_types *type, char **env)
     (void)cmd;
     
     char **args = types_to_char(type);
-
-    int i = -1;
-    while (args[++i])
-        printf("args[%i]: [%s]\n", i, args[i]);
+    
     pid_t pid = fork();
     if (pid == -1)
         exit_with_error("Fork failed");

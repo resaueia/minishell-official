@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/19 22:33:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:29:47 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,16 @@ int setup_redirection(t_init_input *args_list, t_types *type)
         if (ft_strncmp(type->cmd, "ls", 2) == 0 && type->next->next->type == FLE)
         {
             type->next->next->cmd = NULL;
+            break;
+        }
+        if (ft_strcmp(type->cmd, ">") == 0 && type->next->type == FLE)
+        {
+            type->next->cmd = NULL;
+            break;
+        }
+        if (ft_strcmp(type->cmd, ">>") == 0 && type->next->type == FLE)
+        {
+            type->next->cmd = NULL;
             break;
         }
         type = type->next;
