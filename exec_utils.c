@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 21:01:24 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:54:47 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void find_command_path(t_types *type, t_envp *env_list)
 
 static void setup_io_redirection(t_types *type)
 {
+    printf("\n---\nsetup_io_redirection\n");
     t_types *temp = type;
     printf("temp: [%p]\n", temp);
     while (temp)
@@ -126,8 +127,12 @@ static void setup_io_redirection(t_types *type)
 void exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
     (void)cmd;
-
+    
     char **args = types_to_char(type);
+
+    int i = -1;
+    while (args[++i])
+        printf("args[%i]: [%s]\n", i, args[i]);
     pid_t pid = fork();
     if (pid == -1)
         exit_with_error("Fork failed");

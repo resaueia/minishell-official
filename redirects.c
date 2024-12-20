@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/19 20:34:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 22:33:13 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,30 +90,15 @@ int setup_redirection(t_init_input *args_list, t_types *type)
         type = type->next;
     }
     type = type_head;
-    t_types *temp = type;
-    printf("temp: [%p]\n", temp);
-    while (temp)
-    {
-        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }
-    /*type = type_head->next;
     while (type)
     {
-        if (type->fd[0] != STDIN_FILENO)
-            type_head->fd[0] = type->fd[0];
-        if (type->fd[1] != STDOUT_FILENO)
-            type_head->fd[1] = type->fd[1];
+        if (ft_strncmp(type->cmd, "ls", 2) == 0 && type->next->next->type == FLE)
+        {
+            type->next->next->cmd = NULL;
+            break;
+        }
         type = type->next;
     }
-    type = type_head;
-    temp = type;
-    printf("temp: [%p]\n", temp);
-    while (temp)
-    {
-        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-        temp = temp->next;
-    }*/
     type = type_head;
     return (0);
 }

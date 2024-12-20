@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/19 00:38:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:31:40 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 {
+    printf("\n---\nexec_cmd_pipe\n");
+    t_types *temp = type;
+    printf("temp: [%p]\n", temp);
+    while (temp)
+    {
+        printf("cms: [%s]_[%u]_[%i]_[%i]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+        temp = temp->next;
+    }
     char    **args;
     (void)cmd;
 
