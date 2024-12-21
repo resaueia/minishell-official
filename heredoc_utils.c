@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:57:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 18:03:16 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 19:41:41 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,69 @@ void	clear_heredoc_files(void)
 			remove_heredoc_file(entry->d_name);
 	}
 	closedir(dir);
+}
+/* Function: is_heredoc
+ * Determines if heredoc processing is required, and handles either
+ * a single heredoc or multiple heredocs using helper functions.
+ */
+
+int	is_heredoc(t_init_input *input_list, t_types *type)
+{
+	t_types	*head;
+	int		here_count;
+
+	(void)input_list;
+	head = type;
+	here_count = count_heredocs(type);
+	if (here_count == 1)
+		return (process_single_heredoc(type, head));
+	else if (here_count > 1)
+		return (process_multiple_heredocs(type, head, here_count));
+	return (0);
+}
+
+/* Function: create_temp_filename
+ * Generates a unique temporary filename using the PID and stores it
+ * in the provided buffer.
+ */
+
+void	create_temp_filename(char *temp_file, int pid)
+{
+	int	i;
+
+	i = 0;
+	temp_file[i++] = '/';
+	temp_file[i++] = 't';
+	temp_file[i++] = 'm';
+	temp_file[i++] = 'p';
+	temp_file[i++] = '/';
+	temp_file[i++] = 'h';
+	temp_file[i++] = 'd';
+	temp_file[i++] = 'o';
+	temp_file[i++] = 'c';
+	temp_file[i++] = '_';
+	while (pid > 0)
+	{
+		temp_file[i++] = (pid % 10) + '0';
+		pid /= 10;
+	}
+	temp_file[i++] = '.';
+	temp_file[i++] = 't';
+	temp_file[i++] = 'x';
+	temp_file[i++] = 't';
+	temp_file[i] = '\0';
+}
+
+/* Function: open_temp_file
+ * Opens the temporary file for the heredoc and returns the file descriptor.
+ */
+
+int	open_temp_file(char *temp_file)
+{
+	int	temp_fd;
+
+	temp_fd = open(temp_file, O_CREAT | O_RDWR | O_TRUNC, 0600);
+	if (temp_fd == -1)
+		perror("Error creating temporary file");
+	return (temp_fd);
 }

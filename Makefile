@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+         #
+#    By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/20 18:01:30 by rsaueia          ###   ########.fr        #
+#    Updated: 2024/12/21 20:10:16 by rsaueia-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,16 +17,28 @@ HEADER = minishell.h
 SRCS = main.c \
 	   prompt.c \
 	   envp.c \
+	   envp_utils.c \
 	   utils.c \
 	   builtins.c \
+	   builtins_utils.c \
+	   cd.c \
+	   echo.c \
+	   path.c \
 	   splitter.c \
 	   delim_split.c \
+	   delim_split_2.c \
 	   input_check.c \
+	   input_check_2.c \
 	   split.utils.c \
 	   exec.c \
 	   exec_utils.c \
+	   exec_utils_2.c \
+	   exec_helper.c \
 	   lexer.c \
 	   libft.c \
+	   libft_join.c \
+	   libft_memory.c \
+	   libft_string.c \
 	   to_free.c \
 	   the_split.c \
 	   parser.c \
@@ -35,6 +47,7 @@ SRCS = main.c \
 	   what_type.c \
 	   heredoc.c \
 	   heredoc_utils.c \
+	   heredoc_utils_2.c \
 	   redirects.c \
 	   redirects_utils.c \
 	   pipe.c \

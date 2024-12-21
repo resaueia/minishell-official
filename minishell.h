@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 16:52:23 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 20:12:09 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ typedef struct s_envp
 // for tokenization to exec
 typedef struct s_types
 {
-	char			*cmd;				// command or argument
-	int				type;				// type of token
-	int				fd[2];				// fd[0] = in , fd[1] = out
-	struct s_types	*prev;	// prev node
-	struct s_types	*next;	// next node
+	char			*cmd;
+	int				type;
+	int				fd[2];
+	struct s_types	*prev;
+	struct s_types	*next;
 }						t_types;
 
 // for parser
@@ -137,7 +137,6 @@ char					*ft_strjoin(char *s1, char *s2);
 char					*ft_strndup(char *str, int len);
 char					*extract_key(char *str);
 char					*ft_strjoin_free(char *s1, char *s2);
-
 
 /* ENVP */
 t_envp					*create_node(char *key, char *value);
@@ -210,6 +209,21 @@ int						is_heredoc(t_init_input *input_list, t_types *type);
 int						handle_heredoc(t_init_input *input_list, t_types *type);
 int						tackle_heredoc(t_types *type, char *start_delim,
 							char *last_delim);
+char					**split_heredoc(t_types *type, int here_count);
+void					change_value(t_types *type, char *value);
+int						count_heredocs(t_types *type);
+int						process_single_heredoc(t_types *type, t_types *head);
+int						process_multiple_heredocs(t_types *type, t_types *head,
+							int here_count);
+void					create_temp_filename(char *temp_file, int pid);
+int						open_temp_file(char *temp_file);
+void					write_line_to_file(int temp_fd, char *line);
+void					single_delimiters(int temp_fd, char *last_delim,
+							int start_write);
+void					multiple_delimiters(int temp_fd, char *start_delim,
+							char *last_delim, int start_write);
+void					process_lines(int temp_fd, char *start_delim,
+							char *last_delim);
 
 /* REDIRECTS */
 int						handle_redirection(t_init_input *input_list,
@@ -237,6 +251,7 @@ void					ft_export(t_types *var, t_envp **env_list);
 void					ft_unset(t_types *var, t_envp **env_list);
 void					exit_shell(char *prompt, char *prompt_dup,
 							t_init_input *input_list, t_envp *env_list);
+char					*args_to_str(t_types *args);
 
 /* TO FREE */
 char					*free_char_ptr(char *ptr);
@@ -250,5 +265,27 @@ void					exit_mini(t_init_input *list, char *prompt,
 /* just suport */
 void					print_the_stack(t_init_input *list);
 void					print_stack(t_init_input *stack);
+
+/* exec utils */
+void					exit_with_error(const char *message);
+char					*ft_strtok_r(char *str, char *delim, char **save_ptr);
+void					construct_path(char *full_path, char *dir, char *cmd);
+int						generate_full_path(char **full_path, char *dir,
+							char *cmd);
+char					*duplicate_path(char *path);
+int						check_access_and_set(char *full_path, t_types *type,
+							char **path_dup);
+char					*build_full_path(char *dir, char *cmd);
+void					setup_io_redirection(t_types *type);
+
+/* delim split */
+int						is_pipe(char c);
+void					extract_token(t_init_input **head,
+							t_init_input **tail, char *s,
+							int start, int end);
+void					process_pipe_token(t_init_input **head,
+							t_init_input **tail, char *s, size_t i);
+void					process_current_character(t_init_input **head,
+							t_init_input **tail, char *s, int *start, size_t i);
 
 #endif

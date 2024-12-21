@@ -1,0 +1,7 @@
+NAME = minishell
+$(NAME): $(NAME)
+	ar rcs $(NAME)
+all: $(NAME)
+$(NAME): $(OBJS)
+	cc $(FLAGS) $(OBJS) -o $(NAME) -lreadline
+	$(RM) $(OBJS) $(NAME)

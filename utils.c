@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 16:52:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 20:31:05 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,15 +160,6 @@ char	*extract_key(char *str)
 	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
 		len++;
 	return (ft_substr(str, 0, len));
-}
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*new_str;
-
-	new_str = ft_strjoin(s1, s2);
-	free(s1);
-	return (new_str);
 }
 
 int	last_status(int new_status)
