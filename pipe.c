@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/21 16:19:53 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 19:22:36 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,50 +24,6 @@ static t_types	*init_types(void)
 	types->prev = NULL;
 	types->next = NULL;
 	return (types);
-}
-
-static void	split_and_insert(t_types **types, char **cmds)
-{
-	char	**args;
-	int		i;
-	int		j;
-
-	i = -1;
-	while (cmds[++i])
-	{
-		args = args_split(cmds[i]);
-		j = -1;
-		while (args[++j])
-			insert_types(types, args[j]);
-		args = free_from_split(args);
-	}
-}
-
-/* Function: process_pipe
- * Splits the input string into commands and arguments, inserts them
- * into the types list, and executes the pipeline. Returns the last exit
- * status of the pipeline execution.
- */
-
-static int	process_pipe(t_init_input *input_list, t_types *types,
-		t_envp *env_list)
-{
-	char	*prompt;
-	char	**cmds;
-	int		last_exit_status; // isso não precisa
-
-	prompt = ft_strdup(input_list->string);
-	cmds = lexer(prompt);
-	split_and_insert(&types, cmds);
-	args_of_cmds(types);
-	cmds = free_from_split(cmds);
-	remove_quotes_from_types(types);
-	// last_exit_status = to_exec(input_list, types, env_list);
-		// to_exec vem normal
-	last_exit_status = to_exec(input_list, types, env_list);
-	free(prompt);
-	return (last_exit_status);
-		// retorna a função (transformar a last_exit_status numa função)
 }
 
 /* Function: handle_parent_process
@@ -138,7 +94,6 @@ int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 			if (pipe(pipe_fd) == -1)
 				return (perror("Error creating pipe"), -1);
 			current->fd_out = pipe_fd[1];
-			current->next->fd_in = pipe_fd[0];
 			current->next->next->fd_in = pipe_fd[0];
 		}
 		pid = fork();

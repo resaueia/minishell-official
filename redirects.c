@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 19:38:26 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 20:38:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,14 @@ int	setup_redirection(t_init_input *args_list, t_types *type)
 			type_echo->fd[1] = temp_fd;
 		type = type->next;
 	}
+	type = type_head;
+	t_types *temp = type;
+	while (temp)
+	{
+		printf("cmd: [%s]_[%d]_[%d]_[%d]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
+		temp = temp->next;
+	}
+
 	type = type_head;
 	while (type)
 	{

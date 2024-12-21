@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 20:12:09 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/21 20:56:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-extern int				g_exit_status;
+//extern int				g_exit_status;
 
 /* COLORS */
 
@@ -92,6 +92,7 @@ typedef struct s_init_input
 /* MAIN */
 int						check_command_line(int c);
 void					prompt(char **envp);
+t_init_input			*init_list(void);
 int						add_to_history(char *line);
 
 /* INPUT CHECK */
@@ -130,6 +131,8 @@ int						to_quotes(char c, int quotes);
 int						is_expander(t_types *types);
 int						is_whitespace_string(const char *str);
 void					remove_quotes(char **str);
+void					remove_quotes_from_str(char **str);
+void					remove_quotes_from_types(t_types *types);
 void					check_args(t_types *cmds);
 char					*joinpath(char *path, char *key, t_envp **env_list);
 char					*custom_dup(char *str, int start, int finish);
@@ -143,8 +146,6 @@ t_envp					*create_node(char *key, char *value);
 t_envp					*get_envp(char **envp);
 int						is_key(char *key, t_envp *head);
 void					print_envp_list(t_envp *head);
-void					lets_expander(t_types *types, t_envp *env_list,
-							int last_exit_status);
 void					*create_new_node(t_envp **env_list, char *key,
 							char *value);
 char					*get_value(char *name, t_envp *list);
@@ -161,12 +162,23 @@ void					execute_command(t_types *type, t_envp *env_list,
 void					find_command_path(t_types *type, t_envp *env_list);
 void					clear_heredoc_files(void);
 
+/* EXPANDER */
+int						has_dol(char *cmd);
+int						validate_before_dollar(char *str, int i);
+void					lets_expander(t_types *types, t_envp *env_list,
+							int last_exit_status);
+char					*to_expander(char *str, int i, t_envp *env, 
+							int exit_status);
+char					*status_expander(char *str, int i, int exit_status);
+char					*env_var_expander(char *str, int i, t_envp *env_list);
+char					*get_expanded_value(char *str, int start, 
+							t_envp *env_list, int end);
+
 /* OTHERS */
 void					process_input(t_init_input *input_list, t_types *types,
 							char *prompt, t_envp *env_list);
 t_init_input			*split_commands(char **commands, t_init_input **head,
 							t_init_input **tail);
-void					remove_quotes_from_types(t_types *types);
 int						last_status(int new_status);
 
 /* PARSER AND TOKENIZATION */
@@ -174,7 +186,7 @@ t_init_input			*add_node(char *input, t_token token);
 t_init_input			*ft_split(char *s);
 t_init_input			*delim_split(char *s);
 void					handle_substring(char *s, size_t *i, int *start_index,
-							t_init_input **head, t_init_input **tail);
+							t_init_input **head);
 t_token					get_token(char *c);
 void					add_to_list(t_init_input **head, t_init_input **tail,
 							char *substr, t_token token);
@@ -183,6 +195,8 @@ void					add_to_list(t_init_input **head, t_init_input **tail,
 char					**args_split(char *input);
 void					insert_types(t_types **head, char *wrd);
 int						what_type(char *wrd);
+int						is_delim(int type);
+int						is_redirects(int type);
 void					include_fds(t_init_input *input_list);
 void					args_of_cmds(t_types *cmd);
 
@@ -236,6 +250,8 @@ void					remove_node(t_types **node);
 int						handle_pipeline(t_init_input *input_list,
 							t_envp *env_list, t_types *type);
 int						setup_pipeline(t_init_input *input_list,
+							t_envp *env_list);
+int						process_pipe(t_init_input *input_list, t_types *types,
 							t_envp *env_list);
 int						to_exec_pipe(t_init_input *input_list, t_types *type,
 							t_envp *env_list);

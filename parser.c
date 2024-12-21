@@ -6,49 +6,11 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 16:01:20 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 19:41:15 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_builtin(char *wrd)
-{
-	if (ft_strcmp(wrd, "echo") == 0)
-		return (1);
-	else if (ft_strcmp(wrd, "cd") == 0)
-		return (1);
-	else if (ft_strcmp(wrd, "pwd") == 0)
-		return (1);
-	else if (ft_strcmp(wrd, "export") == 0)
-		return (1);
-	else if (ft_strcmp(wrd, "unset") == 0)
-		return (1);
-	else if (ft_strcmp(wrd, "env") == 0 || ft_strcmp(wrd, "envp") == 0)
-		return (1);
-	else if (ft_strcmp(wrd, "exit") == 0)
-		return (1);
-	else
-		return (0);
-}
-
-int	what_type(char *wrd)
-{
-	if (ft_strcmp(wrd, "|") == 0)
-		return (PIPE);
-	else if (ft_strcmp(wrd, ">") == 0)
-		return (OUT);
-	else if (ft_strcmp(wrd, ">>") == 0)
-		return (APPEND);
-	else if (ft_strcmp(wrd, "<") == 0)
-		return (IN);
-	else if (ft_strcmp(wrd, "<<") == 0)
-		return (HDOC);
-	else if (is_builtin(wrd))
-		return (BUILTIN);
-	else
-		return (WORD);
-}
 
 void	insert_types(t_types **head, char *wrd)
 {
@@ -106,48 +68,6 @@ void	include_fds(t_init_input *input_list)
 		temp->fd_in = 0;
 		temp->fd_out = 1;
 		temp = temp->next;
-	}
-}
-
-static void	remove_quotes_from_str(char **str)
-{
-	char	*src;
-	char	*dst;
-
-	if (!str || !*str)
-		return ;
-	src = *str;
-	dst = *str;
-	if (*src == '\"')
-	{
-		while (*src++)
-		{
-			if (*src != '\"')
-				*dst++ = *src;
-		}
-		*dst = '\0';
-	}
-	else if (*src == '\'')
-	{
-		while (*src++)
-		{
-			if (*src != '\'')
-				*dst++ = *src;
-		}
-		*dst = '\0';
-	}
-}
-
-void	remove_quotes_from_types(t_types *types)
-{
-	t_types	*current;
-
-	current = types;
-	while (current)
-	{
-		if (current->cmd)
-			remove_quotes_from_str(&current->cmd);
-		current = current->next;
 	}
 }
 
