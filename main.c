@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 18:01:51 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 23:16:00 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	main(int c, char **v, char **envp)
 	if (!check_command_line(c))
 		return (0);
 	(void)v;
-
 	prompt(envp);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 19:46:52 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 23:12:49 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,51 +49,50 @@ static char	*args_to_str(t_types *args)
 	return (str);
 }
 
-
 // Handles "-n" flag logic for ft_echo
-static int handle_newline_flag(char **args)
+static int	handle_newline_flag(char **args)
 {
-    char *tmp;
+	char	*tmp;
 
-    tmp = *args;
-    if (ft_strncmp(*args, "-n", 2) == 0)
-    {
-        (*args)++;
-        while (**args == 'n')
-            (*args)++;
-        if (**args == ' ' || **args == '\0')
-        {
-            (*args)++;
-            return (0); // No newline
-        }
-        *args = tmp; // Reset pointer if not a valid "-n"
-    }
-    return (1); // Default: Add newline
+	tmp = *args;
+	if (ft_strncmp(*args, "-n", 2) == 0)
+	{
+		(*args)++;
+		while (**args == 'n')
+			(*args)++;
+		if (**args == ' ' || **args == '\0')
+		{
+			(*args)++;
+			return (0);
+		}
+		*args = tmp;
+	}
+	return (1);
 }
 
 // Outputs the echo arguments to the specified fd
-static void echo_output(char *args, int newline, int fd_out)
+static void	echo_output(char *args, int newline, int fd_out)
 {
-    ft_putstr_fd(args, fd_out);
-    if (newline)
-        ft_putchar_fd('\n', fd_out);
+	ft_putstr_fd(args, fd_out);
+	if (newline)
+		ft_putchar_fd('\n', fd_out);
 }
 
 // Main ft_echo function
-void ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
+void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 {
-    char *args;
-    int newline;
+	char	*args;
+	int		newline;
 
-    (void)env_list;
-    if (!cmds->cmd || !cmds->next)
-    {
-        ft_putstr_fd("\n", fd_out);
-        return;
-    }
-    args = args_to_str(cmds);
-    newline = handle_newline_flag(&args);
-    echo_output(args, newline, fd_out);
+	(void)env_list;
+	if (!cmds->cmd || !cmds->next)
+	{
+		ft_putstr_fd("\n", fd_out);
+		return ;
+	}
+	args = args_to_str(cmds);
+	newline = handle_newline_flag(&args);
+	echo_output(args, newline, fd_out);
 }
 
 /*
@@ -101,8 +100,6 @@ void ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
  * Converts arguments into a single string, checks for the "-n" flag, and outputs
  * the resulting string to the specified file descriptor.
  */
-
-
 
 /*void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
 {

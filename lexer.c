@@ -73,7 +73,7 @@ char	**lexer(char *input)
 		{
 			temp = to_replace(temp, i);
 			i = i + 2;
-		}	
+		}
 		else if (temp[i] == '\"' || temp[i] == '\'')
 			quotes = to_quotes(temp[i], quotes);
 	}

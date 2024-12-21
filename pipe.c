@@ -54,8 +54,8 @@ static int	process_pipe(t_init_input *input_list, t_types *types,
 {
 	char	*prompt;
 	char	**cmds;
+	int		last_exit_status; // isso não precisa
 
-	int last_exit_status; // isso não precisa
 	prompt = ft_strdup(input_list->string);
 	cmds = lexer(prompt);
 	split_and_insert(&types, cmds);

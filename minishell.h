@@ -36,8 +36,6 @@ extern int				g_exit_status;
 # define PINK "\033[38;5;218m"
 # define MAGENTA "\033[38;5;200m"
 
-# define PROGRAM_NAME BLUE "mi" PURPLE "ni" PINK "shell" MAGENTA "> " RESET
-
 /* DATA STRUCTS */
 
 // for token
@@ -68,11 +66,11 @@ typedef struct s_envp
 // for tokenization to exec
 typedef struct s_types
 {
-	char *cmd;            // command or argument
-	int type;             // type of token
-	int fd[2];            // fd[0] = in , fd[1] = out
-	struct s_types *prev; // prev node
-	struct s_types *next; // next node
+	char			*cmd;				// command or argument
+	int				type;				// type of token
+	int				fd[2];				// fd[0] = in , fd[1] = out
+	struct s_types	*prev;	// prev node
+	struct s_types	*next;	// next node
 }						t_types;
 
 // for parser

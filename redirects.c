@@ -14,12 +14,12 @@
 
 int	setup_redirection(t_init_input *args_list, t_types *type)
 {
+	t_types	*type_head;
+	t_types	*type_echo;
+	int		temp_fd;
+
 	(void)type;
 	(void)args_list;
-	t_types *type_head;
-	t_types *type_echo;
-	int temp_fd;
-
 	if (ft_strncmp(type->cmd, "echo", 4) == 0)
 		type_echo = type;
 	type_head = type;

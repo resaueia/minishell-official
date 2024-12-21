@@ -101,9 +101,9 @@ char	**list_to_char(t_init_input *list)
 t_init_input	*split_commands(char **commands, t_init_input **head,
 		t_init_input **tail)
 {
-	int i;
-	t_init_input *split_cmd_list;
-	t_init_input *current_node;
+	int				i;
+	t_init_input	*split_cmd_list;
+	t_init_input	*current_node;
 
 	i = 0;
 	while (commands[i])

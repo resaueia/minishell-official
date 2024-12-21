@@ -70,7 +70,7 @@ int	is_btin(t_types *type)
 
 int	is_exec(t_types *type)
 {
-	t_types *tmp;
+	t_types	*tmp;
 
 	tmp = type;
 	while (tmp)

@@ -125,8 +125,8 @@ static int	extract_key_value(char *input, char **key, char **value)
 
 /* Function: extract_key_value
 
-	* Extracts the `key` and `value` from an input string in the format `key=value`.
- * Returns 1 on success and 0 on failure.
+* Extracts the `key` and `value` from an input string in the format
+`key=value`. Returns 1 on success and 0 on failure.
  */
 
 static void	add_envp_node(t_envp **head, t_envp **current, char *key,

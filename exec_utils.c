@@ -70,6 +70,7 @@ static int	generate_full_path(char **full_path, char *dir, char *cmd)
 	construct_path(*full_path, dir, cmd);
 	return (0);
 }
+
 static int	check_access_and_update(char **cmd, char *full_path, char *path_dup)
 {
 	if (access(full_path, X_OK) == 0)
@@ -134,17 +135,11 @@ void	find_command_path(t_types *type, t_envp *env_list)
 
 /* Function: find_command_path
 
-	* Searches for the command in the directories specified by the PATH environment variable.
- * Updates the command with the valid full path if found,
-	or prints an error message.
- */
-
-/* Function: find_command_path
-
-	* Searches for the command in the directories specified by the PATH environment variable.
- * Updates the command with the valid full path if found,
-	or prints an error message.
- */
+* Searches for the command in the directories specified by the PATH 
+environment variable.
+* Updates the command with the valid full path if found,
+or prints an error message.
+*/
 
 static void	setup_io_redirection(t_types *type)
 {
@@ -166,7 +161,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 {
 	char	**args;
 	pid_t	pid;
-		int status;
+	int		status;
 
 	(void)cmd;
 	args = types_to_char(type);

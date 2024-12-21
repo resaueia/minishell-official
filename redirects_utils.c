@@ -14,8 +14,8 @@
 
 void	remove_node(t_types **head)
 {
-	t_types *node;
-	t_types *temp_node;
+	t_types	*node;
+	t_types	*temp_node;
 
 	node = *head;
 	while (node)

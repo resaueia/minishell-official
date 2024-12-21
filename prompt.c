@@ -6,7 +6,7 @@
 /*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 17:56:31 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/20 23:14:17 by rsaueia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ static void	process_command(char *prompt, t_init_input *input_list,
 
 void	prompt(char **envp)
 {
-	char *prompt;
-	t_init_input *input_list;
-	t_envp *env_list;
+	char			*prompt;
+	t_init_input	*input_list;
+	t_envp			*env_list;
 
 	env_list = get_envp(envp);
 	input_list = init_list();

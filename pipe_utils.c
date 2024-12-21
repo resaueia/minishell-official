@@ -14,8 +14,8 @@
 
 void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 {
-	t_types *temp;
-	char **args;
+	t_types	*temp;
+	char	**args;
 
 	printf("\n---\nexec_cmd_pipe\n");
 	temp = type;

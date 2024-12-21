@@ -36,7 +36,7 @@ int	is_double_delim(char *str)
 		if (ft_strchr("|<>", str[i]))
 		{
 			if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i
-					+ 1] == '>'))
+						+ 1] == '>'))
 				i++;
 			if (ft_strchr("|<>", str[i + 1]))
 				return (1);
@@ -56,9 +56,9 @@ int	has_end_delim(char *str)
 	return (0);
 }
 
-/* I'm already ignoring white spaces in one of my split functions and because they're
-properly dealt with, they're not stored into nodes, hence why I believe this
-function is redundant (for now!).*/
+/* I'm already ignoring white spaces in one of my split functions and
+because they're properly dealt with, they're not stored into nodes, 
+hence why I believe this function is redundant (for now!).*/
 
 static void	toggle_quote(char c, int *single_quote, int *double_quote)
 {

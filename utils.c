@@ -113,7 +113,7 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 
 	value = get_value(key, *env_list);
 	new_path = (char *)malloc(sizeof(char) * (ft_strlen(value) + ft_strlen(path)
-				+ 2)); // maloca o tamanho de value + path + 2
+				+ 2));
 	if (!new_path)
 		return (NULL);
 	tmp = new_path;
@@ -170,9 +170,10 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	free(s1);
 	return (new_str);
 }
+
 int	last_status(int new_status)
 {
-	static int status;
+	static int	status;
 
 	if (new_status > -1)
 		status = new_status;
