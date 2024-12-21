@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 19:12:20 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 14:46:24 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@
 static void	exit_with_error(const char *message)
 {
 	if (message && *message)
+	{	
+		last_status(1);
 		printf("minishell: %s: %s\n", message, strerror(errno));
+	}
 	else
+	{
+		last_status(1);
 		printf("minishell: %s\n", strerror(errno));
-	exit(EXIT_FAILURE);
+	}
+	exit(0);
 }
 
 static char	*ft_strtok_r(char *str, char *delim, char **save_ptr)
@@ -71,75 +77,65 @@ static int	generate_full_path(char **full_path, char *dir, char *cmd)
 	return (0);
 }
 
-static int	check_access_and_update(char **cmd, char *full_path, char *path_dup)
+static char *duplicate_path(char *path)
 {
-	if (access(full_path, X_OK) == 0)
-	{
-		free(*cmd);
-		*cmd = full_path;
-		free(path_dup);
-		return (1);
-	}
-	free(full_path);
-	return (0);
+    char *path_dup;
+
+    path_dup = ft_strdup(path);
+    if (!path_dup)
+        exit_with_error("Error duplicating PATH");
+    return (path_dup);
 }
 
-/* Function: check_access_and_update
- * Checks if the constructed path is executable and updates the `cmd`.
- * Returns 1 if the path is valid and updated, otherwise returns 0.
- */
-
-static int	process_path_directory(char *dir, char **cmd, char *path_dup)
+static int check_access_and_set(char *full_path, t_types *type, char **path_dup)
 {
-	char	*full_path;
-
-	if (generate_full_path(&full_path, dir, *cmd) == -1)
-		exit_with_error("Error constructing path");
-	if (check_access_and_update(cmd, full_path, path_dup))
-		return (1);
-	return (0);
+    if (access(full_path, X_OK) == 0)
+    {
+        free(type->cmd);
+        type->cmd = full_path;
+        free(*path_dup);
+        return (1); // Caminho encontrado
+    }
+    free(full_path);
+    return (0); // Caminho não encontrado
 }
 
-/* Function: process_path_directory
- * Processes a single directory in the PATH, attempting to construct and verify
- * the full path for the command. Returns 1 if a valid command is found,
-	otherwise 0.
- */
-
-void	find_command_path(t_types *type, t_envp *env_list)
+static char *build_full_path(char *dir, char *cmd)
 {
-	char	*path;
-	char	*path_dup;
-	char	*dir;
-	char	*save_ptr;
+    char *full_path;
 
-	path = get_value("PATH", env_list);
-	if (!path)
-	{
-		last_status(1);
-		printf("minishell: No such file or directory: %s\n", type->cmd);
-		return ;
-	}
-	path_dup = ft_strdup(path);
-	if (!path_dup)
-		exit_with_error("Error duplicating PATH");
-	dir = ft_strtok_r(path_dup, ":", &save_ptr);
-	while (dir)
-	{
-		if (process_path_directory(dir, &type->cmd, path_dup))
-			return ;
-		dir = ft_strtok_r(NULL, ":", &save_ptr);
-	}
-	free(path_dup);
+    if (generate_full_path(&full_path, dir, cmd) == -1)
+        exit_with_error("Error constructing path");
+    return (full_path);
 }
 
-/* Function: find_command_path
+void find_command_path(t_types *type, t_envp *env_list)
+{
+    char *path;
+    char *path_dup;
+    char *dir;
+    char *save_ptr;
+    char *full_path;
 
-* Searches for the command in the directories specified by the PATH 
-environment variable.
-* Updates the command with the valid full path if found,
-or prints an error message.
-*/
+    path = get_value("PATH", env_list);
+    if (!path)
+    {
+        last_status(127);
+        printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+        return;
+    }
+    path_dup = duplicate_path(path);
+    dir = ft_strtok_r(path_dup, ":", &save_ptr);
+    while (dir)
+    {
+        full_path = build_full_path(dir, type->cmd);
+        if (check_access_and_set(full_path, type, &path_dup))
+            return;
+        dir = ft_strtok_r(NULL, ":", &save_ptr);
+    }
+    printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+    free(path_dup);
+}
 
 static void	setup_io_redirection(t_types *type)
 {
@@ -172,10 +168,12 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 	{
 		setup_io_redirection(type);
 		if (execve(type->cmd, args, env) == -1)
-			exit(EXIT_FAILURE);
+			exit(127);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-	}
+		status = WEXITSTATUS(status);
+        last_status(status);
+    }
 }

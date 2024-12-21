@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 17:59:32 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 15:05:44 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,9 @@ void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 	}
 	cmds = free_from_split(cmds);
 	args_of_cmds(types);
-	lets_expander(types, env_list, input_list->exit_status);
+	lets_expander(types, env_list, last_status(-1));
 	remove_quotes_from_types(types);
 	input_list->exit_status = to_exec(input_list, types, env_list);
+	printf("pós exec\n");
+	//last_status(-1);
 }

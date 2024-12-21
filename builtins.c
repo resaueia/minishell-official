@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 23:12:49 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 14:01:28 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,10 @@ static void	handle_cd_path_change(char *path, t_envp **env_list)
 		change_path(cwd, "PWD", env_list);
 	}
 	else
+	{
+		last_status(1);
 		printf("cd: %s: %s\n", strerror(errno), path);
+	}
 }
 
 /* Function: handle_cd_path_change

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:55:24 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 23:22:04 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 15:23:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,9 @@ static void	single_delimiters(int temp_fd, char *last_delim, int start_write)
 		line = readline("heredoc> ");
 		if (!line)
 		{
-			perror("Error reading line");
+			printf("minishell: warning: ");
+			printf("here-document delimited by end-of-file ");
+			printf("(wanted `%s')\n", last_delim);
 			break ;
 		}
 		if (ft_strcmp(line, last_delim) == 0 && start_write == 1)

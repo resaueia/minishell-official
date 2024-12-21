@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 20:00:49 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:33:24 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 			if (pipe(pipe_fd) == -1)
 				return (perror("Error creating pipe"), -1);
 			current->fd_out = pipe_fd[1];
+			current->next->fd_in = pipe_fd[0];
 			current->next->next->fd_in = pipe_fd[0];
 		}
 		pid = fork();
