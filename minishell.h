@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/20 18:01:10 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 16:52:23 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,14 @@ int						to_quotes(char c, int quotes);
 int						is_expander(t_types *types);
 int						is_whitespace_string(const char *str);
 void					remove_quotes(char **str);
+void					check_args(t_types *cmds);
 char					*joinpath(char *path, char *key, t_envp **env_list);
 char					*custom_dup(char *str, int start, int finish);
 char					*ft_strjoin(char *s1, char *s2);
 char					*ft_strndup(char *str, int len);
 char					*extract_key(char *str);
 char					*ft_strjoin_free(char *s1, char *s2);
+
 
 /* ENVP */
 t_envp					*create_node(char *key, char *value);

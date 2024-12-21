@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/21 15:33:24 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:19:53 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static void	handle_child_process(t_init_input *current,
 		close(current->fd_in);
 	}
 	last_exit_status = process_pipe(current, types, env_list);
-	exit(last_exit_status);
+	exit(EXIT_SUCCESS);
 }
 
 /* Function: setup_pipeline

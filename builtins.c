@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 14:01:28 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:52:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ static void	handle_cd_special_paths(char *path, char *src, t_envp **env_list)
 {
 	path = change_path(path, src, env_list);
 	chdir(path);
+	last_status(0);
 }
 
 /* Function: handle_cd_special_paths
@@ -152,6 +153,7 @@ static void	handle_cd_path_change(char *path, t_envp **env_list)
 	{
 		getcwd(cwd, sizeof(cwd));
 		change_path(cwd, "PWD", env_list);
+		last_status(0);
 	}
 	else
 	{
@@ -169,6 +171,7 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 {
 	char	*path;
 
+	check_args(cmds);
 	path = args_to_str(cmds);
 	if (ft_strlen(path) == 1 && *path == '/')
 	{
@@ -226,6 +229,7 @@ void	ft_export(t_types *cmds, t_envp **env_list)
 	var = args_to_str(cmds);
 	if (!validate_export(var))
 	{
+		last_status(1);
 		printf("minishell: export: `%s': not a valid identifier\n", var);
 		free(var);
 		return ;
@@ -241,6 +245,8 @@ void	ft_export(t_types *cmds, t_envp **env_list)
 		}
 		create_new_node(env_list, var, delim + 1);
 	}
+	else
+		last_status(1);
 	free(var);
 }
 

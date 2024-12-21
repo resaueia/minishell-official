@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 18:04:28 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 17:16:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,26 @@ static void	handle_fd_redirection(t_types *types, int *saved_stdout)
 	}
 }
 
+// Função para verificar se os argumentos do comando "env" estão corretos
+static int	check_args_env(t_types *types)
+{
+	t_types	*temp;
+
+	temp = types;
+	while (temp)
+	{
+		if (ft_strcmp(temp->cmd, "env") == 0 || ft_strcmp(temp->cmd, "envp") == 0)
+			temp = temp->next;
+		else 
+		{
+			printf("env: ‘%s’: No such file or directory\n", temp->cmd);
+			last_status(127);
+			return (0);
+		}
+	}
+	return (1);
+}
+
 // Função para executar comandos internos (dividida)
 static void	execute_individual_builtin(t_envp *env_list, t_init_input *list,
 		t_types *types)
@@ -112,7 +132,10 @@ static void	execute_individual_builtin(t_envp *env_list, t_init_input *list,
 		print_stack(list);
 	else if (ft_strcmp(types->cmd, "env") == 0 || ft_strcmp(types->cmd,
 			"envp") == 0)
-		print_envp_list(tmp);
+	{
+		if (check_args_env(types))
+			print_envp_list(tmp);
+	}
 	else if (ft_strcmp(types->cmd, "pwd") == 0)
 		ft_pwd(STDOUT_FILENO);
 	else if (ft_strncmp(types->cmd, "echo", 4) == 0)
@@ -123,11 +146,6 @@ static void	execute_individual_builtin(t_envp *env_list, t_init_input *list,
 		ft_export(types, &tmp);
 	else if (ft_strncmp(types->cmd, "unset", 5) == 0)
 		ft_unset(types, &tmp);
-	else
-	{
-		printf("minishell: %s: command not found\n", types->cmd);
-		last_status(127);
-	}
 }
 
 // Função principal para executar comandos internos
