@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:56:18 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 15:33:38 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 15:54:52 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,27 @@ void	add_to_list(t_init_input **head, t_init_input **tail, char *substr,
 	}
 }
 
-void extract_token_wrapper(t_init_input **head, t_init_input **tail, char *s,
-                           int start, int end)
+void	extract_token_wrapper(t_wrapper_context *wrapper_ctx, int start,
+								int end)
 {
-    t_token_context ctx = {head, tail, start, end};
-    extract_token(&ctx, s);
+	t_token_context	ctx;
+
+	ctx.head = NULL;
+	ctx.tail = NULL;
+	ctx.start = 0;
+	ctx.end = 0;
+	ctx.head = wrapper_ctx->head;
+	ctx.tail = wrapper_ctx->tail;
+	ctx.start = start;
+	ctx.end = end;
+	extract_token(&ctx, wrapper_ctx->s);
 }
 
-void extract_token(t_token_context *ctx, char *s)
+void	extract_token(t_token_context *ctx, char *s)
 {
-    char *token;
+	char	*token;
 
-    token = custom_dup(s, ctx->start, ctx->end);
-    add_to_list(ctx->head, ctx->tail, token, get_token(token));
-    free(token);
+	token = custom_dup(s, ctx->start, ctx->end);
+	add_to_list(ctx->head, ctx->tail, token, get_token(token));
+	free(token);
 }

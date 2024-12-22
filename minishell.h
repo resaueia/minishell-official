@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 15:34:50 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:01:10 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,25 @@ typedef struct s_init_input
 
 typedef struct s_process_context
 {
-    t_init_input **head;
-    t_init_input **tail;
-    int           *start;
+	t_init_input	**head;
+	t_init_input	**tail;
+	int				*start;
 }						t_process_context;
 
 typedef struct s_token_context
 {
-    t_init_input **head;
-    t_init_input **tail;
-    int           start;
-    int           end;
+	t_init_input	**head;
+	t_init_input	**tail;
+	int				start;
+	int				end;
 }						t_token_context;
+
+typedef struct s_wrapper_context
+{
+	t_init_input	**head;
+	t_init_input	**tail;
+	char			*s;
+}						t_wrapper_context;
 
 /* ---- FUNCTION PROTOTYPES ---- */
 
@@ -216,7 +223,7 @@ int						is_delim(int type);
 int						is_redirects(int type);
 void					include_fds(t_init_input *input_list);
 void					args_of_cmds(t_types *cmd);
-int 					handle_builtins_non_first(t_types **cmd);
+int						handle_builtins_non_first(t_types **cmd);
 int						handle_builtins_first(t_types **cmd);
 void					handle_redirects(t_types *cmd);
 
@@ -264,7 +271,8 @@ int						handle_redirection(t_init_input *input_list,
 							t_types *type);
 int						setup_redirection(t_types *type);
 int						handle_in(t_types *type, t_types *type_head);
-int						handle_out(t_types *type, t_types *type_head, int is_append);
+int						handle_out(t_types *type, t_types *type_head,
+							int is_append);
 void					remove_node(t_types **node);
 
 /* PIPES */
@@ -318,10 +326,10 @@ void					setup_io_redirection(t_types *type);
 
 /* delim split */
 int						is_pipe(char c);
-void 					extract_token(t_token_context *ctx, char *s);
+void					extract_token(t_token_context *ctx, char *s);
 void					process_pipe_token(t_init_input **head,
 							t_init_input **tail, char *s, size_t i);
-void 					process_current_character(t_process_context *ctx,
+void					process_current_character(t_process_context *ctx,
 							char *s, size_t i);
-							
+
 #endif
