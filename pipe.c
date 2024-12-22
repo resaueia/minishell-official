@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/22 01:05:55 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:37:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static void	handle_child_process(t_init_input *current,
 		t_init_input *input_list, t_types *types, t_envp *env_list)
 {
 	int	last_exit_status;
-	(void)last_exit_status;
 
+	(void)last_exit_status;
 	if (current == input_list)
 	{
 		dup2(current->fd_out, STDOUT_FILENO);
@@ -72,6 +72,15 @@ static void	handle_child_process(t_init_input *current,
 	}
 	last_exit_status = process_pipe(current, types, env_list);
 	exit(EXIT_SUCCESS);
+}
+
+/* Function: wait_for_children
+ * Waits for all child processes to finish execution.
+ */
+void	wait_for_children(void)
+{
+	while (wait(NULL) > 0)
+		;
 }
 
 /* Function: setup_pipeline
@@ -104,6 +113,6 @@ int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 			handle_child_process(current, input_list, types, env_list);
 		current = handle_parent_process(current);
 	}
-	while (wait(NULL) > 0);
+	wait_for_children();
 	return (0);
 }
