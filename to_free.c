@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 22:56:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 04:36:28 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,29 @@ void	free_list(t_init_input *list)
  * Iterates through a linked list of t_types, freeing the cmd field
  * and each node individually.
  */
-void	free_types(t_types *types)
+void free_types(t_types **head)
 {
-	t_types	*temp;
+    t_types *current;
+    t_types *next_node;
 
-	while (types)
-	{
-		temp = types;
-		types = types->next;
-		if (temp->cmd)
-			free(temp->cmd);
-		free(temp);
-	}
+    if (!head || !*head)
+        return;
+
+    current = *head;
+    while (current)
+    {
+        next_node = current->next;
+        if (current->cmd)
+        {
+            free(current->cmd);
+            current->cmd = NULL;
+        }
+        free(current);
+        current = next_node;
+    }
+    *head = NULL;
 }
+
 
 /* Function: free_env
  * Iterates through a linked list of t_envp, freeing both key and value

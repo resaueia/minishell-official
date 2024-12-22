@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 22:45:40 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 04:35:10 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 	if (check_node(type))
 	{
 		free_list(input_list);
-		free_types(type);
+		free_types(&type);
 		clear_heredoc_files();
 	}
 	return (0);
@@ -38,11 +38,11 @@ int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 	{
 		perror("Error setting up pipeline");
 		free_list(input_list);
-		free_types(type);
+		free_types(&type);
 		return (-1);
 	}
 	free_list(input_list);
-	free_types(type);
+	free_types(&type);
 	return (0);
 }
 
@@ -50,7 +50,7 @@ int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 // Função auxiliar para tratar redirecionamentos
 int	handle_redirection(t_init_input *input_list, t_types *type)
 {
-	if (setup_redirection(input_list, type) == -1)
+	if (setup_redirection(type) == -1)
 	{
 		perror("Error setting up redirection");
 		return (-1);
@@ -58,7 +58,7 @@ int	handle_redirection(t_init_input *input_list, t_types *type)
 	if (check_node(type))
 	{
 		free_list(input_list);
-		free_types(type);
+		free_types(&type);
 		return (0);
 	}
 	else
@@ -92,9 +92,9 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		execute_builtin(env_list, input_list, type);
 	if (is_exec(type))
 		execute_command(type, env_list, input_list, env);
-	// função para verificar fds abertos e fechar, nó por nó.
+	fd_closer(input_list, type);
 	free_from_split(env);
 	free_list(input_list);
-	free_types(type);
+	free_types(&type);
 	return (0);
 }

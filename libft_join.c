@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   libft_join.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:00:00 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:09:40 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 01:31:13 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_strjoin_whit_free(char *s1, char *s2, int free_s1, int free_s2)
+{
+	char	*joined;
+	size_t	len;
+
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (ft_strdup(s1));
+	len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	joined = (char *)malloc(sizeof(char) * len);
+	if (!joined)
+		return (NULL);
+	ft_strlcpy(joined, s1, len);
+	ft_strlcat(joined, s2, len);
+	if (free_s1)
+		free(s1);
+	if (free_s2)
+		free(s2);
+	return (joined);
+}
 
 char	*ft_strjoin(char *s1, char *s2)
 {

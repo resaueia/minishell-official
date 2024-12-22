@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 20:56:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 04:41:57 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ char					*custom_dup(char *str, int start, int finish);
 char					*ft_strjoin(char *s1, char *s2);
 char					*ft_strndup(char *str, int len);
 char					*extract_key(char *str);
+char					*ft_strjoin_whit_free(char *s1, char *s2, int free_s1,
+							int free_s2);
 char					*ft_strjoin_free(char *s1, char *s2);
 
 /* ENVP */
@@ -167,11 +169,11 @@ int						has_dol(char *cmd);
 int						validate_before_dollar(char *str, int i);
 void					lets_expander(t_types *types, t_envp *env_list,
 							int last_exit_status);
-char					*to_expander(char *str, int i, t_envp *env, 
+char					*to_expander(char *str, int i, t_envp *env,
 							int exit_status);
 char					*status_expander(char *str, int i, int exit_status);
 char					*env_var_expander(char *str, int i, t_envp *env_list);
-char					*get_expanded_value(char *str, int start, 
+char					*get_expanded_value(char *str, int start,
 							t_envp *env_list, int end);
 
 /* OTHERS */
@@ -199,6 +201,9 @@ int						is_delim(int type);
 int						is_redirects(int type);
 void					include_fds(t_init_input *input_list);
 void					args_of_cmds(t_types *cmd);
+int 					handle_builtins_non_first(t_types **cmd);
+int						handle_builtins_first(t_types **cmd);
+void					handle_redirects(t_types *cmd);
 
 /* TO CONVERT LIST TO CHAR** */
 char					**types_to_char(t_types *list);
@@ -242,8 +247,9 @@ void					process_lines(int temp_fd, char *start_delim,
 /* REDIRECTS */
 int						handle_redirection(t_init_input *input_list,
 							t_types *type);
-int						setup_redirection(t_init_input *args_list,
-							t_types *type);
+int						setup_redirection(t_types *type);
+int						handle_in(t_types *type, t_types *type_head);
+int						handle_out(t_types *type, t_types *type_head, int is_append);
 void					remove_node(t_types **node);
 
 /* PIPES */
@@ -273,8 +279,9 @@ char					*args_to_str(t_types *args);
 char					*free_char_ptr(char *ptr);
 char					**free_from_split(char **str);
 void					free_list(t_init_input *list);
-void					free_types(t_types *types);
+void					free_types(t_types **types);
 void					free_env(t_envp *env_list);
+void					fd_closer(t_init_input *input_list, t_types *type);
 void					exit_mini(t_init_input *list, char *prompt,
 							char *prompt_dup, t_envp *env_list);
 

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/21 22:21:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 01:53:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,21 @@ char	**types_to_char(t_types *list)
 	return (cmds);
 }
 
+static int	count_cmds(t_envp *commands)
+{
+	t_envp	*temp;
+	int		count;
+
+	temp = commands;
+	count = 0;
+	while (temp)
+	{
+		count++;
+		temp = temp->next;
+	}
+	return (count);
+}
+
 char	**env_to_char(t_envp *env_list)
 {
 	t_envp	*temp;
@@ -49,25 +64,20 @@ char	**env_to_char(t_envp *env_list)
 	int		count;
 
 	temp = env_list;
+	count = count_cmds(temp);
 	i = 0;
-	count = 0;
-	while (temp)
-	{
-		count++;
-		temp = temp->next;
-	}
-	list = (char **)malloc(sizeof(char *) * count + 1);
+	list = (char **)malloc(sizeof(char *) * (count + 1));
+	if (!list)
+		return (NULL);
 	temp = env_list;
-	char * temp_key = 0;
 	while (temp)
 	{
-		// create a new join with a free paramenter
-		temp_key = ft_strjoin(temp->key, "=");
-		list[i] = ft_strjoin(temp_key, temp->value);
-		free(temp_key);
+		list[i] = ft_strjoin_whit_free(ft_strdup(temp->key), "=", 1, 0);
+		list[i] = ft_strjoin_whit_free(list[i], temp->value, 1, 0);
 		temp = temp->next;
 		i++;
 	}
+	temp = NULL;
 	list[i] = NULL;
 	return (list);
 }

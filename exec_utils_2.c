@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:19:50 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:46:35 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 01:38:53 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	exit_with_error(const char *message)
 {
 	if (message && *message)
-	{	
+	{
 		last_status(1);
 		printf("minishell: %s: %s\n", message, strerror(errno));
 	}

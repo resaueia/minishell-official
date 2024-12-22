@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/21 22:47:07 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/22 04:43:01 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ SRCS = main.c \
 	   to_free.c \
 	   the_split.c \
 	   parser.c \
-	   parser_utils.c \
+	   parser_nodes.c \
+	   parser_nodes_utils.c \
 	   parser_validations.c \
 	   quotes_utils.c \
 	   expander.c \
@@ -61,6 +62,8 @@ SRCS = main.c \
 	   heredoc_utils_2.c \
 	   redirects.c \
 	   redirects_utils.c \
+	   redirects_in.c \
+	   redirects_out.c \
 	   pipe.c \
 	   pipe_utils.c \
 

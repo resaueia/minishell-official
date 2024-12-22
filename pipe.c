@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/21 19:22:36 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 01:05:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	handle_child_process(t_init_input *current,
 		t_init_input *input_list, t_types *types, t_envp *env_list)
 {
 	int	last_exit_status;
+	(void)last_exit_status;
 
 	if (current == input_list)
 	{

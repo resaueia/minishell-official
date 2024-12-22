@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:44:40 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 18:45:11 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 01:22:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,24 @@ void	exit_mini(t_init_input *list, char *prompt, char *prompt_dup,
 		free_char_ptr(prompt_dup);
 	if (env_list)
 		free_env(env_list);
+}
+
+void	fd_closer(t_init_input *input_list, t_types *type)
+{
+	while (input_list)
+	{
+		if (input_list->fd_in != 0)
+			close(input_list->fd_in);
+		if (input_list->fd_out != 1)
+			close(input_list->fd_out);
+		input_list = input_list->next;
+	}
+	while (type)
+	{
+		if (type->fd[0] != 0)
+			close(type->fd[0]);
+		if (type->fd[1] != 1)
+			close(type->fd[1]);
+		type = type->next;
+	}
 }

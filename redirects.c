@@ -6,106 +6,22 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/21 20:38:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 04:41:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	setup_redirection(t_init_input *args_list, t_types *type)
+static void finalize_redirection(t_types *type_head, t_types *type_echo)
 {
-	t_types	*type_head;
-	t_types	*type_echo;
-	int		temp_fd;
+    t_types *type = type_head;
 
-	(void)type;
-	(void)args_list;
-	if (ft_strncmp(type->cmd, "echo", 4) == 0)
-		type_echo = type;
-	type_head = type;
-	while (type)
-	{
-		if (ft_strcmp(type->cmd, "<") == 0 && type->next)
-		{
-			if (access(type->next->cmd, R_OK) == -1)
-			{
-				ft_putstr_fd("minishell: no such file or directory:", 2);
-				last_status(1);
-				return (-1);
-			}
-			if (type->fd[0] != STDIN_FILENO)
-				close(type->fd[0]);
-			temp_fd = open(type->next->cmd, O_RDONLY);
-			if (temp_fd == -1)
-			{
-				perror("Error opening fd for input redirect");
-				last_status(1);
-				return (-1);
-			}
-			type->fd[0] = temp_fd;
-			type_head->fd[0] = temp_fd;
-			if (type->fd[0] != STDIN_FILENO)
-				type->next->fd[1] = type->fd[0];
-		}
-		else if (ft_strcmp(type->cmd, ">") == 0 && type->next)
-		{
-			if (access(type->next->cmd, W_OK) == -1 && errno != ENOENT)
-			{
-				perror("No write permission for output redirect");
-				last_status(1);
-				return (-1);
-			}
-			if (type->fd[1] != STDOUT_FILENO)
-				close(type->fd[1]);
-			temp_fd = open(type->next->cmd, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (temp_fd == -1)
-			{
-				perror("Error opening fd for output redirect");
-				return (-1);
-			}
-			type->fd[1] = temp_fd;
-			type_head->fd[1] = temp_fd;
-			if (type->fd[1] != STDIN_FILENO)
-				type->next->fd[0] = type->fd[1];
-		}
-		else if (ft_strcmp(type->cmd, ">>") == 0 && type->next)
-		{
-			if (access(type->next->cmd, W_OK) == -1 && errno != ENOENT)
-			{
-				perror("No write permission for append redirect");
-				return (-1);
-			}
-			if (type->fd[1] != STDOUT_FILENO)
-				close(type->fd[1]);
-			temp_fd = open(type->next->cmd, O_WRONLY | O_CREAT | O_APPEND,
-					0644);
-			if (temp_fd == -1)
-			{
-				perror("Error opening fd for append redirect");
-				return (-1);
-			}
-			type->fd[1] = temp_fd;
-			type_head->fd[1] = temp_fd;
-			if (type->fd[1] != STDIN_FILENO)
-				type->next->fd[0] = type->fd[1];
-		}
-		if (ft_strncmp(type_head->cmd, "echo", 4) == 0)
-			type_echo->fd[1] = temp_fd;
-		type = type->next;
-	}
-	type = type_head;
-	t_types *temp = type;
-	while (temp)
-	{
-		printf("cmd: [%s]_[%d]_[%d]_[%d]\n", temp->cmd, temp->type, temp->fd[0], temp->fd[1]);
-		temp = temp->next;
-	}
-
-	type = type_head;
-	while (type)
-	{
-		if (ft_strncmp(type->cmd, "ls", 2) == 0
-			&& type->next->next->type == FLE)
+    if (type_echo)
+        type_echo->fd[1] = type_head->fd[1];
+    while (type)
+    {
+        if (ft_strncmp(type->cmd, "ls", 2) == 0 && 
+				type->next->next->type == FLE)
 		{
 			type->next->next->cmd = NULL;
 			break ;
@@ -121,7 +37,33 @@ int	setup_redirection(t_init_input *args_list, t_types *type)
 			break ;
 		}
 		type = type->next;
-	}
-	type = type_head;
-	return (0);
+    }
+}
+
+int setup_redirection(t_types *type)
+{
+    t_types *type_head;
+    t_types *type_echo;
+
+    type_head = type;
+    if (ft_strncmp(type->cmd, "echo", 4) == 0)
+		type_echo = type;
+	type_head = type;
+    while (type)
+    {
+        if (ft_strcmp(type->cmd, "<") == 0 && type->next)
+        {
+            if (handle_in(type, type_head) == -1)
+                return (-1);
+        }
+        else if ((ft_strcmp(type->cmd, ">") == 0 || 
+					ft_strcmp(type->cmd, ">>") == 0) && type->next)
+        {
+            if (handle_out(type, type_head, ft_strcmp(type->cmd, ">>") == 0))
+                return (-1);
+        }
+        type = type->next;
+    }
+    finalize_redirection(type_head, type_echo);
+    return (0);
 }

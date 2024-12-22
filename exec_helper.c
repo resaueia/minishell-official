@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:50:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:52:32 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 01:14:59 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	check_args_env(t_types *types)
 	while (temp)
 	{
 		if (ft_strcmp(temp->cmd, "env") == 0 || ft_strcmp(temp->cmd,
-                    "envp") == 0)
+				"envp") == 0)
 			temp = temp->next;
 		else
 		{
