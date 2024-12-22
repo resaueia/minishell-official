@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 22:12:24 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 04:38:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:16:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	remove_node(t_types **head)
 				*head = node->next;
 			free(node->cmd);
 			if (node)
-				node = NULL;	
+				node = NULL;
 		}
 		node = temp_node;
 	}

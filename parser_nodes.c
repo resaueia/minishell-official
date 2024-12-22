@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:28:38 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 02:55:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:14:59 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	process_first_node(t_types **cmd, int *node_ref)
 	return (0);
 }
 
-static int process_non_first_node(t_types **cmd, int *node_ref)
+static int	process_non_first_node(t_types **cmd, int *node_ref)
 {
 	if (is_redirects((*cmd)->type))
 		handle_redirects(*cmd);
@@ -46,13 +46,12 @@ static int process_non_first_node(t_types **cmd, int *node_ref)
 	return (0);
 }
 
-
-void args_of_cmds(t_types *cmd)
+void	args_of_cmds(t_types *cmd)
 {
 	t_types	*head;
 	int		node_ref;
 
-	if(!cmd)
+	if (!cmd)
 		return ;
 	head = cmd;
 	node_ref = 1;
