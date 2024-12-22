@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:56:18 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:56:58 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 15:33:38 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,18 @@ void	add_to_list(t_init_input **head, t_init_input **tail, char *substr,
 	}
 }
 
-void	extract_token(t_init_input **head, t_init_input **tail, char *s,
-		int start, int end)
+void extract_token_wrapper(t_init_input **head, t_init_input **tail, char *s,
+                           int start, int end)
 {
-	char	*token;
-
-	token = custom_dup(s, start, end);
-	add_to_list(head, tail, token, get_token(token));
-	free(token);
+    t_token_context ctx = {head, tail, start, end};
+    extract_token(&ctx, s);
 }
-/* Function: extract_token
- * Extracts a token from the string `s` between indices `start` and `end`,
- * determines its type, and adds it to the linked list.
- */
+
+void extract_token(t_token_context *ctx, char *s)
+{
+    char *token;
+
+    token = custom_dup(s, ctx->start, ctx->end);
+    add_to_list(ctx->head, ctx->tail, token, get_token(token));
+    free(token);
+}

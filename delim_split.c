@@ -6,16 +6,22 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:40:07 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/21 19:56:53 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 15:33:00 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	process_pipe_token(t_init_input **head, t_init_input **tail,
-		char *s, size_t i)
+			char *s, size_t i)
 {
-	extract_token(head, tail, s, i, i + 1);
+	t_token_context	ctx;
+
+	ctx.head = head;
+	ctx.tail = tail;
+	ctx.start = i;
+	ctx.end = i + 1;
+	extract_token(&ctx, s);
 }
 
 /* Function: process_pipe_token
@@ -23,19 +29,27 @@ void	process_pipe_token(t_init_input **head, t_init_input **tail,
  * and adding them to the linked list.
  */
 
-void	process_current_character(t_init_input **head, t_init_input **tail,
-		char *s, int *start, size_t i)
+static void	handle_pipe_or_end(t_process_context *ctx, char *s, size_t i)
+{
+	t_token_context	token_ctx;
+
+	if (*(ctx->start) >= 0)
+	{
+		token_ctx.head = ctx->head;
+		token_ctx.tail = ctx->tail;
+		token_ctx.start = *(ctx->start);
+		token_ctx.end = i + (s[i + 1] == '\0');
+		extract_token(&token_ctx, s);
+		*(ctx->start) = -1;
+	}
+	if (is_pipe(s[i]))
+		process_pipe_token(ctx->head, ctx->tail, s, i);
+}
+
+void	process_current_character(t_process_context *ctx, char *s, size_t i)
 {
 	if (is_pipe(s[i]) || s[i + 1] == '\0')
-	{
-		if (*start >= 0)
-		{
-			extract_token(head, tail, s, *start, i + (s[i + 1] == '\0'));
-			*start = -1;
-		}
-		if (is_pipe(s[i]))
-			process_pipe_token(head, tail, s, i);
-	}
+		handle_pipe_or_end(ctx, s, i);
 }
 
 /* Function: process_current_character
@@ -46,15 +60,19 @@ void	process_current_character(t_init_input **head, t_init_input **tail,
 
 t_init_input	*delim_split(char *s)
 {
-	t_init_input	*head;
-	t_init_input	*tail;
-	size_t			i;
-	int				start;
+	t_init_input		*head;
+	t_init_input		*tail;
+	t_process_context	ctx;
+	size_t				i;
+	int					start;
 
 	head = NULL;
 	tail = NULL;
+	ctx.head = &head;
+	ctx.tail = &tail;
 	i = 0;
 	start = -1;
+	ctx.start = &start;
 	if (!s)
 		return (NULL);
 	while (s[i])
@@ -62,7 +80,7 @@ t_init_input	*delim_split(char *s)
 		if (!is_pipe(s[i]) && start < 0)
 			start = i;
 		else
-			process_current_character(&head, &tail, s, &start, i);
+			process_current_character(&ctx, s, i);
 		i++;
 	}
 	return (head);

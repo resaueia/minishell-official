@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 04:41:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 15:34:50 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,21 @@ typedef struct s_init_input
 	struct s_init_input	*prev;
 	struct s_init_input	*next;
 }						t_init_input;
+
+typedef struct s_process_context
+{
+    t_init_input **head;
+    t_init_input **tail;
+    int           *start;
+}						t_process_context;
+
+typedef struct s_token_context
+{
+    t_init_input **head;
+    t_init_input **tail;
+    int           start;
+    int           end;
+}						t_token_context;
 
 /* ---- FUNCTION PROTOTYPES ---- */
 
@@ -303,12 +318,10 @@ void					setup_io_redirection(t_types *type);
 
 /* delim split */
 int						is_pipe(char c);
-void					extract_token(t_init_input **head,
-							t_init_input **tail, char *s,
-							int start, int end);
+void 					extract_token(t_token_context *ctx, char *s);
 void					process_pipe_token(t_init_input **head,
 							t_init_input **tail, char *s, size_t i);
-void					process_current_character(t_init_input **head,
-							t_init_input **tail, char *s, int *start, size_t i);
-
+void 					process_current_character(t_process_context *ctx,
+							char *s, size_t i);
+							
 #endif
