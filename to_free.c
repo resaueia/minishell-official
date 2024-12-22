@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 18:44:59 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:56:18 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	**free_from_split(char **str)
 		i++;
 	}
 	free(str);
-	str = NULL;
 	return (NULL);
 }
 
@@ -48,15 +47,13 @@ char	**free_from_split(char **str)
  */
 void	free_list(t_init_input *list)
 {
-	t_init_input	*temp;
-
 	while (list)
 	{
-		temp = list;
+		if (list->string)
+			free(list->string);
+		if (list)
+			free(list);
 		list = list->next;
-		if (temp->string)
-			free(temp->string);
-		free(temp);
 	}
 }
 

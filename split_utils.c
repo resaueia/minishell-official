@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.utils.c                                      :+:      :+:    :+:   */
+/*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia <rsaueia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/20 17:54:01 by rsaueia          ###   ########.fr       */
+/*   Updated: 2024/12/21 22:21:13 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,13 @@ char	**env_to_char(t_envp *env_list)
 	}
 	list = (char **)malloc(sizeof(char *) * count + 1);
 	temp = env_list;
+	char * temp_key = 0;
 	while (temp)
 	{
-		list[i] = ft_strjoin(temp->key, "=");
-		list[i] = ft_strjoin(list[i], temp->value);
+		// create a new join with a free paramenter
+		temp_key = ft_strjoin(temp->key, "=");
+		list[i] = ft_strjoin(temp_key, temp->value);
+		free(temp_key);
 		temp = temp->next;
 		i++;
 	}

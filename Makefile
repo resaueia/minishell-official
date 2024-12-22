@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/21 20:55:12 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/21 22:47:07 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ OBJS = $(SRCS:.c=.o)
 
 RM = rm -f
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror
 
 $(NAME): $(NAME)
 	ar rcs $(NAME)
@@ -88,5 +88,9 @@ fclean: clean
 	$(RM) $(OBJS) $(NAME)
 
 re: fclean all
+
+
+hell: re
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=rl.supp ./minishell 
 
 .PHONY: all clean fclean re
