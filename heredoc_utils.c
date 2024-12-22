@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:57:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:41:41 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:26:41 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ void	clear_heredoc_files(void)
 		perror("Failed to open /tmp directory");
 		return ;
 	}
-	while ((entry = readdir(dir)) != NULL)
+	entry = readdir(dir);
+	while (entry != NULL)
 	{
 		if (ft_strncmp(entry->d_name, "hdoc_", 5) == 0)
 			remove_heredoc_file(entry->d_name);
+		entry = readdir(dir);
 	}
 	closedir(dir);
 }
