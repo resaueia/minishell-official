@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   to_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 16:19:59 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:43:34 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,19 @@ char	**free_from_split(char **str)
  */
 void	free_list(t_init_input *list)
 {
+	t_init_input	*temp;
+	
 	while (list)
 	{
+		temp = list->next;
 		if (list->string)
+		{
 			free(list->string);
+			list->string = NULL;
+		}
 		if (list)
 			free(list);
-		list = list->next;
+		list = temp;
 	}
 }
 
