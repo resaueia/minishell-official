@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:08:04 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:18:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:47:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	has_dol(char *cmd)
 
 int	validate_before_dollar(char *str, int i)
 {
+	if (i == 0)
+		return (1);	
 	if (str[i - 1] == '&' || str[i - 1] == '!')
 		return (0);
 	if (str[i - 1] == '(' || str[i - 1] == ')')

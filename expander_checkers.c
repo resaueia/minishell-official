@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:29:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:12:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static void	remove_backslashes(char *str)
 
 static char	*expander_or_not(char *cmd, t_envp *env_list, int exit_status)
 {
+	printf("expander_or_not\n");
+	printf("cmd: %s\n", cmd);
 	int	i;
 
 	i = 0;

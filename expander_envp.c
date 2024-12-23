@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:20:21 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:27:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:31:01 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static char	*rebd_str(char *prefix, char *expanded, char *suffix, char *old)
 	char	*temp;
 	char	*pre_temp;
 
+	temp = NULL;
 	pre_temp = prefix;
 	if (pre_temp[0] == '*')
 		pre_temp++;
@@ -58,10 +59,16 @@ static char	*rebd_str(char *prefix, char *expanded, char *suffix, char *old)
 		new_str = ft_strdup("");
 	else
 		new_str = ft_strjoin(temp, suffix);
-	free(temp);
-	free(prefix);
-	free(suffix);
-	free(old);
+	if (temp)
+		free(temp);
+	if (prefix)
+		free(prefix);
+	if (expanded)
+		free(expanded);
+	if (suffix)
+		free(suffix);
+	if (old)
+		free(old);
 	return (new_str);
 }
 

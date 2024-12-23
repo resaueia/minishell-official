@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 22:42:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:08:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	*build_full_path(char *dir, char *cmd)
 
 void	find_command_path(t_types *type, t_envp *env_list)
 {
+	printf("cmd: %s\n", type->cmd);
 	char	*path;
 	char	*path_dup;
 	char	*dir;
@@ -30,6 +31,7 @@ void	find_command_path(t_types *type, t_envp *env_list)
 	char	*full_path;
 
 	path = get_value("PATH", env_list);
+	printf("path: %s\n", path);
 	if (!path)
 	{
 		last_status(127);

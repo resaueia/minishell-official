@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:56:28 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:10:15 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:51:14 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,17 @@ size_t	ft_strlcat(char *dest, const char *src, size_t sz)
 
 int	ft_strncmp(char *s1, char *s2, size_t n)
 {
-	--n;
-	while (s1[n] == s2[n] && s1[n] && s2[n])
+	size_t	i;
+
+	if (!s1 || !s2) // Certifique-se de que ambos os ponteiros são válidos
+		return (s1 ? 1 : -1);
+	i = 0;
+	while (i < n && (s1[i] || s2[i])) // Evite acessar além do tamanho das strings
 	{
-		if (n == 0)
-			return (0);
-		n--;
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
-	return (1);
+	return (0);
 }
+

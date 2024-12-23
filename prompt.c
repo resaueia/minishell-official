@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:57:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:35:02 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ void	prompt(char **envp)
 	while (1)
 	{
 		prompt = readline("minishell> ");
+		if (!prompt)
+		{
+			exit_shell(NULL, NULL, input_list, env_list);
+			break ;
+		}
 		if (handle_empty_or_exit(prompt, input_list, env_list))
 			continue ;
 		process_command(prompt, input_list, env_list);

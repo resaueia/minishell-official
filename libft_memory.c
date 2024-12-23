@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_memory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:57:55 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:10:10 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:39:24 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ char	*ft_strdup(char *str)
 	int		i;
 	char	*dup;
 
+	dup = NULL;
 	i = 0;
 	if (!str)
 		return (NULL);
-	dup = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	dup = (char *)calloc(sizeof(char), (ft_strlen(str) + 1));
 	if (!dup)
 		return (NULL);
 	while (str[i])

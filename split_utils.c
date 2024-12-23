@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/22 01:53:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:58:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**types_to_char(t_types *list)
 		count++;
 		temp = temp->next;
 	}
-	cmds = (char **)malloc(sizeof(char *) * count + 1);
+	cmds = (char **)calloc(sizeof(char *), count + 1);
 	if (!cmds)
 		return (NULL);
 	temp = list;

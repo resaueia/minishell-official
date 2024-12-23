@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 02:55:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:47:48 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	insert_types(t_types **head, char *wrd)
 	t_types	*new;
 	t_types	*temp;
 
-	new = (t_types *)malloc(sizeof(t_types));
+	new = (t_types *)calloc(sizeof(t_types), 1);
 	new->cmd = ft_strdup(wrd);
 	new->type = what_type(wrd);
 	new->fd[0] = STDIN_FILENO;
