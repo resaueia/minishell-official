@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 21:12:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:32:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ static char	*expander_or_not(char *cmd, t_envp *env_list, int exit_status)
 		if (cmd[i] == '$')
 			cmd = to_expander(cmd, i, env_list, exit_status);
 	}
+	printf("cmd: %s\n", cmd);
 	return (cmd);
 }
 

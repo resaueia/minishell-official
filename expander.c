@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:04:31 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:27:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:14:09 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*to_expander(char *str, int i, t_envp *env, int exit_status)
 			else if (str[i + 1] != '\0' && str[i + 1] != '?')
 			{
 				expanded = env_var_expander(str, i, env);
+				// printf("expanded: [%s]_[%d]\n", expanded, ft_strlen(expanded)); //EXCLUIR
 				if (*expanded == '(' || *expanded == ')')
 					return (ft_strdup(""));
 				return (expanded);

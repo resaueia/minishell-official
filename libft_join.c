@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:00:00 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 21:20:53 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:40:40 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,18 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
+	
 	new = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!new)
 		return (0);
 	i = 0;
-	while (s1[i])
+	while (s1 && s1[i])
 	{
 		new[i] = s1[i];
 		i++;
 	}
 	j = 0;
-	while (s2[j])
+	while (s2 && s2[j])
 	{
 		new[i] = s2[j];
 		i++;

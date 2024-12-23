@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 21:04:24 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:24:04 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	execute_command(t_types *type, t_envp *env_list,
 
 int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
-	printf("type->cmd: [%s]_[%d]\n", type->cmd, type->type);
+	printf("type->cmd: [%s]_[%d]\n", type->cmd, type->type); //EXCLUIR
 	char	**env;
 
 	env = env_to_char(env_list);
