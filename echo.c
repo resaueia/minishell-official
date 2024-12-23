@@ -6,7 +6,7 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:40:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 20:11:43 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:58:43 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	args = args_to_str(cmds);
 	newline = handle_newline_flag(&args);
 	echo_output(args, newline, fd_out);
+	free(args);
 }
 
 /*
