@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 16:19:59 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 13:11:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**free_from_split(char **str)
  * Iterates through a linked list of t_init_input, freeing the string
  * and each node one by one.
  */
-void	free_list(t_init_input *list)
+/*void	free_list(t_init_input *list)
 {
 	while (list)
 	{
@@ -55,7 +55,23 @@ void	free_list(t_init_input *list)
 			free(list);
 		list = list->next;
 	}
+}*/
+
+void free_list(t_init_input *list)
+{
+    t_init_input *tmp;
+
+    while (list) 
+	{
+        tmp = list;
+        list = list->next;
+        if (tmp->string)
+            free(tmp->string);
+        free(tmp);
+    }
+    list = NULL;  // <- GARANTE QUE O PONTEIRO É INVALIDADO
 }
+
 
 /* Function: free_types
  * Iterates through a linked list of t_types, freeing the cmd field

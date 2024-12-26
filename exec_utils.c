@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 22:42:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:55:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,21 @@ char	*build_full_path(char *dir, char *cmd)
 	return (full_path);
 }
 
-void	find_command_path(t_types *type, t_envp *env_list)
+int	check_access_and_set(char *full_path, t_types *type,
+char **path_dup)
+{
+	if (access(full_path, X_OK) == 0)
+	{
+		free(type->cmd);
+		type->cmd = full_path;
+		free(*path_dup);
+		return (1);
+	}
+	free(full_path);
+	return (0);
+}
+
+int	find_command_path(t_types *type, t_envp *env_list)
 {
 	char	*path;
 	char	*path_dup;
@@ -30,23 +44,28 @@ void	find_command_path(t_types *type, t_envp *env_list)
 	char	*full_path;
 
 	path = get_value("PATH", env_list);
-	if (!path)
+	if (!path || *path == '\0')
 	{
 		last_status(127);
-		printf("minishell: %s: %s\n", strerror(errno), type->cmd);
-		return ;
+		printf("minishell: No such file or directory: %s\n", type->cmd);
+		return (1);
 	}
-	path_dup = duplicate_path(path);
-	dir = ft_strtok_r(path_dup, ":", &save_ptr);
-	while (dir)
+	else
 	{
-		full_path = build_full_path(dir, type->cmd);
-		if (check_access_and_set(full_path, type, &path_dup))
-			return ;
-		dir = ft_strtok_r(NULL, ":", &save_ptr);
+		path_dup = duplicate_path(path);
+		dir = ft_strtok_r(path_dup, ":", &save_ptr);
+		while (dir)
+		{
+			full_path = build_full_path(dir, type->cmd);
+			if (check_access_and_set(full_path, type, &path_dup))
+				return (0);
+			dir = ft_strtok_r(NULL, ":", &save_ptr);
+		}
+		last_status(127);
+		printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+		free(path_dup);
 	}
-	printf("minishell: %s: %s\n", strerror(errno), type->cmd);
-	free(path_dup);
+	return (1);
 }
 
 void	setup_io_redirection(t_types *type)
@@ -63,20 +82,6 @@ void	setup_io_redirection(t_types *type)
 			exit_with_error("dup2 fd_out failed");
 		close(type->fd[1]);
 	}
-}
-
-int	check_access_and_set(char *full_path, t_types *type,
-char **path_dup)
-{
-	if (access(full_path, X_OK) == 0)
-	{
-		free(type->cmd);
-		type->cmd = full_path;
-		free(*path_dup);
-		return (1);
-	}
-	free(full_path);
-	return (0);
 }
 
 void	exec_cmd(t_init_input *cmd, t_types *type, char **env)

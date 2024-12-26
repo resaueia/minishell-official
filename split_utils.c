@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/22 01:53:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:16:00 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**types_to_char(t_types *list)
+/*char	**types_to_char(t_types *list)
 {
 	t_types	*temp;
 	char	**cmds;
@@ -39,7 +39,34 @@ char	**types_to_char(t_types *list)
 	}
 	cmds[i] = NULL;
 	return (cmds);
+}*/
+
+char	**types_to_char(t_types *list)
+{
+	t_types	*temp;
+	char	**args;
+	int		i;
+
+	i = 0;
+	temp = list;
+	while (temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	args = (char **)malloc(sizeof(char *) * (i + 1));  // +1 para NULL
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (list)
+	{
+		args[i++] = ft_strdup(list->cmd);  // Copia cada comando
+		list = list->next;
+	}
+	args[i] = NULL;  // Corrige o erro de falta do terminador NULL
+	return (args);
 }
+
 
 static int	count_cmds(t_envp *commands)
 {

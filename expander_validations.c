@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:08:04 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:18:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 13:29:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,21 @@ int	has_dol(char *cmd)
 
 int	validate_before_dollar(char *str, int i)
 {
-	if (str[i - 1] == '&' || str[i - 1] == '!')
-		return (0);
-	if (str[i - 1] == '(' || str[i - 1] == ')')
+	if (i == 0)
+		return (1);
+	else if (i > 0)
 	{
-		printf("minishell: syntax error near unexpected token");
-		if (str[i - 1] == '(')
-			printf(" `%s'\n", &str[i]);
-		else if (str[i - 1] == ')')
-			printf(" `%c'\n", str[i - 1]);
+		if (str[i - 1] == '&' || str[i - 1] == '!')
 		return (0);
+		if (str[i - 1] == '(' || str[i - 1] == ')')
+		{
+			printf("minishell: syntax error near unexpected token");
+			if (str[i - 1] == '(')
+				printf(" `%s'\n", &str[i]);
+			else if (str[i - 1] == ')')
+				printf(" `%c'\n", str[i - 1]);
+			return (0);
+		}
 	}
 	return (1);
 }

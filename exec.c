@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 04:35:10 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:55:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	execute_command(t_types *type, t_envp *env_list,
 {
 	if (!type)
 		return ;
-	find_command_path(type, env_list);
+	if (find_command_path(type, env_list))
+		return ;
 	exec_cmd(input_list, type, env);
 	clear_heredoc_files();
 }
@@ -94,7 +95,11 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		execute_command(type, env_list, input_list, env);
 	fd_closer(input_list, type);
 	free_from_split(env);
-	free_list(input_list);
+	if (input_list)
+	{
+		free_list(input_list);
+		input_list = NULL;
+	}
 	free_types(&type);
 	return (0);
 }

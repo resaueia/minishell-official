@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 02:55:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 13:14:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 	args_of_cmds(types);
 	lets_expander(types, env_list, last_status(-1));
 	remove_quotes_from_types(types);
-	input_list->exit_status = to_exec(input_list, types, env_list);
+	if (to_exec(input_list, types, env_list))
+		input_list = NULL;
 }

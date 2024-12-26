@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 16:01:10 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:54:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void					execute_builtin(t_envp *envp, t_init_input *list,
 void					exec_cmd(t_init_input *cmd, t_types *type, char **env);
 void					execute_command(t_types *type, t_envp *env_list,
 							t_init_input *input_list, char **env);
-void					find_command_path(t_types *type, t_envp *env_list);
+int						find_command_path(t_types *type, t_envp *env_list);
 void					clear_heredoc_files(void);
 
 /* EXPANDER */

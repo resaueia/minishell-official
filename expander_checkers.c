@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:29:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 13:58:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,26 @@ static void	remove_backslashes(char *str)
 	*dst = '\0';
 }
 
+static char	*its_time_to_expander(char *cmd, t_envp *env_list, int exit_status)
+{
+	int	len;
+	int	i;
+	
+	i = 0;
+	len = ft_strlen(cmd);
+	while (i < len)
+	{
+		if (cmd[i] == '$')
+		{
+			cmd = to_expander(cmd, i, env_list, exit_status);
+			len = ft_strlen(cmd);  // Atualizar tamanho após expansão
+			i = -1;                // Reiniciar o loop para nova análise
+		}
+		i++;
+	}
+	return (cmd);
+}
+
 static char	*expander_or_not(char *cmd, t_envp *env_list, int exit_status)
 {
 	int	i;
@@ -78,24 +98,19 @@ static char	*expander_or_not(char *cmd, t_envp *env_list, int exit_status)
 	remove_backslashes(cmd);
 	while (cmd[i])
 	{
+		if (cmd[i] == '\'')
+		{
+			rmv_sg_qts(&cmd);
+			return (cmd);
+		}
 		if (cmd[i] == '\"')
 		{
 			rmv_db_qts(&cmd);
 			break ;
 		}
-		else if (cmd[i] == '\'')
-		{
-			rmv_sg_qts(&cmd);
-			return (cmd);
-		}
 		i++;
 	}
-	i = -1;
-	while (cmd[++i])
-	{
-		if (cmd[i] == '$')
-			cmd = to_expander(cmd, i, env_list, exit_status);
-	}
+	cmd = its_time_to_expander(cmd, env_list, exit_status);
 	return (cmd);
 }
 
