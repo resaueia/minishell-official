@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/27 20:24:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 15:54:48 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,19 @@ int	find_command_path(t_types *type, t_envp *env_list)
 		printf("minishell: No such file or directory: %s\n", type->cmd);
 		return (1);
 	}
-	else
+	path_dup = duplicate_path(path);
+	free(path);
+	dir = ft_strtok_r(path_dup, ":", &save_ptr);
+	while (dir)
 	{
-		path_dup = duplicate_path(path);
-		free(path);
-		dir = ft_strtok_r(path_dup, ":", &save_ptr);
-		while (dir)
-		{
-			full_path = build_full_path(dir, type->cmd);
-			if (check_access_and_set(full_path, type, &path_dup))
-				return (0);
-			dir = ft_strtok_r(NULL, ":", &save_ptr);
-		}
-		last_status(127);
-		printf("minishell: %s: %s\n", strerror(errno), type->cmd);
-		free(path_dup);
+		full_path = build_full_path(dir, type->cmd);
+		if (check_access_and_set(full_path, type, &path_dup))
+			return (0);
+		dir = ft_strtok_r(NULL, ":", &save_ptr);
 	}
+	last_status(127);
+	printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+	free(path_dup);
 	return (1);
 }
 

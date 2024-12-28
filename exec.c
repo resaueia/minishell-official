@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/27 22:49:43 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:06:23 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,21 @@ void	execute_command(t_types *type, t_envp *env_list,
 {
 	if (!type)
 		return ;
-	if (find_command_path(type, env_list))
+	if (type->cmd[0] == '.' || type->cmd[0] == '/')
+	{
+		if (access(type->cmd, X_OK) != 0)
+		{
+			if (errno == EACCES)
+				printf("minishell: %s: Permission denied\n", type->cmd);
+			else if (errno == ENOENT)
+				printf("minishell: %s: No such file or directory\n", type->cmd);
+			else
+				printf("minishell: %s: %s\n", strerror(errno), type->cmd);
+			last_status(127);
+			return ;
+		}
+	}
+	else if (find_command_path(type, env_list))
 		return ;
 	exec_cmd(input_list, type, env);
 	clear_heredoc_files();
