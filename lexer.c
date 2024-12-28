@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/27 22:49:09 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 00:02:03 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,36 @@ int	to_quotes(char c, int quotes)
 	return (quotes);
 }
 
+static int	counter(char *input)
+{
+	int	count = 0;
+    int	i = 0;
+
+    while (input[i])
+    {
+        if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+        {
+            count += 2;  // Um delimitador antes e outro depois
+            if (input[i + 1] == input[i])  // Caso de '>>' ou '<<'
+            {
+                count++;
+                i++;  // Pula o próximo operador duplicado
+            }
+        }
+        i++;
+    }
+    return (count);
+}
+
 static char	*to_replace(char *input, int position)
 {
 	char	*ret;
 	int		i;
 	int		j;
+	int		len;
 
-	ret = (char *)malloc((ft_strlen(input) + 1) * sizeof (char));
+	len = ft_strlen(input) + counter(input) + 1;
+	ret = (char *)malloc(len * sizeof (char));
 	if (!ret)
 		return (NULL);
 	i = -1;
@@ -50,7 +73,7 @@ static char	*to_replace(char *input, int position)
 	if (input[i] == input[i - 1] && input[i] != '|')
 		ret[j++] = input[i++];
 	ret[j++] = 29;
-	while (input[i])
+	while (input[i] && j < len)
 		ret[j++] = input[i++];
 	ret[j] = '\0';
 	input = free_char_ptr(input);
