@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 18:42:51 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/27 21:57:55 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 		handle_cd_special_paths(path, "HOME", env_list);
 	else if (*path == '-')
 		handle_cd_special_paths(path, "OLDPWD", env_list);
+	free(path);
 }
 
 /* Function: ft_cd

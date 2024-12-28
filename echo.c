@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:40:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/27 20:15:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/27 21:57:03 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ char	*args_to_str(t_types *args)
 
 	temp = args;
 	if (temp->next == NULL)
-	{
-		str = ft_strdup("");
-		return (str);
-	}
+		return (ft_strdup(""));
 	if (temp->type == 3 && temp->next)
 		temp = temp->next;
 	str = ft_strdup(temp->cmd);
@@ -40,33 +37,6 @@ char	*args_to_str(t_types *args)
 	}
 	return (str);
 }
-
-/*char	*args_to_str(t_types *args)
-{
-	char	*str;
-	char	*temp_str;
-	t_types	*temp;
-
-	temp = args;
-	if (temp->next == NULL)
-		return (ft_strdup(""));
-	if (temp->type == 3 && temp->next)
-		temp = temp->next;
-	str = ft_strdup(temp->cmd);
-	temp = temp->next;
-	while (temp && temp->type == 20)
-	{
-		temp_str = str;  // Salva o ponteiro original
-		str = ft_strjoin(str, " ");
-		free(temp_str);  // Libera a string anterior
-		temp_str = str;  // Salva o novo ponteiro
-		str = ft_strjoin(str, temp->cmd);
-		free(temp_str);  // Libera novamente após nova alocação
-		temp = temp->next;
-	}
-	return (str);
-}*/
-
 
 // Handles "-n" flag logic for ft_echo
 static int	handle_newline_flag(char **args)

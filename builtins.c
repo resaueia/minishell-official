@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:45:16 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/27 22:05:25 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,39 +24,6 @@ void	ft_pwd(int fd_out)
 	else
 		perror("getcwd() incurred in unexpected error");
 }
-
-/*void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
-{
-	(void)env_list;
-	char	*args;
-	int		newline;
-	char	*tmp;
-
-	newline = 1;
-	if (cmds->cmd == NULL || cmds->next == NULL)
-	{
-		ft_putstr_fd("\n", fd_out);
-		return ;
-	}
-	args = args_to_str(cmds);
-	if (ft_strncmp(args, "-n", 2) == 0)
-	{
-		tmp = args;
-		args++;
-		while (*args == 'n')
-			args++;
-		if (*args == ' ' || *args == '\0')
-		{
-			newline = 0;
-			args++;
-		}
-		else
-			args = tmp;
-	}
-	ft_putstr_fd(args, fd_out);
-	if (newline == 1)
-		ft_putchar_fd('\n', fd_out);
-}*/
 
 static int	validate_export(char *arg)
 {
@@ -133,9 +100,11 @@ void	ft_unset(t_types *cmds, t_envp **env_list)
 			free(current->key);
 			free(current->value);
 			free(current);
+			free(var);
 			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
+	free(var);
 }
