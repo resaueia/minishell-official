@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 19:52:51 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/27 20:22:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*to_replace(char *input, int position)
 	if (input[i] == input[i - 1] && input[i] != '|')
 		ret[j++] = input[i++];
 	ret[j++] = 29;
-	while (input[i])
+	while (input[i] && j < (int)ft_strlen(input))
 		ret[j++] = input[i++];
 	ret[j] = '\0';
 	input = free_char_ptr(input);

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/26 14:55:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/27 21:44:38 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 	if (is_exec(type))
 		execute_command(type, env_list, input_list, env);
 	fd_closer(input_list, type);
-	free_from_split(env);
 	if (input_list)
 	{
 		free_list(input_list);
 		input_list = NULL;
 	}
 	free_types(&type);
+	free_from_split(env);
 	return (0);
 }

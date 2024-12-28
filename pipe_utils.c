@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:18:28 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/27 21:45:56 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
+/*void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 {
 	t_types	*temp;
 	char	**args;
@@ -34,7 +34,7 @@ void	exec_cmd_pipe(t_init_input *cmd, t_types *type, char **env)
 		perror("Execution has failed");
 		exit(EXIT_FAILURE);
 	}
-}
+}*/
 
 static void	split_and_insert(t_types **types, char **cmds)
 {

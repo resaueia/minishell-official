@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/26 14:55:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/27 20:24:19 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	find_command_path(t_types *type, t_envp *env_list)
 	else
 	{
 		path_dup = duplicate_path(path);
+		free(path);
 		dir = ft_strtok_r(path_dup, ":", &save_ptr);
 		while (dir)
 		{

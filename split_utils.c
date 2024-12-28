@@ -6,40 +6,11 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/26 14:16:00 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/27 20:27:11 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*char	**types_to_char(t_types *list)
-{
-	t_types	*temp;
-	char	**cmds;
-	int		i;
-	int		count;
-
-	temp = list;
-	i = 0;
-	count = 0;
-	while (temp && temp->type != 11)
-	{
-		count++;
-		temp = temp->next;
-	}
-	cmds = (char **)malloc(sizeof(char *) * count + 1);
-	if (!cmds)
-		return (NULL);
-	temp = list;
-	while (temp && temp->type != 11)
-	{
-		cmds[i] = ft_strdup(temp->cmd);
-		temp = temp->next;
-		i++;
-	}
-	cmds[i] = NULL;
-	return (cmds);
-}*/
 
 char	**types_to_char(t_types *list)
 {

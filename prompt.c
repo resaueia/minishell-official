@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:57:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/27 21:39:35 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ void	prompt(char **envp)
 			continue ;
 		process_command(prompt, input_list, env_list);
 	}
+	free_env(env_list);
 }
