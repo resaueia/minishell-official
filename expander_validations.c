@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_validations.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:08:04 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:18:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/24 17:17:26 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	has_dol(char *cmd)
 
 int	validate_before_dollar(char *str, int i)
 {
+	if (i <= 0)
+		return (1);
 	if (str[i - 1] == '&' || str[i - 1] == '!')
 		return (0);
 	if (str[i - 1] == '(' || str[i - 1] == ')')

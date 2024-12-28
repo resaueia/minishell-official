@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 22:42:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 15:05:02 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*build_full_path(char *dir, char *cmd)
 	return (full_path);
 }
 
-void	find_command_path(t_types *type, t_envp *env_list)
+int	find_command_path(t_types *type, t_envp *env_list)
 {
 	char	*path;
 	char	*path_dup;
@@ -34,19 +34,21 @@ void	find_command_path(t_types *type, t_envp *env_list)
 	{
 		last_status(127);
 		printf("minishell: %s: %s\n", strerror(errno), type->cmd);
-		return ;
+		return (1);
 	}
 	path_dup = duplicate_path(path);
+	free(path);
 	dir = ft_strtok_r(path_dup, ":", &save_ptr);
 	while (dir)
 	{
 		full_path = build_full_path(dir, type->cmd);
 		if (check_access_and_set(full_path, type, &path_dup))
-			return ;
+			return (0);
 		dir = ft_strtok_r(NULL, ":", &save_ptr);
 	}
 	printf("minishell: %s: %s\n", strerror(errno), type->cmd);
 	free(path_dup);
+	return (1);
 }
 
 void	setup_io_redirection(t_types *type)
@@ -79,7 +81,7 @@ char **path_dup)
 	return (0);
 }
 
-void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
+void	exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
 {
 	char	**args;
 	pid_t	pid;
@@ -94,7 +96,14 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 	{
 		setup_io_redirection(type);
 		if (execve(type->cmd, args, env) == -1)
+		{
+			args = free_from_split(args);
+			free_list(cmd);
+			free_list_args(env);
+			free_types(&type);
+			free_env(env_list);
 			exit(127);
+		}
 	}
 	else
 	{
@@ -102,5 +111,5 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 		status = WEXITSTATUS(status);
 		last_status(status);
 	}
-	free_from_split(args);
+	args = free_from_split(args);
 }

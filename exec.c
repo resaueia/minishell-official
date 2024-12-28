@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 04:35:10 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 15:16:11 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -23,8 +23,8 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 	}
 	if (check_node(type))
 	{
-		free_list(input_list);
-		free_types(&type);
+		//free_list(input_list);
+		//free_types(&type);
 		clear_heredoc_files();
 	}
 	return (0);
@@ -34,6 +34,12 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 // Função auxiliar para tratar pipes
 int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 {
+
+	if (type)
+	{
+		free_types(&type);
+		type = NULL;
+	}
 	if (setup_pipeline(input_list, env_list) == -1)
 	{
 		perror("Error setting up pipeline");
@@ -41,8 +47,9 @@ int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 		free_types(&type);
 		return (-1);
 	}
-	free_list(input_list);
-	free_types(&type);
+	fd_closer(input_list, type);
+	if (input_list)
+		free_list(input_list);
 	return (0);
 }
 
@@ -72,8 +79,8 @@ void	execute_command(t_types *type, t_envp *env_list,
 {
 	if (!type)
 		return ;
-	find_command_path(type, env_list);
-	exec_cmd(input_list, type, env);
+	if (!find_command_path(type, env_list))
+		exec_cmd(input_list, type, env, env_list);
 	clear_heredoc_files();
 }
 
@@ -81,20 +88,27 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
 	char	**env;
 
-	env = env_to_char(env_list);
+	env = NULL;
 	if (is_hdoc(type) && handle_heredoc(input_list, type) == -1)
 		return (-1);
 	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
+	{
 		return (-1);
+	}
 	if (is_pp(type))
 		return (handle_pipeline(input_list, env_list, type));
 	if (is_btin(type))
 		execute_builtin(env_list, input_list, type);
 	if (is_exec(type))
+	{
+		env = env_to_char(env_list);
 		execute_command(type, env_list, input_list, env);
+		env = free_from_split(env);
+	}
 	fd_closer(input_list, type);
-	free_from_split(env);
-	free_list(input_list);
-	free_types(&type);
+	if (input_list)
+		free_list(input_list);
+	if (type)
+		free_types(&type);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/22 01:53:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:41:05 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**types_to_char(t_types *list)
 		count++;
 		temp = temp->next;
 	}
-	cmds = (char **)malloc(sizeof(char *) * count + 1);
+	cmds = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!cmds)
 		return (NULL);
 	temp = list;

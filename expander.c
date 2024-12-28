@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:04:31 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:27:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/24 17:10:59 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	*to_expander(char *str, int i, t_envp *env, int exit_status)
 				expanded = env_var_expander(str, i, env);
 				if (*expanded == '(' || *expanded == ')')
 					return (ft_strdup(""));
+				// free(str);
+				// str = expanded;
 				return (expanded);
 			}
 		}

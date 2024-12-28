@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:40:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 20:11:43 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/24 17:56:16 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*args_to_str(t_types *args)
 	temp = temp->next;
 	while (temp && temp->type == 20)
 	{
-		str = ft_strjoin(str, " ");
-		str = ft_strjoin(str, temp->cmd);
+		str = ft_strjoin_free(str, " ");
+		str = ft_strjoin_free(str, temp->cmd);
 		temp = temp->next;
 	}
 	return (str);
@@ -40,8 +40,11 @@ char	*args_to_str(t_types *args)
 static int	handle_newline_flag(char **args)
 {
 	char	*tmp;
+	char	*new_args;
 
 	tmp = *args;
+	if (ft_strlen(*args) == 0)
+		return (1);
 	if (ft_strncmp(*args, "-n", 2) == 0)
 	{
 		(*args)++;
@@ -50,6 +53,11 @@ static int	handle_newline_flag(char **args)
 		if (**args == ' ' || **args == '\0')
 		{
 			(*args)++;
+			new_args = ft_strdup(*args);
+			free(tmp);
+			if (!new_args)
+				return (1);
+			*args = new_args;
 			return (0);
 		}
 		*args = tmp;
@@ -72,6 +80,7 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	int		newline;
 
 	(void)env_list;
+	args = NULL;
 	if (!cmds->cmd || !cmds->next)
 	{
 		ft_putstr_fd("\n", fd_out);
@@ -80,6 +89,11 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	args = args_to_str(cmds);
 	newline = handle_newline_flag(&args);
 	echo_output(args, newline, fd_out);
+	if (args)
+	{
+		free(args);
+		args = NULL;
+	}
 }
 
 /*

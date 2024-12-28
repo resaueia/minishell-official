@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:57:19 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 14:27:37 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -25,7 +25,7 @@ static int	handle_empty_or_exit(char *prompt, t_init_input *input_list,
 		free(prompt);
 		return (1);
 	}
-	if (ft_strncmp(prompt, "exit", 4) == 0)
+	if (ft_strncmp(prompt, "exit", 3) == 0)
 	{
 		exit_shell(prompt, NULL, input_list, env_list);
 		return (1);
@@ -41,6 +41,8 @@ static void	exec_shell(char *prompt_dup, t_init_input *input_list,
 	else
 	{
 		last_status(2);
+		free(prompt_dup);
+		prompt_dup = NULL;
 		printf("minishell: syntax error\n");
 	}
 }
@@ -55,7 +57,7 @@ static void	process_command(char *prompt, t_init_input *input_list,
 		prompt_dup = ft_strdup(prompt);
 	exec_shell(prompt_dup, input_list, env_list);
 	free(prompt);
-	free(prompt_dup);
+	prompt = NULL;
 }
 
 void	prompt(char **envp)

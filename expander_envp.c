@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_envp.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:20:21 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 20:27:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/24 16:38:03 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static char	*rebd_str(char *prefix, char *expanded, char *suffix, char *old)
 	if (pre_temp[0] == '*')
 		pre_temp++;
 	temp = ft_strjoin(pre_temp, expanded);
+	free(expanded);
 	if (*pre_temp == '#')
 		new_str = ft_strdup("");
 	else

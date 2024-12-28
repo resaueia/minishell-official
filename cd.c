@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 18:42:51 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/26 18:38:18 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -26,11 +26,13 @@ static void	handle_cd_special_paths(char *path, char *src, t_envp **env_list)
 static void	handle_cd_path_change(char *path, t_envp **env_list)
 {
 	char	cwd[1024];
+	char	*tmp_path;
 
 	if (chdir(path) == 0)
 	{
 		getcwd(cwd, sizeof(cwd));
-		change_path(cwd, "PWD", env_list);
+		tmp_path = change_path(cwd, "PWD", env_list);
+		free(tmp_path);
 		last_status(0);
 	}
 	else
@@ -48,6 +50,7 @@ static void	handle_cd_path_change(char *path, t_envp **env_list)
 void	ft_cd(t_types *cmds, t_envp **env_list)
 {
 	char	*path;
+	char	*tmp;
 
 	check_args(cmds);
 	path = args_to_str(cmds);
@@ -59,13 +62,18 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	else if (ft_strlen(path) >= 2)
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
-			path = joinpath(path + 2, "HOME", env_list);
+		{
+			tmp = joinpath(path + 2, "HOME", env_list);
+			free(path);
+			path = tmp;
+		}
 		handle_cd_path_change(path, env_list);
 	}
 	else if (!*path || *path == '~')
 		handle_cd_special_paths(path, "HOME", env_list);
 	else if (*path == '-')
 		handle_cd_special_paths(path, "OLDPWD", env_list);
+	free(path);
 }
 
 /* Function: ft_cd

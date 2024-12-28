@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:50:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 01:14:59 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/26 15:09:40 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ static void	execute_individual_builtin(t_envp *env_list, t_init_input *list,
 	}
 	else if (ft_strcmp(types->cmd, "pwd") == 0)
 		ft_pwd(STDOUT_FILENO);
-	else if (ft_strncmp(types->cmd, "echo", 4) == 0)
-		ft_echo(types, &tmp, STDOUT_FILENO);
 	else if (ft_strncmp(types->cmd, "cd", 2) == 0)
 		ft_cd(types, &tmp);
+	else if (ft_strncmp(types->cmd, "echo", 4) == 0)
+		ft_echo(types, &tmp, STDOUT_FILENO);
 	else if (ft_strncmp(types->cmd, "export", 6) == 0)
 		ft_export(types, &tmp);
 	else if (ft_strncmp(types->cmd, "unset", 5) == 0)

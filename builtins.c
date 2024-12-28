@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 18:59:21 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:45:16 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:35:27 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_pwd(int fd_out)
 		perror("getcwd() incurred in unexpected error");
 }
 
-/*void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out) 
+/*void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 {
 	(void)env_list;
 	char	*args;
@@ -133,6 +133,7 @@ void	ft_unset(t_types *cmds, t_envp **env_list)
 			free(current->key);
 			free(current->value);
 			free(current);
+			free(var);
 			return ;
 		}
 		prev = current;

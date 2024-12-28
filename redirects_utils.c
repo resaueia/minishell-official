@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 22:12:24 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 16:16:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/25 14:42:27 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	remove_node(t_types **head)
 			if (node == *head)
 				*head = node->next;
 			free(node->cmd);
-			if (node)
-				node = NULL;
+			node->cmd = NULL;
+			free(node);
+			node = NULL;
 		}
 		node = temp_node;
 	}

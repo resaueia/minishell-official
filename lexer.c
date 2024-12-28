@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/20 19:52:51 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:47:27 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*to_replace(char *input, int position)
 	int		i;
 	int		j;
 
-	ret = (char *)malloc((ft_strlen(input) + 1) * sizeof (char));
+	ret = (char *)malloc((ft_strlen(input) + 4)* sizeof(char));
 	if (!ret)
 		return (NULL);
 	i = -1;

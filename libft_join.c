@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_join.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:00:00 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 01:31:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:51:43 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ char	*ft_strjoin(char *s1, char *s2)
 char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*new_str;
-
+	
 	new_str = ft_strjoin(s1, s2);
 	free(s1);
+	s1 = NULL;
 	return (new_str);
 }
 

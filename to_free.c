@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   to_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 16:19:59 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:10:23 by thfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,19 @@ char	**free_from_split(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	while (str[i])
 	{
-		str[i] = free_char_ptr(str[i]);
+		if (str[i])
+		{
+			free(str[i]);
+			str[i] = NULL;
+		}
 		i++;
 	}
 	free(str);
+	str = NULL;
 	return (NULL);
 }
 
@@ -45,18 +52,53 @@ char	**free_from_split(char **str)
  * Iterates through a linked list of t_init_input, freeing the string
  * and each node one by one.
  */
-void	free_list(t_init_input *list)
+// void	free_list(t_init_input *list)
+// {
+// 	while (list)
+// 	{
+// 		if (list->string)
+// 			free(list->string);
+// 		if (list)
+// 			free(list);
+// 		list = list->next;
+// 	}
+// }
+void	free_list_args(char **args)
 {
-	while (list)
+	int	i;
+
+	if (!args)
+		return ;
+	i = 0;
+	while (args[i])
 	{
-		if (list->string)
-			free(list->string);
-		if (list)
-			free(list);
-		list = list->next;
+		free(args[i]);
+		args[i] = NULL;
+		i++;
 	}
+	free(args);
+	args = NULL;
 }
 
+void	free_list(t_init_input *list)
+{
+	t_init_input	*temp;
+
+	if (!list)
+		return ;
+	while (list)
+	{
+		temp = list->next;
+		if (list->string)
+		{
+			free(list->string);
+			list->string = NULL;
+		}
+		free_list_args(list->args);
+		free(list);
+		list = temp;
+	}
+}
 /* Function: free_types
  * Iterates through a linked list of t_types, freeing the cmd field
  * and each node individually.

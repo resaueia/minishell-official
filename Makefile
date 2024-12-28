@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
+#    By: thaismeneses <thaismeneses@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/22 04:43:01 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/22 18:05:51 by thaismenese      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	cc $(FLAGS) $(OBJS) -o $(NAME) -lreadline
-	
+
 %.o: %.c $(HEADER)
 	cc $(FLAGS) -c $<
 
@@ -94,6 +94,6 @@ re: fclean all
 
 
 hell: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=rl.supp ./minishell 
+	valgrind --show-leak-kinds=all --leak-check=full --track-origins=yes --track-fds=yes --suppressions=r1.supp -s ./minishell
 
 .PHONY: all clean fclean re

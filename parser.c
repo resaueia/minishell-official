@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 02:55:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 14:42:25 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -82,6 +82,8 @@ void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 	cmds = lexer(prompt);
 	input_list = delim_split(prompt);
 	include_fds(input_list);
+	free(prompt);
+	prompt = NULL;
 	i = -1;
 	while (cmds[++i])
 	{
@@ -95,5 +97,5 @@ void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 	args_of_cmds(types);
 	lets_expander(types, env_list, last_status(-1));
 	remove_quotes_from_types(types);
-	input_list->exit_status = to_exec(input_list, types, env_list);
+	to_exec(input_list, types, env_list);
 }

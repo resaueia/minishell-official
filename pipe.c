@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/22 16:37:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 15:07:59 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -50,9 +50,7 @@ static t_init_input	*handle_parent_process(t_init_input *current)
 static void	handle_child_process(t_init_input *current,
 		t_init_input *input_list, t_types *types, t_envp *env_list)
 {
-	int	last_exit_status;
 
-	(void)last_exit_status;
 	if (current == input_list)
 	{
 		dup2(current->fd_out, STDOUT_FILENO);
@@ -70,7 +68,8 @@ static void	handle_child_process(t_init_input *current,
 		dup2(current->fd_in, STDIN_FILENO);
 		close(current->fd_in);
 	}
-	last_exit_status = process_pipe(current, types, env_list);
+	process_pipe(current, types, env_list);
+	free_types(&types);
 	exit(EXIT_SUCCESS);
 }
 
@@ -114,5 +113,6 @@ int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 		current = handle_parent_process(current);
 	}
 	wait_for_children();
+	free_types(&types);
 	return (0);
 }
