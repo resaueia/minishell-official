@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:39:17 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 20:11:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:06:50 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,19 @@ int	process_single_heredoc(t_types *type, t_types *head)
 	return (0);
 }
 
+static void	free_heredoc_delims(char **delim)
+{
+	int	i = 0;
+	if (!delim)
+		return;
+	while (delim[i])
+	{
+		free(delim[i]);
+		i++;
+	}
+	free(delim);
+}
+
 /* Function: process_multiple_heredocs
  * Handles the setup and processing of multiple heredocs, updating
  * the file descriptor with the temporary file.
@@ -128,5 +141,6 @@ int	process_multiple_heredocs(t_types *type, t_types *head,
 		}
 		type = type->next;
 	}
+	free_heredoc_delims(delim);
 	return (0);
 }

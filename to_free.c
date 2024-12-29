@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 21:00:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:00:17 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*free_char_ptr(char *ptr)
  * Frees an array of strings (result of a split function), including each
  * individual string, and sets the array pointer to NULL.
  */
-char	**free_from_split(char **str)
+/*char	**free_from_split(char **str)
 {
 	int	i;
 
@@ -47,7 +47,26 @@ char	**free_from_split(char **str)
 	free(str);
 	str = NULL;
 	return (NULL);
+}*/
+
+char	**free_from_split(char **str)
+{
+	int	i;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);  // Libera cada string
+		str[i] = NULL;
+		i++;
+	}
+	free(str);  // Libera o array de ponteiros
+	str = NULL;
+	return (NULL);
 }
+
 
 /* Function: free_list
  * Iterates through a linked list of t_init_input, freeing the string
@@ -89,22 +108,17 @@ void free_list(t_init_input *list)
  */
 void	free_types(t_types **head)
 {
-	t_types	*current;
-	t_types	*next_node;
+	t_types	*tmp;
 
 	if (!head || !*head)
 		return ;
-	current = *head;
-	while (current)
+	while (*head)
 	{
-		next_node = current->next;
-		if (current->cmd)
-		{
-			free(current->cmd);
-			current->cmd = NULL;
-		}
-		free(current);
-		current = next_node;
+		tmp = (*head)->next;
+        if ((*head)->cmd)
+            free((*head)->cmd);  // Libera a string duplicada
+        free(*head);
+        *head = tmp;
 	}
 	*head = NULL;
 }

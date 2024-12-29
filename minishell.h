@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 20:02:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:56:42 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct s_init_input
 	char				**args;
 	int					fd_in;
 	int					fd_out;
-	int					exit_status;
 	t_token				token;
 	t_types				*types;
 	struct s_init_input	*prev;

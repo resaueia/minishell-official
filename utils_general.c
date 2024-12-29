@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:36:08 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:28:24 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 22:01:06 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_the_stack(t_init_input *list)
 int	last_status(int new_status)
 {
 	static int	status;
-
+	
 	if (new_status > -1)
 		status = new_status;
 	return (status);

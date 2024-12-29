@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:35:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:45:48 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/28 22:02:05 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	handle_ctrl_d_sig(t_init_input *input_list, t_envp *env_list)
 	rl_clear_history();
 	free_env(env_list);
 	free_list(input_list);
+	last_status(0);
 	exit(0);
 }
 

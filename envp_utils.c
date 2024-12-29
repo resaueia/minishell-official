@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:44:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 19:43:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:48:41 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,13 @@ int	is_key(char *key, t_envp *head)
 char	*get_value(char *name, t_envp *list)
 {
 	t_envp	*current;
-	char	*new_value;
 
 	current = list;
-	new_value = NULL;
 	while (current)
 	{
 		if (ft_strcmp(current->key, name) == 0)
-		{
-			new_value = ft_strdup(current->value);
-			break ;
-		}
+			return(ft_strdup(current->value));
 		current = current->next;
 	}
-	return (new_value);
+	return (NULL);
 }

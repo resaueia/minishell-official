@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:06:59 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 21:01:17 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:57:50 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_init_input	*add_node(char *input, t_token token)
 	new_node->types = NULL;
 	new_node->prev = NULL;
 	new_node->next = NULL;
-	new_node->exit_status = 0;
 	return (new_node);
 }
 

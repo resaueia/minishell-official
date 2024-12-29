@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 19:34:47 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:40:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	handle_cd_path_change(char *path, t_envp **env_list)
 void	ft_cd(t_types *cmds, t_envp **env_list)
 {
 	char	*path;
+	char	*tmp_pwd;
 
 	check_args(cmds);
 	path = args_to_str(cmds);
@@ -59,7 +60,11 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	else if (ft_strlen(path) >= 2)
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
-			path = joinpath(path + 2, "HOME", env_list);
+		{
+			tmp_pwd = joinpath(path + 2, "HOME", env_list);
+			free(path);
+			path = tmp_pwd;
+		}
 		handle_cd_path_change(path, env_list);
 	}
 	else if (!*path || *path == '~')

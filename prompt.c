@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 21:04:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 22:22:08 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	handle_empty_or_exit(char *prompt, t_init_input *input_list,
 		t_envp *env_list)
 {
-	if (!prompt || prompt[0] == '\0')
+	if (!prompt)
 	{
 		exit_shell(NULL, NULL, input_list, env_list);
 		return (1);
@@ -68,14 +68,10 @@ void	prompt(char **envp)
 
 	env_list = get_envp(envp);
 	input_list = init_list();
+	last_status(0);
 	while (1)
 	{
 		prompt = readline("minishell> ");
-		if (!prompt)
-		{
-			exit_shell(NULL, NULL, input_list, env_list);
-			break ;
-		}
 		if (handle_empty_or_exit(prompt, input_list, env_list))
 			continue ;
 		process_command(prompt, input_list, env_list);

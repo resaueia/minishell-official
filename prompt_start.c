@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:56:49 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/21 19:59:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 22:28:41 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_init_input	*init_list(void)
 	list->args = NULL;
 	list->fd_in = 0;
 	list->fd_out = 1;
-	list->exit_status = 0;
 	list->token = (t_token){0};
 	list->types = NULL;
 	list->prev = NULL;
