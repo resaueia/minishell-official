@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:00:00 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/22 01:31:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:52:24 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!new)
 		return (0);
 	i = 0;
-	while (s1[i])
+	while (s1 && s1[i])
 	{
 		new[i] = s1[i];
 		i++;
 	}
 	j = 0;
-	while (s2[j])
+	while (s2 && s2[j])
 	{
 		new[i] = s2[j];
 		i++;
@@ -70,6 +70,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 
 	new_str = ft_strjoin(s1, s2);
 	free(s1);
+	s1 = NULL;
 	return (new_str);
 }
 

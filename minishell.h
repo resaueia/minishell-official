@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/26 14:54:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:02:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,6 +301,7 @@ char					*args_to_str(t_types *args);
 /* TO FREE */
 char					*free_char_ptr(char *ptr);
 char					**free_from_split(char **str);
+void					free_list_args(char **args);
 void					free_list(t_init_input *list);
 void					free_types(t_types **types);
 void					free_env(t_envp *env_list);

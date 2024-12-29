@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 15:54:48 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:08:43 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 	{
 		setup_io_redirection(type);
 		if (execve(type->cmd, args, env) == -1)
+		{
+			args = free_from_split(args);
 			exit(127);
+		}
 	}
 	else
 	{
@@ -105,5 +108,5 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 		status = WEXITSTATUS(status);
 		last_status(status);
 	}
-	free_from_split(args);
+	args = free_from_split(args);
 }

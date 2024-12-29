@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 16:06:23 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 19:48:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 	}
 	if (check_node(type))
 	{
-		free_list(input_list);
-		free_types(&type);
+		//free_list(input_list);
+		//free_types(&type);
 		clear_heredoc_files();
 	}
 	return (0);
@@ -34,6 +34,11 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 // Função auxiliar para tratar pipes
 int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 {
+	if (type)
+	{
+		free_types(&type);
+		type = NULL;
+	}
 	if (setup_pipeline(input_list, env_list) == -1)
 	{
 		perror("Error setting up pipeline");
@@ -41,8 +46,11 @@ int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 		free_types(&type);
 		return (-1);
 	}
-	free_list(input_list);
-	free_types(&type);
+	//free_list(input_list);
+	//free_types(&type);
+	fd_closer(input_list, type);
+	if (input_list)
+		free_list(input_list);
 	return (0);
 }
 
@@ -96,7 +104,7 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
 	char	**env;
 
-	env = env_to_char(env_list);
+	env = NULL;
 	if (is_hdoc(type) && handle_heredoc(input_list, type) == -1)
 		return (-1);
 	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
@@ -106,14 +114,15 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 	if (is_btin(type))
 		execute_builtin(env_list, input_list, type);
 	if (is_exec(type))
+	{
+		env = env_to_char(env_list);
 		execute_command(type, env_list, input_list, env);
+		env = free_from_split(env);
+	}
 	fd_closer(input_list, type);
 	if (input_list)
-	{
 		free_list(input_list);
-		input_list = NULL;
-	}
-	free_types(&type);
-	free_from_split(env);
+	if (type)
+		free_types(&type);
 	return (0);
 }

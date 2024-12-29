@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/27 21:10:14 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:00:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,20 @@ char	**free_from_split(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	while (str[i])
 	{
 		str[i] = free_char_ptr(str[i]);
+		if (str[i])
+		{
+			free(str[i]);
+			str[i] = NULL;
+		}
 		i++;
 	}
 	free(str);
+	str = NULL;
 	return (NULL);
 }
 
@@ -61,6 +69,8 @@ void free_list(t_init_input *list)
 {
     t_init_input *tmp;
 
+	/*if (!list)
+		return ;*/
     while (list) 
 	{
         tmp = list;

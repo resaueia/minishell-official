@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/27 22:49:33 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:57:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	insert_types(t_types **head, char *wrd)
 	t_types	*new;
 	t_types	*temp;
 
+	if (!wrd || wrd[0] == '\0')
+		return ;
 	new = (t_types *)malloc(sizeof(t_types));
 	new->cmd = ft_strdup(wrd);
 	new->type = what_type(wrd);
@@ -79,9 +81,13 @@ void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 	int		i;
 	int		j;
 
+	if (!prompt || *prompt == '\0')
+		return ;
 	cmds = lexer(prompt);
 	input_list = delim_split(prompt);
 	include_fds(input_list);
+	free(prompt);
+	prompt = NULL;
 	i = -1;
 	while (cmds[++i])
 	{

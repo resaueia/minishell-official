@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:40:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/27 21:57:03 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 19:37:56 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static int	handle_newline_flag(char **args)
 	char	*tmp;
 
 	tmp = *args;
+	if (ft_strlen(*args) == 0)
+		return (1);
 	if (ft_strncmp(*args, "-n", 2) == 0)
 	{
 		(*args)++;

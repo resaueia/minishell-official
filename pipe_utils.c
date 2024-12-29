@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:38:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/27 21:45:56 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 20:18:30 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	process_pipe(t_init_input *input_list, t_types *types,
 	cmds = free_from_split(cmds);
 	remove_quotes_from_types(types);
 	last_exit_status = to_exec(input_list, types, env_list);
+	free_env(env_list);
 	free(prompt);
 	return (last_exit_status);
 }

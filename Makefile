@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/22 04:43:01 by jparnahy         ###   ########.fr        #
+#    Updated: 2024/12/28 19:31:54 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,6 +94,6 @@ re: fclean all
 
 
 hell: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=rl.supp ./minishell 
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=rl.supp ./minishell
 
 .PHONY: all clean fclean re
