@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   to_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 21:00:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 22:21:04 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -65,24 +65,59 @@ char	**free_from_split(char **str)
 	}
 }*/
 
-void free_list(t_init_input *list)
-{
-    t_init_input *tmp;
+// void free_list(t_init_input *list)
+// {
+//     t_init_input *tmp;
 
-	/*if (!list)
-		return ;*/
-    while (list) 
+// 	/*if (!list)
+// 		return ;*/
+//     while (list)
+// 	{
+//         tmp = list;
+//         list = list->next;
+//         if (tmp->string)
+//             free(tmp->string);
+//         free(tmp);
+//     }
+//     list = NULL;  // <- GARANTE QUE O PONTEIRO É INVALIDADO
+// }
+
+void	free_list_args(char **args)
+{
+	int	i;
+
+	if (!args)
+		return ;
+	i = 0;
+	while (args[i])
 	{
-        tmp = list;
-        list = list->next;
-        if (tmp->string)
-            free(tmp->string);
-        free(tmp);
-    }
-    list = NULL;  // <- GARANTE QUE O PONTEIRO É INVALIDADO
+		free(args[i]);
+		args[i] = NULL;
+		i++;
+	}
+	free(args);
+	args = NULL;
 }
 
+void	free_list(t_init_input *list)
+{
+	t_init_input	*temp;
 
+	if (!list)
+		return ;
+	while (list)
+	{
+		temp = list->next;
+		if (list->string)
+		{
+			free(list->string);
+			list->string = NULL;
+		}
+		free_list_args(list->args);
+		free(list);
+		list = temp;
+	}
+}
 /* Function: free_types
  * Iterates through a linked list of t_types, freeing the cmd field
  * and each node individually.
