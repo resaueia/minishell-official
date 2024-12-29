@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 23:00:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:10:57 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	setup_io_redirection(t_types *type)
 	}
 }
 
-void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
+void	exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
 {
 	char	**args;
 	pid_t	pid;
 	int		status;
 
-	(void)cmd;
+	//(void)cmd;
 	args = types_to_char(type);
 	pid = fork();
 	if (pid == -1)
@@ -98,7 +98,12 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env)
 		setup_io_redirection(type);
 		if (execve(type->cmd, args, env) == -1)
 		{
+			printf("aqui\n");
 			args = free_from_split(args);
+			free_list(cmd);
+			free_list_args(env);
+			free_types(&type);
+			free_env(env_list);
 			exit(127);
 		}
 	}

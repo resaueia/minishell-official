@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 21:56:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:13:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int						to_exec(t_init_input *input_list, t_types *type,
 							t_envp *env_list);
 void					execute_builtin(t_envp *envp, t_init_input *list,
 							t_types *types);
-void					exec_cmd(t_init_input *cmd, t_types *type, char **env);
+void					exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list);
 void					execute_command(t_types *type, t_envp *env_list,
 							t_init_input *input_list, char **env);
 int						find_command_path(t_types *type, t_envp *env_list);
@@ -307,6 +307,8 @@ void					free_env(t_envp *env_list);
 void					fd_closer(t_init_input *input_list, t_types *type);
 void					exit_mini(t_init_input *list, char *prompt,
 							char *prompt_dup, t_envp *env_list);
+void					free_list_args(char **args);
+
 
 /* just suport */
 void					print_the_stack(t_init_input *list);
