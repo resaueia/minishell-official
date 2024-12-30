@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:44:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/21 19:50:28 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2024/12/30 14:53:03 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,13 @@ int	is_key(char *key, t_envp *head)
 char	*get_value(char *name, t_envp *list)
 {
 	t_envp	*current;
-	char	*new_value;
 
 	current = list;
-	new_value = NULL;
 	while (current)
 	{
 		if (ft_strcmp(current->key, name) == 0)
-			new_value = ft_strdup(current->value);
+			return(ft_strdup(current->value));
 		current = current->next;
 	}
-	return (new_value);
+	return (NULL);
 }
