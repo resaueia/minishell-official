@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 23:13:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:49:39 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int						is_whitespace_string(const char *str);
 void					remove_quotes(char **str);
 void					remove_quotes_from_str(char **str);
 void					remove_quotes_from_types(t_types *types);
-void					check_args(t_types *cmds);
+int						check_args(t_types *cmds);
 char					*joinpath(char *path, char *key, t_envp **env_list);
 char					*custom_dup(char *str, int start, int finish);
 char					*ft_strjoin(char *s1, char *s2);

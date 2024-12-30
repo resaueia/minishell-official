@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:36:08 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 22:01:06 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/30 17:10:41 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	last_status(int new_status)
 	return (status);
 }
 
-void	check_args(t_types *cmds)
+int	check_args(t_types *cmds)
 {
 	int		count;
 	t_types	*temp;
@@ -52,6 +52,7 @@ void	check_args(t_types *cmds)
 	{
 		printf("minishell: cd: too many arguments\n");
 		last_status(2);
-		exit(2);
+		return (1);
 	}
+	return (0);
 }

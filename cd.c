@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 21:40:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:51:08 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	char	*path;
 	char	*tmp_pwd;
 
-	check_args(cmds);
+	if (check_args(cmds))
+		return ;
 	path = args_to_str(cmds);
 	if (ft_strlen(path) == 1 && *path == '/')
 	{

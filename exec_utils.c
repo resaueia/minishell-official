@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 23:10:57 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/30 17:36:32 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
 		setup_io_redirection(type);
 		if (execve(type->cmd, args, env) == -1)
 		{
-			printf("aqui\n");
 			args = free_from_split(args);
 			free_list(cmd);
 			free_list_args(env);

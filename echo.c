@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:40:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 19:37:56 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:46:13 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	ft_echo(t_types *cmds, t_envp **env_list, int fd_out)
 	if (!cmds->cmd || !cmds->next)
 	{
 		ft_putstr_fd("\n", fd_out);
+		last_status(0);
 		return ;
 	}
 	args = args_to_str(cmds);

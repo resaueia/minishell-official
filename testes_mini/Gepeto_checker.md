@@ -16,11 +16,14 @@
 - [x] Comando: echo "hello" > file.txt
 - Resultado Esperado: Cria um arquivo file.txt contendo "hello".
 
-- [x] Comando: cat < file.txt
+- [x] Comando: cat file.txt
 - Resultado Esperado: Exibe o conteúdo de file.txt.
 
 - [x] Comando: echo "append" >> file.txt
 - Resultado Esperado: Adiciona "append" ao final de file.txt.
+
+- [ ] Comando: cat < file.txt > out.txt
+- Resultado Esperado: captura o conteúdo de file.txt e envia para out.txt
 
 ## 3. Variáveis de Ambiente [ok]
 
@@ -43,6 +46,9 @@
 
 ## 5. Compilação [ok]
 
+- [x] Comando: make re 
+- Resultado Esperado: volta compilar o programa sem erros..
+
 - [!] Comando: make -n (não temos essa flag configuraa)
 - Resultado Esperado: Mostra que os flags -Wall -Wextra -Werror estão sendo usados.
 - Resultado Atual:
@@ -55,26 +61,16 @@ make: Circular minishell <- minishell dependency dropped.
 make: 'minishell' is up to date.
 ```
 
-- [x] Comando: make re
-- Resultado Esperado: O projeto recompila sem erros.
-
 - [x] Comando: make _[SÓ VOLTA A COMPILAR DEPOIS QUE RODAR O MAKE FCLEAN]_
 - Resultado Esperado: O projeto compila sem erros.
 
-## 6. Caminho do Ambiente [!NOK!]
+## 6. Caminho do Ambiente [ok]
 
 - [x] Comando: ls
 - Resultado Esperado: Lista o conteúdo do diretório atual.
 
-- [] Comando: unset PATH && ls
+- [x] Comando: unset PATH && ls
 - Resultado Esperado: ls: command not found.
-- Resultado Atual:
-
-```
-minishell> unset PATH
-minishell> ls
-[1]    131057 segmentation fault (core dumped)  ./minishell
-```
 
 - [x] Comando: export PATH=/bin && ls
 - Resultado Esperado: Lista o conteúdo do diretório atual.
@@ -95,7 +91,7 @@ minishell> ls
 - [x] Comando: ls | grep "file_that_does_not_exist"
 - Resultado Esperado: Nenhuma saída.
 
-- [ ] Comando: ls | cat > output.txt
+- [!] Comando: ls | cat > output.txt
 - Resultado Esperado: Cria output.txt com o conteúdo listado.
 - Resultado Atual:
 
@@ -139,8 +135,8 @@ minishell> ls | cat > output.txt
 
 ## 12. Valor de Retorno [!NOK!]
 
-- [ ] Comando: /bin/ls && echo $?
+- [x] Comando: /bin/ls && echo $?
 - Resultado Esperado: Exibe 0.
 
-- [ ] Comando: /bin/ls non_existent_file && echo $?
+- [x] Comando: /bin/ls non_existent_file && echo $?
 - Resultado Esperado: Exibe 2.

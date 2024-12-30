@@ -17,21 +17,21 @@
 - [ok] cd: too many arguments (caso tenha mais de um argumento no cd. Exemplo: cd pasta algo) = 2
 - [ok] cd (sucesso) = 0
 
-## EXPORT
+## EXPORT [ok]
 
 - [ok] export: need '=' after variable name = 1
 - [ok] export: not a valid identifier = 1
 
-## UNSET
+## UNSET [ok]
 
 - [ok] unset = 0 (não dá erro)
 
-## EXIT
+## EXIT [ok]
 
-- [ ] exit (caso o argumento do exit não seja um número ou dê overflow no long) = 2
-- [ ] exit (caso tenha mais de um argumento. Exemplo: exit algo1 algo2) = 1
-- [ ] exit (caso tenha um argumento numérico válido) = ft_atoll(desse argumento)
-- [ ] exit (sucesso) = 0
+- [x] exit (caso o argumento do exit não seja um número ou dê overflow no long) = 2
+- [x] exit (caso tenha mais de um argumento. Exemplo: exit algo1 algo2) = 1
+- [x] exit (caso tenha um argumento numérico válido) = ft_atoll(desse argumento)
+- [x] exit (sucesso) = 0
 
 ## ENV [ok]
 
@@ -46,10 +46,10 @@
 
 - [ok] caso tenha erro de sintaxe no input do usuário = 2
 
-## DENTRO DO INFILE '<' e OUTFILE '>':
+## DENTRO DO INFILE '<' e OUTFILE '>': []
 
-- [ ] tentar acessar algo que não tem premissão (permission denied) = 1
-- [ ] tentar acessar um arquivo que não existe (no such file or directory) = 1
+- [x] tentar acessar algo que não tem premissão (permission denied) = 1
+- [x] tentar acessar um arquivo que não existe (no such file or directory) = 1
 
 ## SEM ERROS [ok]
 

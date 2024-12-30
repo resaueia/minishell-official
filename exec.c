@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 22:29:33 by thfranco         ###   ########.fr       */
+/*   Updated: 2024/12/30 17:09:33 by jparnahy         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -96,7 +96,6 @@ void	execute_command(t_types *type, t_envp *env_list,
 	}
 	else if (find_command_path(type, env_list))
 		return ;
-	print_the_stack(input_list);
 	exec_cmd(input_list, type, env, env_list);
 	clear_heredoc_files();
 }
