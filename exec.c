@@ -1,16 +1,45 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/30 17:09:33 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/31 18:12:00 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
+
+
+static void rotate_list(t_types **head)
+{
+	t_types *current = *head;
+
+	while (current)
+	{
+		if (current->type == 1)
+		{
+			current->type = 5;
+			if (current == *head)
+				return;
+			if (current->prev)
+				current->prev->next = current->next;
+			if (current->next)
+				current->next->prev = current->prev;
+
+			current->prev = NULL;
+			current->next = *head;
+			(*head)->prev = current;
+			*head = current;
+			rotate_list(head);
+			return;
+		}
+
+		current = current->next;
+	}
+}
 
 /********** HEREDOCS **********/
 // Função auxiliar para tratar heredoc
@@ -25,7 +54,6 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 	{
 		//free_list(input_list);
 		//free_types(&type);
-		clear_heredoc_files();
 	}
 	return (0);
 }
@@ -100,13 +128,18 @@ void	execute_command(t_types *type, t_envp *env_list,
 	clear_heredoc_files();
 }
 
+
 int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {
 	char	**env;
 
 	env = NULL;
-	if (is_hdoc(type) && handle_heredoc(input_list, type) == -1)
-		return (-1);
+	if (is_hdoc(type))
+	{
+		rotate_list(&type);
+		if (handle_heredoc(input_list, type) == -1)
+			return (-1);
+	}
 	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
 		return (-1);
 	if (is_pp(type))
@@ -119,6 +152,7 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		execute_command(type, env_list, input_list, env);
 		env = free_from_split(env);
 	}
+	clear_heredoc_files();
 	fd_closer(input_list, type);
 	if (input_list)
 	{

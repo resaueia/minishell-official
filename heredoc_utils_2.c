@@ -1,16 +1,43 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:39:17 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/28 23:06:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2024/12/31 14:41:57 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
+
+static t_types *remove_null_nodes(t_types *head)
+{
+	t_types *current;
+	t_types *to_remove;
+
+	current = head;
+	to_remove = NULL;
+	while (current)
+	{
+		if (current->cmd == NULL)
+		{
+			to_remove = current;
+			if (to_remove->prev)
+				to_remove->prev->next = to_remove->next;
+			else
+				head = to_remove->next;
+			if (to_remove->next)
+				to_remove->next->prev = to_remove->prev;
+			current = to_remove->next;
+			free(to_remove);
+		}
+		else
+			current = current->next;
+	}
+	return head;
+}
 
 char	**split_heredoc(t_types *type, int here_count)
 {
@@ -93,6 +120,7 @@ int	process_single_heredoc(t_types *type, t_types *head)
 				return (-1);
 			}
 			type->fd[0] = heredoc_fd;
+			remove_null_nodes(type);
 			return (1);
 		}
 		type = type->next;
