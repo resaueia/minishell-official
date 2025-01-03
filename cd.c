@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/30 16:51:08 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:27:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ static void	handle_cd_special_paths(char *path, char *src, t_envp **env_list)
 static void	handle_cd_path_change(char *path, t_envp **env_list)
 {
 	char	cwd[1024];
+	char	*tmp_path;
 
 	if (chdir(path) == 0)
 	{
 		getcwd(cwd, sizeof(cwd));
-		change_path(cwd, "PWD", env_list);
+		tmp_path = change_path(cwd, "PWD", env_list);
+		free(tmp_path);
 		last_status(0);
 	}
 	else

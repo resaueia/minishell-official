@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 23:12:50 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:30:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,4 +176,5 @@ void	free_env(t_envp *env_list)
 			free(temp->value);
 		free(temp);
 	}
+	env_list = NULL;
 }

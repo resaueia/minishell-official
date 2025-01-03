@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:35:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/30 17:23:02 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:31:18 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	handle_ctrl_d_sig(t_init_input *input_list, t_envp *env_list)
 {
 	printf("exit\n");
 	rl_clear_history();
-	free_env(env_list);
+	if (env_list)
+		free_env(env_list);
 	free_list(input_list);
 	last_status(0);
 	exit(0);

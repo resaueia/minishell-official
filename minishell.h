@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/30 16:49:39 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/03 18:48:07 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,7 @@ int						handle_in(t_types *type, t_types *type_head);
 int						handle_out(t_types *type, t_types *type_head,
 							int is_append);
 void					remove_node(t_types **node);
+t_types 				*remove_null_nodes(t_types *head);
 
 /* PIPES */
 int						handle_pipeline(t_init_input *input_list,

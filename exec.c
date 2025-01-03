@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/02 22:48:39 by thfranco         ###   ########.fr       */
+/*   Updated: 2025/01/03 19:10:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -125,7 +125,7 @@ void	execute_command(t_types *type, t_envp *env_list,
 	else if (find_command_path(type, env_list))
 		return ;
 	exec_cmd(input_list, type, env, env_list);
-	clear_heredoc_files();
+	//clear_heredoc_files();
 }
 
 
@@ -140,6 +140,7 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		if (handle_heredoc(input_list, type) == -1)
 			return (-1);
 	}
+	lets_expander(type, env_list, last_status(-1));
 	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
 		return (-1);
 	if (is_pp(type))

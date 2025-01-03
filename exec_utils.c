@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/30 17:36:32 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/03 19:29:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
 	int		status;
 
 	//(void)cmd;
+	status = 0;
 	args = types_to_char(type);
 	pid = fork();
 	if (pid == -1)
@@ -109,7 +110,7 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
 	else
 	{
 		if (waitpid(pid, &status, 0) == -1)
-			status = 1;
+			status = 130;
 		else
 			status = WEXITSTATUS(status);
 	}
