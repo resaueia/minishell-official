@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/22 16:00:46 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/02 22:16:20 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -46,7 +46,7 @@ int	setup_redirection(t_types *type)
 	t_types	*type_head;
 	t_types	*type_echo;
 
-	type_head = type;
+	type_echo = NULL;
 	if (ft_strncmp(type->cmd, "echo", 4) == 0)
 		type_echo = type;
 	type_head = type;
