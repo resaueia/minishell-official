@@ -6,13 +6,13 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2025/01/06 18:38:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:13:12 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_types	*init_types(void)
+/*static t_types	*init_types(void)
 {
 	t_types	*types;
 
@@ -24,7 +24,7 @@ static t_types	*init_types(void)
 	types->prev = NULL;
 	types->next = NULL;
 	return (types);
-}
+}*/
 
 /* Function: handle_parent_process
  * Handles pipe management in the parent process and advances the command list.
@@ -124,7 +124,6 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
     int prev_fd = -1; // Para armazenar o fd de leitura anterior
     pid_t pid;
     t_init_input *current = input_list;
-    t_types *types = init_types();
 
     while (current) 
 	{
@@ -134,7 +133,7 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             if (pipe(pipe_fd) == -1) 
 			{
                 perror("Error creating pipe");
-                free_types(&types);
+                free_types(&input_list->types);
                 return -1;
             }
         } 
@@ -148,7 +147,7 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
         if (pid == -1) 
 		{
             perror("Error during fork");
-            free_types(&types);
+            free_types(&input_list->types);
             return -1;
         }
         if (pid == 0) // Processo filho
@@ -168,7 +167,7 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             // Fechar o lado de leitura do pipe
             if (pipe_fd[0] != -1)
                 close(pipe_fd[0]);
-            process_pipe(current, types, env_list); // Executar o comando
+            process_pipe(current, input_list->types, env_list); // Executar o comando
             exit(EXIT_SUCCESS);
         }
         // Processo pai: fechar os descritores que não são mais necessários
@@ -183,7 +182,7 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
     }
     // Aguardar todos os processos filhos
     wait_for_children();
-    free_types(&types);
+    free_types(&input_list->types);
     return 0;
 }
 
