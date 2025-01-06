@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2025/01/03 19:37:37 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 18:38:27 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_types	*init_types(void)
  * Handles pipe management in the parent process and advances the command list.
  */
 
-static t_init_input	*handle_parent_process(t_init_input *current)
+/*static t_init_input	*handle_parent_process(t_init_input *current)
 {
 	if (current->fd_in != STDIN_FILENO)
 		close(current->fd_in);
@@ -40,14 +40,14 @@ static t_init_input	*handle_parent_process(t_init_input *current)
 	if (current && current->token == 11)
 		current = current->next;
 	return (current);
-}
+}*/
 
 /* Function: handle_child_process
  * Handles file descriptor duplication and calls process_pipe
  * for command execution in the child process. Exits with the last exit status.
  */
 
-static void	handle_child_process(t_init_input *current,
+/*static void	handle_child_process(t_init_input *current,
 		t_init_input *input_list, t_types *types, t_envp *env_list)
 {
 	int	last_exit_status;
@@ -73,7 +73,7 @@ static void	handle_child_process(t_init_input *current,
 	last_exit_status = process_pipe(current, types, env_list);
 	free_types(&types);
 	exit(EXIT_SUCCESS);
-}
+}*/
 
 /* Function: wait_for_children
  * Waits for all child processes to finish execution.
@@ -88,8 +88,7 @@ void	wait_for_children(void)
  * Sets up and executes a pipeline of commands. Handles pipe creation,
  * forking processes, and managing file descriptors.
  */
-
-int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
+/*int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 {
 	int				pipe_fd[2];
 	pid_t			pid;
@@ -117,4 +116,74 @@ int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 	wait_for_children();
 	free_types(&types);
 	return (0);
+}*/
+
+int setup_pipeline(t_init_input *input_list, t_envp *env_list) 
+{
+    int pipe_fd[2];
+    int prev_fd = -1; // Para armazenar o fd de leitura anterior
+    pid_t pid;
+    t_init_input *current = input_list;
+    t_types *types = init_types();
+
+    while (current) 
+	{
+        // Criar o pipe apenas se houver um próximo comando
+        if (current->next && current->next->token == 11) 
+		{
+            if (pipe(pipe_fd) == -1) 
+			{
+                perror("Error creating pipe");
+                free_types(&types);
+                return -1;
+            }
+        } 
+		else 
+		{
+            pipe_fd[0] = -1; // Sem próximo comando, nenhum pipe é necessário
+            pipe_fd[1] = -1;
+        }
+        // Criar o processo filho para o comando atual
+        pid = fork();
+        if (pid == -1) 
+		{
+            perror("Error during fork");
+            free_types(&types);
+            return -1;
+        }
+        if (pid == 0) // Processo filho
+		{ 
+            // Redirecionar entrada, se necessário
+            if (prev_fd != -1) 
+			{
+                dup2(prev_fd, STDIN_FILENO);
+                close(prev_fd);
+            }
+            // Redirecionar saída, se necessário
+            if (pipe_fd[1] != -1) 
+			{
+                dup2(pipe_fd[1], STDOUT_FILENO);
+                close(pipe_fd[1]);
+            }
+            // Fechar o lado de leitura do pipe
+            if (pipe_fd[0] != -1)
+                close(pipe_fd[0]);
+            process_pipe(current, types, env_list); // Executar o comando
+            exit(EXIT_SUCCESS);
+        }
+        // Processo pai: fechar os descritores que não são mais necessários
+        if (prev_fd != -1)
+            close(prev_fd);
+        if (pipe_fd[1] != -1)
+            close(pipe_fd[1]);
+        // Atualizar o descritor de leitura para o próximo comando
+        prev_fd = pipe_fd[0];
+        // Avançar para o próximo comando na lista
+        current = current->next ? current->next->next : NULL;
+    }
+    // Aguardar todos os processos filhos
+    wait_for_children();
+    free_types(&types);
+    return 0;
 }
+

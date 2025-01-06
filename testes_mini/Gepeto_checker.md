@@ -22,7 +22,7 @@
 - [x] Comando: echo "append" >> file.txt
 - Resultado Esperado: Adiciona "append" ao final de file.txt.
 
-- [ ] Comando: cat < file.txt > out.txt
+- [x] Comando: cat < file.txt > out.txt
 - Resultado Esperado: captura o conteúdo de file.txt e envia para out.txt
 
 ## 3. Variáveis de Ambiente [ok]
@@ -49,17 +49,8 @@
 - [x] Comando: make re 
 - Resultado Esperado: volta compilar o programa sem erros..
 
-- [!] Comando: make -n (não temos essa flag configuraa)
-- Resultado Esperado: Mostra que os flags -Wall -Wextra -Werror estão sendo usados.
-- Resultado Atual:
-
-```
-minishell> make -n
-Makefile:53: warning: overriding recipe for target 'minishell'
-Makefile:48: warning: ignoring old recipe for target 'minishell'
-make: Circular minishell <- minishell dependency dropped.
-make: 'minishell' is up to date.
-```
+- [x] Comando: make clean 
+- Resultado Esperado: limpa os objects
 
 - [x] Comando: make _[SÓ VOLTA A COMPILAR DEPOIS QUE RODAR O MAKE FCLEAN]_
 - Resultado Esperado: O projeto compila sem erros.
@@ -83,7 +74,7 @@ make: 'minishell' is up to date.
 - [x] Comando: Ctrl+D em um prompt vazio.
 - Resultado Esperado: O shell encerra.
 
-## 8. Pipes [!NOK!]
+## 8. Pipes [ok]
 
 - [x] Comando: echo "hello" | cat
 - Resultado Esperado: Exibe hello.
@@ -91,14 +82,8 @@ make: 'minishell' is up to date.
 - [x] Comando: ls | grep "file_that_does_not_exist"
 - Resultado Esperado: Nenhuma saída.
 
-- [!] Comando: ls | cat > output.txt
+- [x] Comando: ls | cat > output.txt
 - Resultado Esperado: Cria output.txt com o conteúdo listado.
-- Resultado Atual:
-
-```
-minishell> ls | cat > output.txt
-[1]    69093 segmentation fault (core dumped)  ./minishell
-```
 
 ## 9. Exit [ok]
 

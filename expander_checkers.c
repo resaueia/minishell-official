@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/26 13:58:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 17:47:30 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,16 @@ static char	*expander_or_not(char *cmd, t_envp *env_list, int exit_status)
 void	lets_expander(t_types *types, t_envp *env_list, int exit_status)
 {
 	t_envp	*env;
+	t_types	*temp;
 
+	temp = types;
 	env = env_list;
 	while (types)
 	{
-		if (has_dol(types->cmd))
+		if (has_dol(types->cmd) && types->type != 99)
 			types->cmd = expander_or_not(types->cmd, env, exit_status);
 		types = types->next;
+		temp = temp->next;
 	}
 	env = NULL;
 }

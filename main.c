@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 21:02:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/22 01:07:42 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 18:16:07 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_command_line(int c)
 int	main(int c, char **v, char **envp)
 {
 	if (!check_command_line(c))
-		return (0);
+		return (1);
 	(void)v;
 	prompt(envp);
 	return (0);

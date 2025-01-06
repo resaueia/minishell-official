@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:40:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/30 16:46:13 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 17:59:40 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static int	handle_newline_flag(char **args)
 			(*args)++;
 		if (**args == ' ' || **args == '\0')
 		{
-			(*args)++;
+			if (**args == ' ')
+				(*args)++;
 			return (0);
 		}
 		*args = tmp;

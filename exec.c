@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/03 19:10:34 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 17:31:16 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 		if (handle_heredoc(input_list, type) == -1)
 			return (-1);
 	}
-	lets_expander(type, env_list, last_status(-1));
 	if (is_rdrct(type) && handle_redirection(input_list, type) == -1)
 		return (-1);
 	if (is_pp(type))
