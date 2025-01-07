@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:35:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/03 18:31:18 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:41:34 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static int	parse_exit_status(char *prompt, int i)
 	while (prompt[i] == ' ')
 		i++;
 	while (prompt[i])
-	{
-		
+	{	
 		if (is_whitspace(prompt[i]))
 		{
 			printf("exit\nminishell: exit: too many arguments\n");

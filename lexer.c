@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:49:45 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 00:02:03 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:26:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,25 @@ int	to_quotes(char c, int quotes)
 
 static int	counter(char *input)
 {
-	int	count = 0;
-    int	i = 0;
+	int	count;
+	int	i;
 
-    while (input[i])
-    {
-        if (input[i] == '>' || input[i] == '<' || input[i] == '|')
-        {
-            count += 2;  // Um delimitador antes e outro depois
-            if (input[i + 1] == input[i])  // Caso de '>>' ou '<<'
-            {
-                count++;
-                i++;  // Pula o próximo operador duplicado
-            }
-        }
-        i++;
-    }
-    return (count);
+	count = 0;
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+		{
+			count += 2;
+			if (input[i + 1] == input[i])
+			{
+				count++;
+				i++;
+			}
+		}
+		i++;
+	}
+	return (count);
 }
 
 static char	*to_replace(char *input, int position)

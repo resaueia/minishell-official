@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 23:02:07 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/06 17:48:15 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:16:38 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,27 @@ void	include_fds(t_init_input *input_list)
 	}
 }
 
+void	split_and_insert(t_types **types, char **cmds)
+{
+	char	**args;
+	int		i;
+	int		j;
+
+	i = -1;
+	while (cmds[++i])
+	{
+		args = args_split(cmds[i]);
+		j = -1;
+		while (args[++j])
+			insert_types(types, args[j]);
+		args = free_from_split(args);
+	}
+}
+
 void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 		t_envp *env_list)
 {
-	char	**args;
 	char	**cmds;
-	int		i;
-	int		j;
 
 	if (!prompt || *prompt == '\0')
 		return ;
@@ -88,15 +102,7 @@ void	process_input(t_init_input *input_list, t_types *types, char *prompt,
 	include_fds(input_list);
 	free(prompt);
 	prompt = NULL;
-	i = -1;
-	while (cmds[++i])
-	{
-		j = -1;
-		args = args_split(cmds[i]);
-		while (args[++j])
-			insert_types(&types, args[j]);
-		args = free_from_split(args);
-	}
+	split_and_insert(&types, cmds);
 	cmds = free_from_split(cmds);
 	args_of_cmds(types);
 	lets_expander(types, env_list, last_status(-1));

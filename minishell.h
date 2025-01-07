@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/03 18:48:07 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:38:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int						to_exec(t_init_input *input_list, t_types *type,
 							t_envp *env_list);
 void					execute_builtin(t_envp *envp, t_init_input *list,
 							t_types *types);
-void					exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list);
+void					exec_cmd(t_init_input *cmd, t_types *type,
+							char **env, t_envp *env_list);
 void					execute_command(t_types *type, t_envp *env_list,
 							t_init_input *input_list, char **env);
 int						find_command_path(t_types *type, t_envp *env_list);
@@ -217,6 +218,7 @@ void					add_to_list(t_init_input **head, t_init_input **tail,
 /* REPARSER */
 char					**args_split(char *input);
 void					insert_types(t_types **head, char *wrd);
+void					split_and_insert(t_types **types, char **cmds);
 int						what_type(char *wrd);
 int						is_delim(int type);
 int						is_redirects(int type);
@@ -273,7 +275,7 @@ int						handle_in(t_types *type, t_types *type_head);
 int						handle_out(t_types *type, t_types *type_head,
 							int is_append);
 void					remove_node(t_types **node);
-t_types 				*remove_null_nodes(t_types *head);
+t_types					*remove_null_nodes(t_types *head);
 
 /* PIPES */
 int						handle_pipeline(t_init_input *input_list,
@@ -309,7 +311,7 @@ void					fd_closer(t_init_input *input_list, t_types *type);
 void					exit_mini(t_init_input *list, char *prompt,
 							char *prompt_dup, t_envp *env_list);
 void					free_list_args(char **args);
-
+void					free_heredoc_delims(char **delim);
 
 /* just suport */
 void					print_the_stack(t_init_input *list);

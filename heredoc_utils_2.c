@@ -6,38 +6,11 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:39:17 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/03 18:48:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:35:07 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_types *remove_null_nodes(t_types *head)
-{
-	t_types *current;
-	t_types *to_remove;
-
-	current = head;
-	to_remove = NULL;
-	while (current)
-	{
-		if (current->cmd == NULL)
-		{
-			to_remove = current;
-			if (to_remove->prev)
-				to_remove->prev->next = to_remove->next;
-			else
-				head = to_remove->next;
-			if (to_remove->next)
-				to_remove->next->prev = to_remove->prev;
-			current = to_remove->next;
-			free(to_remove);
-		}
-		else
-			current = current->next;
-	}
-	return head;
-}
 
 char	**split_heredoc(t_types *type, int here_count)
 {
@@ -126,19 +99,6 @@ int	process_single_heredoc(t_types *type, t_types *head)
 		type = type->next;
 	}
 	return (0);
-}
-
-static void	free_heredoc_delims(char **delim)
-{
-	int	i = 0;
-	if (!delim)
-		return;
-	while (delim[i])
-	{
-		free(delim[i]);
-		i++;
-	}
-	free(delim);
 }
 
 /* Function: process_multiple_heredocs

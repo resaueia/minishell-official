@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2025/01/06 20:13:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:46:20 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ int setup_pipeline(t_init_input *input_list, t_envp *env_list)
             // Fechar o lado de leitura do pipe
             if (pipe_fd[0] != -1)
                 close(pipe_fd[0]);
-            process_pipe(current, input_list->types, env_list); // Executar o comando
+            process_pipe(current, input_list->types, env_list);
             exit(EXIT_SUCCESS);
         }
         // Processo pai: fechar os descritores que não são mais necessários

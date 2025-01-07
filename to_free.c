@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/03 18:30:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:36:59 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,6 @@ char	*free_char_ptr(char *ptr)
  * Frees an array of strings (result of a split function), including each
  * individual string, and sets the array pointer to NULL.
  */
-/*char	**free_from_split(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i])
-	{
-		str[i] = free_char_ptr(str[i]);
-		if (str[i])
-		{
-			free(str[i]);
-			str[i] = NULL;
-		}
-		i++;
-	}
-	free(str);
-	str = NULL;
-	return (NULL);
-}*/
-
 char	**free_from_split(char **str)
 {
 	int	i;
@@ -58,48 +36,14 @@ char	**free_from_split(char **str)
 	i = 0;
 	while (str[i])
 	{
-		free(str[i]);  // Libera cada string
+		free(str[i]);
 		str[i] = NULL;
 		i++;
 	}
-	free(str);  // Libera o array de ponteiros
+	free(str);
 	str = NULL;
 	return (NULL);
 }
-
-
-/* Function: free_list
- * Iterates through a linked list of t_init_input, freeing the string
- * and each node one by one.
- */
-/*void	free_list(t_init_input *list)
-{
-	while (list)
-	{
-		if (list->string)
-			free(list->string);
-		if (list)
-			free(list);
-		list = list->next;
-	}
-}*/
-
-// void free_list(t_init_input *list)
-// {
-//     t_init_input *tmp;
-
-// 	/*if (!list)
-// 		return ;*/
-//     while (list)
-// 	{
-//         tmp = list;
-//         list = list->next;
-//         if (tmp->string)
-//             free(tmp->string);
-//         free(tmp);
-//     }
-//     list = NULL;  // <- GARANTE QUE O PONTEIRO É INVALIDADO
-// }
 
 void	free_list_args(char **args)
 {
@@ -118,63 +62,44 @@ void	free_list_args(char **args)
 	args = NULL;
 }
 
-void	free_list(t_init_input *list)
+t_types	*remove_null_nodes(t_types *head)
 {
-	t_init_input	*temp;
+	t_types	*current;
+	t_types	*to_remove;
 
-	if (!list)
-		return ;
-	while (list)
+	current = head;
+	to_remove = NULL;
+	while (current)
 	{
-		temp = list->next;
-		if (list->string)
+		if (current->cmd == NULL)
 		{
-			free(list->string);
-			list->string = NULL;
+			to_remove = current;
+			if (to_remove->prev)
+				to_remove->prev->next = to_remove->next;
+			else
+				head = to_remove->next;
+			if (to_remove->next)
+				to_remove->next->prev = to_remove->prev;
+			current = to_remove->next;
+			free(to_remove);
 		}
-		free_list_args(list->args);
-		free(list);
-		list = temp;
+		else
+			current = current->next;
 	}
+	return (head);
 }
-/* Function: free_types
- * Iterates through a linked list of t_types, freeing the cmd field
- * and each node individually.
- */
-void	free_types(t_types **head)
-{
-	t_types	*tmp;
 
-	if (!head || !*head)
+void	free_heredoc_delims(char **delim)
+{
+	int	i;
+
+	i = 0;
+	if (!delim)
 		return ;
-	while (*head)
+	while (delim[i])
 	{
-		tmp = (*head)->next;
-        if ((*head)->cmd)
-            free((*head)->cmd);  // Libera a string duplicada
-        free(*head);
-        *head = tmp;
+		free(delim[i]);
+		i++;
 	}
-	*head = NULL;
-}
-
-/* Function: free_env
- * Iterates through a linked list of t_envp, freeing both key and value
- * fields, and then frees each node.
- */
-void	free_env(t_envp *env_list)
-{
-	t_envp	*temp;
-
-	while (env_list)
-	{
-		temp = env_list;
-		env_list = env_list->next;
-		if (temp->key)
-			free(temp->key);
-		if (temp->value)
-			free(temp->value);
-		free(temp);
-	}
-	env_list = NULL;
+	free(delim);
 }
