@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/03 18:27:31 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/06 21:58:14 by thfranco         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -58,14 +58,16 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	if (ft_strlen(path) == 1 && *path == '/')
 	{
 		chdir("/");
-		change_path("/", "PWD", env_list);
+		tmp_pwd = change_path("/", "PWD", env_list);
+		free(tmp_pwd);
 	}
 	else if (ft_strlen(path) >= 2)
 	{
 		if (ft_strncmp(path, "~/", 2) == 0)
 		{
 			tmp_pwd = joinpath(path + 2, "HOME", env_list);
-			free(path);
+			if (path)
+				free(path);
 			path = tmp_pwd;
 		}
 		handle_cd_path_change(path, env_list);
