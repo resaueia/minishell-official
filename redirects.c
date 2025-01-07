@@ -6,19 +6,29 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 18:37:09 by rsaueia           #+#    #+#             */
-/*   Updated: 2025/01/03 19:08:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:04:51 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	finalize_redirection(t_types *type_head, t_types *type_echo)
+static int	has_ls_fle(t_types *type)
 {
-	t_types	*type;
+	t_types	*tmp;
 
-	type = type_head;
-	if (type_echo)
-		type_echo->fd[1] = type_head->fd[1];
+	tmp = type;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->cmd, "ls", 2) == 0
+			&& tmp->next->next->type == FLE)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+static void	remove_ls_fle(t_types *type)
+{
 	while (type)
 	{
 		if (ft_strncmp(type->cmd, "ls", 2) == 0
@@ -28,13 +38,16 @@ static void	finalize_redirection(t_types *type_head, t_types *type_echo)
 			type->next->next->cmd = NULL;
 			break ;
 		}
-		if (ft_strcmp(type->cmd, ">") == 0 && type->next->type == FLE)
-		{
-			free(type->next->cmd);
-			type->next->cmd = NULL;
-			break ;
-		}
-		if (ft_strcmp(type->cmd, ">>") == 0 && type->next->type == FLE)
+		type = type->next;
+	}
+}
+
+static void	remove_redirect_fle(t_types *type)
+{
+	while (type)
+	{
+		if ((ft_strcmp(type->cmd, ">") == 0 || ft_strcmp(type->cmd, ">>") == 0)
+			&& type->next->type == FLE)
 		{
 			free(type->next->cmd);
 			type->next->cmd = NULL;
@@ -42,6 +55,16 @@ static void	finalize_redirection(t_types *type_head, t_types *type_echo)
 		}
 		type = type->next;
 	}
+}
+
+static void	finalize_redirection(t_types *type_head, t_types *type_echo)
+{
+	if (type_echo)
+		type_echo->fd[1] = type_head->fd[1];
+	if (has_ls_fle(type_head))
+		remove_ls_fle(type_head);
+	else
+		remove_redirect_fle(type_head);
 	remove_null_nodes(type_head);
 }
 
@@ -70,6 +93,5 @@ int	setup_redirection(t_types *type)
 		type = type->next;
 	}
 	finalize_redirection(type_head, type_echo);
-	//remove_node(&type);
 	return (0);
 }

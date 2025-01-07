@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2024/12/28 19:31:54 by jparnahy         ###   ########.fr        #
+#    Updated: 2025/01/07 18:32:36 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS = main.c \
 	   libft_memory.c \
 	   libft_string.c \
 	   to_exit.c \
+	   to_free_lists.c \
 	   to_free.c \
 	   the_split.c \
 	   parser.c \

@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:56:28 by rsaueia-          #+#    #+#             */
-/*   Updated: 2024/12/26 13:20:44 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:24:22 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,16 @@ size_t	ft_strlcat(char *dest, const char *src, size_t sz)
 	return (len_s + len_d);
 }
 
-/*int	ft_strncmp(char *s1, char *s2, size_t n)
-{
-	--n;
-	while (s1[n] == s2[n] && s1[n] && s2[n])
-	{
-		if (n == 0)
-			return (0);
-		n--;
-	}
-	return (1);
-}*/
-
 int	ft_strncmp(char *s1, char *s2, size_t n)
 {
-    size_t	i;
+	size_t	i;
 
-    i = 0;
-    while (i < n && (s1[i] || s2[i]))  // Verifique ambos s1[i] e s2[i]
-    {
-        if (s1[i] != s2[i])
-            return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (i < n && (s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
 }
-

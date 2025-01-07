@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:47:41 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/06 22:21:14 by thfranco         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:32:48 by jparnahy         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -17,12 +17,12 @@ char	*joinpath(char *path, char *key, t_envp **env_list)
 	char	*new_path;
 	char	*value;
 	char	*tmp;
-	char 	*the_value;
+	char	*the_value;
 
 	the_value = get_value(key, *env_list);
 	value = the_value;
-	new_path = (char *)malloc(sizeof(char) *
-				(ft_strlen(value) + ft_strlen(path) + 2));
+	new_path = (char *)malloc(sizeof(char)
+			* (ft_strlen(value) + ft_strlen(path) + 2));
 	if (!new_path)
 		return (NULL);
 	tmp = new_path;
