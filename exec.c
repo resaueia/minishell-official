@@ -3,46 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/06 17:31:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:14:48 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static void rotate_list(t_types **head)
+static void	rotate_list(t_types **head)
 {
-	t_types *current = *head;
+	t_types	*current;
 
+	current = *head;
 	while (current)
 	{
 		if (current->type == 1)
 		{
 			current->type = 5;
 			if (current == *head)
-				return;
+				return ;
 			if (current->prev)
 				current->prev->next = current->next;
 			if (current->next)
 				current->next->prev = current->prev;
-
 			current->prev = NULL;
 			current->next = *head;
 			(*head)->prev = current;
 			*head = current;
 			rotate_list(head);
-			return;
+			return ;
 		}
-
 		current = current->next;
 	}
 }
 
 /********** HEREDOCS **********/
 // Função auxiliar para tratar heredoc
+
 int	handle_heredoc(t_init_input *input_list, t_types *type)
 {
 	if (is_heredoc(input_list, type) == -1)
@@ -60,6 +59,7 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 
 /********** PIPES **********/
 // Função auxiliar para tratar pipes
+
 int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 {
 	if (type)
@@ -74,8 +74,6 @@ int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 		free_types(&type);
 		return (-1);
 	}
-	//free_list(input_list);
-	//free_types(&type);
 	fd_closer(input_list, type);
 	if (input_list)
 		free_list(input_list);
@@ -84,6 +82,7 @@ int	handle_pipeline(t_init_input *input_list, t_envp *env_list, t_types *type)
 
 /********** REDIRECTS **********/
 // Função auxiliar para tratar redirecionamentos
+
 int	handle_redirection(t_init_input *input_list, t_types *type)
 {
 	if (setup_redirection(type) == -1)
@@ -103,6 +102,7 @@ int	handle_redirection(t_init_input *input_list, t_types *type)
 }
 
 // Função auxiliar para execução de comandos
+
 void	execute_command(t_types *type, t_envp *env_list,
 		t_init_input *input_list, char **env)
 {
@@ -125,9 +125,7 @@ void	execute_command(t_types *type, t_envp *env_list,
 	else if (find_command_path(type, env_list))
 		return ;
 	exec_cmd(input_list, type, env, env_list);
-	//clear_heredoc_files();
 }
-
 
 int	to_exec(t_init_input *input_list, t_types *type, t_envp *env_list)
 {

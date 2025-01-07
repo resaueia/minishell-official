@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:44:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/03 17:43:20 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:27:55 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*get_value(char *name, t_envp *list)
 	while (current)
 	{
 		if (ft_strcmp(current->key, name) == 0)
-			return(ft_strdup(current->value));
+			return (ft_strdup(current->value));
 		current = current->next;
 	}
 	return (NULL);

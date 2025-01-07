@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_checkers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/06 17:47:30 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:38:03 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static char	*its_time_to_expander(char *cmd, t_envp *env_list, int exit_status)
 {
 	int	len;
 	int	i;
-	
+
 	i = 0;
 	len = ft_strlen(cmd);
 	while (i < len)
@@ -82,8 +82,8 @@ static char	*its_time_to_expander(char *cmd, t_envp *env_list, int exit_status)
 		if (cmd[i] == '$')
 		{
 			cmd = to_expander(cmd, i, env_list, exit_status);
-			len = ft_strlen(cmd);  // Atualizar tamanho após expansão
-			i = -1;                // Reiniciar o loop para nova análise
+			len = ft_strlen(cmd);
+			i = -1;
 		}
 		i++;
 	}

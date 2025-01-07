@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   to_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:03:25 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/03 18:30:27 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:04:30 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,14 @@ char	**free_from_split(char **str)
 	i = 0;
 	while (str[i])
 	{
-		free(str[i]);  // Libera cada string
+		free(str[i]);
 		str[i] = NULL;
 		i++;
 	}
-	free(str);  // Libera o array de ponteiros
+	free(str);
 	str = NULL;
 	return (NULL);
 }
-
 
 /* Function: free_list
  * Iterates through a linked list of t_init_input, freeing the string
@@ -141,6 +140,7 @@ void	free_list(t_init_input *list)
  * Iterates through a linked list of t_types, freeing the cmd field
  * and each node individually.
  */
+
 void	free_types(t_types **head)
 {
 	t_types	*tmp;
@@ -150,10 +150,10 @@ void	free_types(t_types **head)
 	while (*head)
 	{
 		tmp = (*head)->next;
-        if ((*head)->cmd)
-            free((*head)->cmd);  // Libera a string duplicada
-        free(*head);
-        *head = tmp;
+		if ((*head)->cmd)
+			free((*head)->cmd);
+		free(*head);
+		*head = tmp;
 	}
 	*head = NULL;
 }

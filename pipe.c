@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:39:20 by rsaueia           #+#    #+#             */
-/*   Updated: 2025/01/06 20:13:12 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:58:37 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,71 +118,63 @@ void	wait_for_children(void)
 	return (0);
 }*/
 
-int setup_pipeline(t_init_input *input_list, t_envp *env_list) 
+int	setup_pipeline(t_init_input *input_list, t_envp *env_list)
 {
-    int pipe_fd[2];
-    int prev_fd = -1; // Para armazenar o fd de leitura anterior
-    pid_t pid;
-    t_init_input *current = input_list;
+	int				pipe_fd[2];
+	int				prev_fd;
+	pid_t			pid;
+	t_init_input	*current;
 
-    while (current) 
+	prev_fd = 1;
+	current = input_list;
+	while (current)
 	{
-        // Criar o pipe apenas se houver um próximo comando
-        if (current->next && current->next->token == 11) 
+		if (current->next && current->next->token == 11)
 		{
-            if (pipe(pipe_fd) == -1) 
+			if (pipe(pipe_fd) == -1)
 			{
-                perror("Error creating pipe");
-                free_types(&input_list->types);
-                return -1;
-            }
-        } 
-		else 
+				perror("Error creating pipe");
+				free_types(&input_list->types);
+				return (-1);
+			}
+		}
+		else
 		{
-            pipe_fd[0] = -1; // Sem próximo comando, nenhum pipe é necessário
-            pipe_fd[1] = -1;
-        }
-        // Criar o processo filho para o comando atual
-        pid = fork();
-        if (pid == -1) 
+			pipe_fd[0] = -1;
+			pipe_fd[1] = -1;
+		}
+		pid = fork();
+		if (pid == -1)
 		{
-            perror("Error during fork");
-            free_types(&input_list->types);
-            return -1;
-        }
-        if (pid == 0) // Processo filho
-		{ 
-            // Redirecionar entrada, se necessário
-            if (prev_fd != -1) 
+			perror("Error during fork");
+			free_types(&input_list->types);
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			if (prev_fd != -1)
 			{
-                dup2(prev_fd, STDIN_FILENO);
-                close(prev_fd);
-            }
-            // Redirecionar saída, se necessário
-            if (pipe_fd[1] != -1) 
+				dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+			}
+			if (pipe_fd[1] != -1)
 			{
-                dup2(pipe_fd[1], STDOUT_FILENO);
-                close(pipe_fd[1]);
-            }
-            // Fechar o lado de leitura do pipe
-            if (pipe_fd[0] != -1)
-                close(pipe_fd[0]);
-            process_pipe(current, input_list->types, env_list); // Executar o comando
-            exit(EXIT_SUCCESS);
-        }
-        // Processo pai: fechar os descritores que não são mais necessários
-        if (prev_fd != -1)
-            close(prev_fd);
-        if (pipe_fd[1] != -1)
-            close(pipe_fd[1]);
-        // Atualizar o descritor de leitura para o próximo comando
-        prev_fd = pipe_fd[0];
-        // Avançar para o próximo comando na lista
-        current = current->next ? current->next->next : NULL;
-    }
-    // Aguardar todos os processos filhos
-    wait_for_children();
-    free_types(&input_list->types);
-    return 0;
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[1]);
+			}
+			if (pipe_fd[0] != -1)
+				close(pipe_fd[0]);
+			process_pipe(current, input_list->types, env_list);
+			exit(EXIT_SUCCESS);
+		}
+		if (prev_fd != -1)
+			close(prev_fd);
+		if (pipe_fd[1] != -1)
+			close(pipe_fd[1]);
+		prev_fd = pipe_fd[0];
+		current = current->next ? current->next->next : NULL;
+	}
+	wait_for_children();
+	free_types(&input_list->types);
+	return (0);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/03 19:29:16 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:37:03 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	exec_cmd(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
 	pid_t	pid;
 	int		status;
 
-	//(void)cmd;
 	status = 0;
 	args = types_to_char(type);
 	pid = fork();

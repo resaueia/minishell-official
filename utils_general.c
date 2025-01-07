@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_general.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:36:08 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/30 17:10:41 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:05:40 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_the_stack(t_init_input *list)
 int	last_status(int new_status)
 {
 	static int	status;
-	
+
 	if (new_status > -1)
 		status = new_status;
 	return (status);

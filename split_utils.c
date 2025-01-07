@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:38:53 by rsaueia           #+#    #+#             */
-/*   Updated: 2024/12/27 20:27:11 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:02:59 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,18 @@ char	**types_to_char(t_types *list)
 		i++;
 		temp = temp->next;
 	}
-	args = (char **)malloc(sizeof(char *) * (i + 1));  // +1 para NULL
+	args = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!args)
 		return (NULL);
 	i = 0;
 	while (list)
 	{
-		args[i++] = ft_strdup(list->cmd);  // Copia cada comando
+		args[i++] = ft_strdup(list->cmd);
 		list = list->next;
 	}
-	args[i] = NULL;  // Corrige o erro de falta do terminador NULL
+	args[i] = NULL;
 	return (args);
 }
-
 
 static int	count_cmds(t_envp *commands)
 {

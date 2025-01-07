@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:39:17 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/03 18:48:22 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:41:01 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_types *remove_null_nodes(t_types *head)
+t_types	*remove_null_nodes(t_types *head)
 {
-	t_types *current;
-	t_types *to_remove;
+	t_types	*current;
+	t_types	*to_remove;
 
 	current = head;
 	to_remove = NULL;
@@ -36,7 +36,7 @@ t_types *remove_null_nodes(t_types *head)
 		else
 			current = current->next;
 	}
-	return head;
+	return (head);
 }
 
 char	**split_heredoc(t_types *type, int here_count)
@@ -130,9 +130,11 @@ int	process_single_heredoc(t_types *type, t_types *head)
 
 static void	free_heredoc_delims(char **delim)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	if (!delim)
-		return;
+		return ;
 	while (delim[i])
 	{
 		free(delim[i]);
