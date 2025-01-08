@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:37:03 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/07 19:00:35 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/08 11:21:52 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,14 @@ static void	process_command(char *prompt, t_init_input *input_list,
 
 	prompt_dup = NULL;
 	if (add_to_history(prompt))
+	{
+		if (ft_strlen(prompt) == 2)
+		{
+			if (ft_strncmp(prompt, "\"\"", 2) == 0)
+				prompt = ft_strdup("\a");
+		}
 		prompt_dup = ft_strdup(prompt);
+	}
 	exec_shell(prompt_dup, input_list, env_list);
 	free(prompt);
 	prompt = NULL;
