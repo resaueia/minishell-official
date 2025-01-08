@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2025/01/08 14:29:08 by jparnahy         ###   ########.fr        #
+#    Updated: 2025/01/08 14:33:03 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,4 +141,5 @@ norm:
 hell: re
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=rl.supp ./minishell
 
-.PHONY: all clean fclean re
+# Phony rules
+.PHONY: all clean fclean re norm hell
