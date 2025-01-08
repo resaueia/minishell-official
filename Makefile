@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2025/01/08 13:22:35 by jparnahy         ###   ########.fr        #
+#    Updated: 2025/01/08 14:20:26 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,24 +49,47 @@ CYAN = \033[1;36m
 BOLD = \033[1m
 ITALIC = \033[3m
 
+# Raiboow colors
+RE = \033[38;5;196m
+OR = \033[38;5;208m
+YE = \033[38;5;226m
+GR = \033[38;5;46m
+BL = \033[38;5;21m
+IN = \033[38;5;93m
+VI = \033[38;5;201m
+
 # Emojis
 CHECK = ✅
 CROSS = ❌
 ARROW = ➜
+FLGS = 🏳️
 GEAR = ⚙️
 BOX = 📦
+
+# Barra de progresso
+PROGRESS_BAR_LENGTH = 70
+PROGRESS_BAR_LENGTH_CLEAN = 40
 
 # Main rules
 all: $(NAME)
 
-# Linking rule
+# Linking rule (com barra de progresso)
 $(NAME): $(OBJ_FILES)
 	@echo
 	@echo "$(CYAN)$(GEAR) Linking...$(RESET)"
-	$(CC) $(FLAGS) $(OBJ_FILES) -o $(NAME) $(INCLUDES) -lreadline
+	@$(CC) $(FLAGS) $(OBJ_FILES) -o $(NAME) $(INCLUDES) -lreadline & \
+	for i in $$(seq 1 $(PROGRESS_BAR_LENGTH)); do \
+		printf "$(GREEN_MARK)=$(RESET)"; \
+		sleep 0.04; \
+	done; \
+	echo "$(GREEN)  $(CHECK) 100%$(RESET)"
 	@echo
-	@echo "$(GREEN)$(CHECK) Compilation complete!$(RESET)"
-	@echo "$(YELLOW)Flags used: $(FLAGS)$(RESET)"
+	@echo "$(FLGS)$(YELLOW) Flags used: $(FLAGS)$(RESET)"
+	@echo "$(ARROW) $(CYAN) Executable created: ./$(NAME)$(RESET)"
+	@echo "$(BOLD)$(GREEN)$(CHECK) Compilation complete!$(RESET)\n"
+	@echo
+	@echo "$(BOLD)$(RE)W E L $(OR)C O M $(YE)E   T O   $(GR)O U R   \
+		$(BL)M I N $(IN)I S H $(VI)E L L$(RESET)\n"
 	@echo
 
 # Compiling each file .c to .o
@@ -82,14 +105,22 @@ $(addprefix $(OBJ_DIR)/, $(SUBDIRS)):
 # Cleaning rules
 clean:
 	@echo "$(RED)$(CROSS) Removing object files... $(RESET)"
+	@for i in $$(seq $(PROGRESS_BAR_LENGTH_CLEAN) -1 1); do \
+		printf "$(RED_MARK)=$(RESET)"; \
+		sleep 0.02; \
+	done; \
 	$(RM) -r $(OBJ_DIR)
-	@echo "$(YELLOW)$(BOX) Object files removed.$(RESET)"
+	@echo "$(YELLOW)  $(BOX) Object files removed.$(RESET)"
 	@echo
 
 fclean: clean
 	@echo "$(RED)$(CROSS) Removing executable... $(RESET)"
+	@for i in $$(seq $(PROGRESS_BAR_LENGTH_CLEAN) -1 1); do \
+		printf "$(RED_MARK)=$(RESET)"; \
+		sleep 0.035; \
+	done; \
 	$(RM) $(NAME)
-	@echo "$(YELLOW)$(GEAR) Executable removed.$(RESET)"
+	@echo "$(YELLOW)  $(GEAR) Executable removed.$(RESET)"
 	@echo
 
 re: fclean all
