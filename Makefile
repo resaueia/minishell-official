@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2025/01/08 14:33:03 by jparnahy         ###   ########.fr        #
+#    Updated: 2025/01/08 17:25:41 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,12 +85,11 @@ $(NAME): $(OBJ_FILES)
 	done; \
 	echo "$(GREEN)  $(CHECK) 100%$(RESET)"
 	@echo
-	@echo "$(FLGS)$(YELLOW) Flags used: $(FLAGS)$(RESET)"
+	@echo "$(FLGS) $(YELLOW)Flags used: $(FLAGS)$(RESET)"
 	@echo "$(ARROW) $(CYAN) Executable created: ./$(NAME)$(RESET)"
 	@echo "$(BOLD)$(GREEN)$(CHECK) Compilation complete!$(RESET)\n"
 	@echo
-	@echo "$(BOLD)$(RE)W E L $(OR)C O M $(YE)E   T O   $(GR)O U R   \
-		$(BL)M I N $(IN)I S H $(VI)E L L$(RESET)\n"
+	@echo "$(BOLD)$(RE)W E L $(OR)C O M $(YE)E   T O   $(GR)O U R   $(BL)M I N $(IN)I S H $(VI)E L L$(RESET)\n"
 	@echo
 
 # Compiling each file .c to .o
