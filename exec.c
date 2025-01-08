@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:50:29 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/07 20:58:27 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:29:29 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@ int	handle_heredoc(t_init_input *input_list, t_types *type)
 		perror("Error setting up heredoc");
 		return (1);
 	}
-	if (check_node(type))
-	{
-		//free_list(input_list);
-		//free_types(&type);
-	}
+	check_node(type);
 	return (0);
 }
 
