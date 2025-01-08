@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
+#    By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2025/01/07 18:32:36 by jparnahy         ###   ########.fr        #
+#    Updated: 2025/01/07 21:04:14 by rsaueia-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,10 @@ SRCS = main.c \
 	   input_check_2.c \
 	   split_utils.c \
 	   exec.c \
+	   exec_2.c \
 	   exec_utils.c \
 	   exec_utils_2.c \
+	   exec_utils_3.c \
 	   exec_helper.c \
 	   lexer.c \
 	   libft.c \
@@ -54,6 +56,7 @@ SRCS = main.c \
 	   quotes_utils.c \
 	   expander.c \
 	   expander_checkers.c \
+	   expander_checkers_2.c \
 	   expander_envp.c \
 	   expander_status.c \
 	   expander_validations.c \

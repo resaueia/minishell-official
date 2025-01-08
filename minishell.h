@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/07 19:38:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:10:34 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,13 @@ char					*status_expander(char *str, int i, int exit_status);
 char					*env_var_expander(char *str, int i, t_envp *env_list);
 char					*get_expanded_value(char *str, int start,
 							t_envp *env_list, int end);
+char					*its_time_to_expander(char *cmd, t_envp *env_list,
+							int exit_status);
+char					*expander_or_not(char *cmd, t_envp *env_list,
+							int exit_status);
+void					rmv_db_qts(char **str);
+void					rmv_sg_qts(char **str);
+void					remove_backslashes(char *str);
 
 /* OTHERS */
 void					process_input(t_init_input *input_list, t_types *types,

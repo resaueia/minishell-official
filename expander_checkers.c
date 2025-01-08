@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander_checkers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 23:43:15 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/06 17:47:30 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:09:59 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	rmv_db_qts(char **str)
+void	rmv_db_qts(char **str)
 {
 	char	*src;
 	char	*dst;
@@ -33,7 +33,7 @@ static void	rmv_db_qts(char **str)
 	*dst = '\0';
 }
 
-static void	rmv_sg_qts(char **str)
+void	rmv_sg_qts(char **str)
 {
 	char	*src;
 	char	*dst;
@@ -54,7 +54,7 @@ static void	rmv_sg_qts(char **str)
 	*dst = '\0';
 }
 
-static void	remove_backslashes(char *str)
+void	remove_backslashes(char *str)
 {
 	char	*src;
 	char	*dst;
@@ -68,50 +68,6 @@ static void	remove_backslashes(char *str)
 		src++;
 	}
 	*dst = '\0';
-}
-
-static char	*its_time_to_expander(char *cmd, t_envp *env_list, int exit_status)
-{
-	int	len;
-	int	i;
-	
-	i = 0;
-	len = ft_strlen(cmd);
-	while (i < len)
-	{
-		if (cmd[i] == '$')
-		{
-			cmd = to_expander(cmd, i, env_list, exit_status);
-			len = ft_strlen(cmd);  // Atualizar tamanho após expansão
-			i = -1;                // Reiniciar o loop para nova análise
-		}
-		i++;
-	}
-	return (cmd);
-}
-
-static char	*expander_or_not(char *cmd, t_envp *env_list, int exit_status)
-{
-	int	i;
-
-	i = 0;
-	remove_backslashes(cmd);
-	while (cmd[i])
-	{
-		if (cmd[i] == '\'')
-		{
-			rmv_sg_qts(&cmd);
-			return (cmd);
-		}
-		if (cmd[i] == '\"')
-		{
-			rmv_db_qts(&cmd);
-			break ;
-		}
-		i++;
-	}
-	cmd = its_time_to_expander(cmd, env_list, exit_status);
-	return (cmd);
 }
 
 void	lets_expander(t_types *types, t_envp *env_list, int exit_status)

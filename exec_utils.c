@@ -6,34 +6,11 @@
 /*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 10:17:37 by jparnahy          #+#    #+#             */
-/*   Updated: 2025/01/07 19:25:02 by rsaueia-         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:50:57 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*build_full_path(char *dir, char *cmd)
-{
-	char	*full_path;
-
-	if (generate_full_path(&full_path, dir, cmd) == -1)
-		exit_with_error("Error constructing path");
-	return (full_path);
-}
-
-int	check_access_and_set(char *full_path, t_types *type,
-char **path_dup)
-{
-	if (access(full_path, X_OK) == 0)
-	{
-		free(type->cmd);
-		type->cmd = full_path;
-		free(*path_dup);
-		return (1);
-	}
-	free(full_path);
-	return (0);
-}
 
 /*int	find_command_path(t_types *type, t_envp *env_list)
 {
@@ -105,8 +82,6 @@ int	find_command_path(t_types *type, t_envp *env_list)
 	return (1);
 }
 
-
-
 void	setup_io_redirection(t_types *type)
 {
 	if (type->fd[0] != STDIN_FILENO)
@@ -159,7 +134,8 @@ void	setup_io_redirection(t_types *type)
 		free_from_split(args);
 }*/
 
-static void	execute_child_process(t_init_input *cmd, t_types *type, char **env, t_envp *env_list)
+static void	execute_child_process(t_init_input *cmd, t_types *type, char **env,
+				t_envp *env_list)
 {
 	char	**args;
 
