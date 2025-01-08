@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thfranco <thfranco@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:42:25 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/06 21:58:14 by thfranco         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:58:58 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -47,7 +47,7 @@ static void	handle_cd_path_change(char *path, t_envp **env_list)
  * the `PWD` in the environment variables. Prints an error if the change fails.
  */
 
-void	ft_cd(t_types *cmds, t_envp **env_list)
+/*void	ft_cd(t_types *cmds, t_envp **env_list)
 {
 	char	*path;
 	char	*tmp_pwd;
@@ -77,9 +77,46 @@ void	ft_cd(t_types *cmds, t_envp **env_list)
 	else if (*path == '-')
 		handle_cd_special_paths(path, "OLDPWD", env_list);
 	free(path);
-}
+}*/
 
 /* Function: ft_cd
  * Changes the current working directory based on the provided path.
  * Supports paths for root (`/`), specific directories, `HOME`, or `OLDPWD`.
  */
+
+static void	ft_cd_root_or_path(char **path, t_envp **env_list)
+{
+	char	*tmp_pwd;
+
+	if (ft_strlen(*path) == 1 && **path == '/')
+	{
+		chdir("/");
+		tmp_pwd = change_path("/", "PWD", env_list);
+		free(tmp_pwd);
+	}
+	else if (ft_strlen(*path) >= 2)
+	{
+		if (ft_strncmp(*path, "~/", 2) == 0)
+		{
+			tmp_pwd = joinpath(*path + 2, "HOME", env_list);
+			free(*path);
+			*path = tmp_pwd;
+		}
+		handle_cd_path_change(*path, env_list);
+	}
+}
+
+void	ft_cd(t_types *cmds, t_envp **env_list)
+{
+	char	*path;
+
+	if (check_args(cmds))
+		return ;
+	path = args_to_str(cmds);
+	ft_cd_root_or_path(&path, env_list);
+	if (!*path || *path == '~')
+		handle_cd_special_paths(path, "HOME", env_list);
+	else if (*path == '-')
+		handle_cd_special_paths(path, "OLDPWD", env_list);
+	free(path);
+}

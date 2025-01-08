@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_validations.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
+/*   By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 20:08:04 by jparnahy          #+#    #+#             */
-/*   Updated: 2024/12/28 20:11:10 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:44:11 by rsaueia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	validate_before_dollar(char *str, int i)
 	else if (i > 0)
 	{
 		if (str[i - 1] == '&' || str[i - 1] == '!')
-		return (0);
+			return (0);
 		if (str[i - 1] == '(' || str[i - 1] == ')')
 		{
 			printf("minishell: syntax error near unexpected token");
