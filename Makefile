@@ -3,99 +3,96 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rsaueia- <rsaueia-@student.42.fr>          +#+  +:+       +#+         #
+#    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2025/01/07 21:04:14 by rsaueia-         ###   ########.fr        #
+#    Updated: 2025/01/08 13:22:35 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# Name of the program
 NAME = minishell
 
-HEADER = minishell.h
+# Directories
+SRC_DIR = src
+OBJ_DIR = obj
+INC_DIR = include
 
-SRCS = main.c \
-	   prompt.c \
-	   prompt_start.c \
-	   envp.c \
-	   envp_utils.c \
-	   utils_general.c \
-	   utils_path.c \
-	   utils_string.c \
-	   builtins.c \
-	   builtins_utils.c \
-	   cd.c \
-	   echo.c \
-	   path.c \
-	   splitter.c \
-	   splitter_utils.c \
-	   delim_split.c \
-	   delim_split_2.c \
-	   input_check.c \
-	   input_check_2.c \
-	   split_utils.c \
-	   exec.c \
-	   exec_2.c \
-	   exec_utils.c \
-	   exec_utils_2.c \
-	   exec_utils_3.c \
-	   exec_helper.c \
-	   lexer.c \
-	   libft.c \
-	   libft_join.c \
-	   libft_memory.c \
-	   libft_string.c \
-	   to_exit.c \
-	   to_free_lists.c \
-	   to_free.c \
-	   the_split.c \
-	   parser.c \
-	   parser_nodes.c \
-	   parser_nodes_utils.c \
-	   parser_validations.c \
-	   quotes_utils.c \
-	   expander.c \
-	   expander_checkers.c \
-	   expander_checkers_2.c \
-	   expander_envp.c \
-	   expander_status.c \
-	   expander_validations.c \
-	   what_type.c \
-	   heredoc.c \
-	   heredoc_utils.c \
-	   heredoc_utils_2.c \
-	   redirects.c \
-	   redirects_utils.c \
-	   redirects_in.c \
-	   redirects_out.c \
-	   pipe.c \
-	   pipe_utils.c \
+# Subdirectories on the source directory
+SUBDIRS = prompt parser exec pipes redirections splitter builtins \
+	env expander heredoc utils free from_libft
 
-OBJS = $(SRCS:.c=.o)
+# Source files
+SRC_FILES = $(shell find $(SRC_DIR) -type f -name "*.c")
 
+# Objects management
+OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+# Header inclusion
+INCLUDES = -I$(INC_DIR) -I/usr/include/readline
+
+# Removing variable
 RM = rm -f
 
+# Flags for the compilation
 FLAGS = -g -Wall -Wextra -Werror
 
-$(NAME): $(NAME)
-	ar rcs $(NAME)
+# Colors for the compilation
+RESET = \033[0m
+GREEN = \033[1;32m
+GREEN_MARK = \033[0;42m
+YELLOW = \033[1;33m
+BLUE = \033[1;34m
+RED = \033[1;31m
+RED_MARK = \033[0;41m
+CYAN = \033[1;36m
+BOLD = \033[1m
+ITALIC = \033[3m
 
+# Emojis
+CHECK = ✅
+CROSS = ❌
+ARROW = ➜
+GEAR = ⚙️
+BOX = 📦
+
+# Main rules
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	cc $(FLAGS) $(OBJS) -o $(NAME) -lreadline
-	
-%.o: %.c $(HEADER)
-	cc $(FLAGS) -c $<
+# Linking rule
+$(NAME): $(OBJ_FILES)
+	@echo
+	@echo "$(CYAN)$(GEAR) Linking...$(RESET)"
+	$(CC) $(FLAGS) $(OBJ_FILES) -o $(NAME) $(INCLUDES) -lreadline
+	@echo
+	@echo "$(GREEN)$(CHECK) Compilation complete!$(RESET)"
+	@echo "$(YELLOW)Flags used: $(FLAGS)$(RESET)"
+	@echo
 
+# Compiling each file .c to .o
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(addprefix $(OBJ_DIR)/, $(SUBDIRS))
+	@mkdir -p $(dir $@)
+	@printf "$(BLUE)$(ARROW) Compiling: %-35s$(RESET)\n" "$<"
+	$(CC) $(FLAGS) -c $< -o $@ $(INCLUDES)
+
+# Rule to compile all directories (Criar subdiretórios)
+$(addprefix $(OBJ_DIR)/, $(SUBDIRS)):
+	@mkdir -p $@
+
+# Cleaning rules
 clean:
-	$(RM) $(OBJS)
+	@echo "$(RED)$(CROSS) Removing object files... $(RESET)"
+	$(RM) -r $(OBJ_DIR)
+	@echo "$(YELLOW)$(BOX) Object files removed.$(RESET)"
+	@echo
 
 fclean: clean
-	$(RM) $(OBJS) $(NAME)
+	@echo "$(RED)$(CROSS) Removing executable... $(RESET)"
+	$(RM) $(NAME)
+	@echo "$(YELLOW)$(GEAR) Executable removed.$(RESET)"
+	@echo
 
 re: fclean all
-
 
 hell: re
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=rl.supp ./minishell
