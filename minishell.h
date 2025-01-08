@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:51:08 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/07 19:38:29 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:04:32 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,9 @@ int						handle_pipeline(t_init_input *input_list,
 							t_envp *env_list, t_types *type);
 int						setup_pipeline(t_init_input *input_list,
 							t_envp *env_list);
+void					handle_child_process(int prev_fd, int *pipe_fd,
+							t_init_input *current, t_envp *env_list);
+void					handle_parent_process(int *prev_fd, int *pipe_fd);
 int						process_pipe(t_init_input *input_list, t_types *types,
 							t_envp *env_list);
 int						to_exec_pipe(t_init_input *input_list, t_types *type,
