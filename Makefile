@@ -6,7 +6,7 @@
 #    By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/04 15:04:46 by rsaueia-          #+#    #+#              #
-#    Updated: 2025/01/08 14:20:26 by jparnahy         ###   ########.fr        #
+#    Updated: 2025/01/08 14:29:08 by jparnahy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ ARROW = ➜
 FLGS = 🏳️
 GEAR = ⚙️
 BOX = 📦
+NOR = 🔎
 
 # Barra de progresso
 PROGRESS_BAR_LENGTH = 70
@@ -125,6 +126,18 @@ fclean: clean
 
 re: fclean all
 
+# Norminette
+norm:
+	@echo "\n$(NOR) $(BOLD)$(CYAN)Running Norminette...\n$(RESET)"
+	@norminette $(SRC_DIR) $(INC_DIR) | tee norminette_output.log
+	@if grep -q "Error" norminette_output.log; then \
+		echo "\n$(BOLD)$(RED)Norminette check failed!$(RESET) $(CROSS)\n"; \
+	else \
+		echo "\n$(BOLD)$(GREEN)Norminette check passed successfully!$(RESET) $(CHECK)\n"; \
+	fi
+	@rm -f norminette_output.log
+
+# Valgrind
 hell: re
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=rl.supp ./minishell
 
