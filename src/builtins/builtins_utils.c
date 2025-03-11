@@ -6,7 +6,7 @@
 /*   By: jparnahy <jparnahy@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:35:37 by rsaueia-          #+#    #+#             */
-/*   Updated: 2025/01/08 11:03:46 by jparnahy         ###   ########.fr       */
+/*   Updated: 2025/03/10 23:06:31 by jparnahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ static int	parse_exit_status(char *prompt, int i)
 	while (prompt[i])
 	{
 		if (is_whitspace(prompt[i]))
-		{
-			printf("exit\nminishell: exit: too many arguments\n");
-			exit (1);
-		}
+			return (-1);
 		if (!ft_isdigit(prompt[i]))
 		{
 			printf("exit\nminishell: exit: %s: numeric argument required\n",
@@ -65,10 +62,10 @@ void	exit_shell(char *prompt, char *prompt_dup, t_init_input *input_list,
 		i++;
 	ret = parse_exit_status(prompt, 4);
 	if (ret == -1)
+		last_status(1);
+	else
 	{
 		exit_mini(input_list, prompt, prompt_dup, env_list);
-		exit(1);
+		exit(ret);
 	}
-	exit_mini(input_list, prompt, prompt_dup, env_list);
-	exit(ret);
 }
